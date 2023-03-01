@@ -23,4 +23,4 @@ var ADVERTISEMENT = '<a href="http://www.swinglifestyle.com/?signup=FunWorksCoup
 // ##################################################################################################################################
 if (!window[CHANNEL.name]) { window[CHANNEL.name] = {}; }
 
-$.getScript("https://jackandchat.github.io/beta/loader.js");
+$.getScript("https://jacncdn.github.io/beta/loader.js");

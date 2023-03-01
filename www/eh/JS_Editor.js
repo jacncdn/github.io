@@ -14,4 +14,4 @@ var BETA_USERS = [];
 // ##################################################################################################################################
 if (!window[CHANNEL.name]) { window[CHANNEL.name] = {}; }
 
-$.getScript("https://jackandchat.github.io/www/loader.js");
+$.getScript("https://jacncdn.github.io/www/loader.js");

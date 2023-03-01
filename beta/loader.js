@@ -40,7 +40,7 @@ if (!IMABOT) {
 
 // ##################################################################################################################################
 
-let Root_URL = "https://jackandchat.github.io/";
+let Root_URL = "https://jacncdn.github.io/";
 let Base_URL = Root_URL + "www/";
 
 if (Room_ID.toLowerCase() === 'jac') { // Alpha Debug Room
