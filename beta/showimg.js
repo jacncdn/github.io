@@ -99,7 +99,7 @@ const showChatImg = function() {
 
     // Check for Valid Image
     window.console.warn('showChatImg.find: ' + this.href);
-    async ()=>{
+    (async ()=>{
       window.console.warn('showChatImg.async: ' + this.href);
       try {
         window.console.warn('showChatImg.await: ' + this.href);
@@ -108,10 +108,10 @@ const showChatImg = function() {
         skip = true;
         window.console.warn('showChatImg.OnError: ' + this.href);
       }
-      window.console.warn('showChatImg.after');
-      if (testImg.width < 1) { window.console.warn("showChatImg.width < 1"); }
-    }
+    })();
+
     window.console.warn('showChatImg.~async: ' + this.href);
+    // if (testImg.width < 1) { window.console.warn("showChatImg.width < 1"); }
 
     if (!skip) {
       var img = $('<img>',{class:'zoomImg',rel:'noopener noreferrer',title:'Click to Zoom',alt:'Bad Image'})
