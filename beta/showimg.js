@@ -99,9 +99,7 @@ const showChatImg = function() {
       .catch(err => { window.console.error('waitForImage.error', err); })
       .then(img => {
         // window.console.warn(`width: `, img);
-        img.keys(obj).forEach(function(key) {
-          console.warn(key, obj[key]); 
-        });
+        Object.entries(img).forEach(([key, val]) => windows.console.debug(key, val));
   
         if (!skip) {
           var chatImg = $('<img>',{class:'zoomImg',rel:'noopener noreferrer',title:'Click to Zoom',alt:'Bad Image'})
