@@ -98,19 +98,20 @@ const showChatImg = function() {
        ) { skip = true; }
 
     // Check for Valid Image
+    window.console.warn('showChatImg.find: ' + this.href);
     async ()=>{
-      window.console.error('showChatImg.async');
+      window.console.warn('showChatImg.async: ' + this.href);
       try {
-        window.console.info('showChatImg.await');
+        window.console.warn('showChatImg.await: ' + this.href);
         await waitForImage(this.href);
       } catch(e) {
         skip = true;
-        window.console.error('showChatImg.OnError', e);
+        window.console.warn('showChatImg.OnError: ' + this.href);
       }
-      window.console.info('showChatImg.after');
-      if (testImg.width < 1) { window.console.error("showChatImg.width < 1"); }
+      window.console.warn('showChatImg.after');
+      if (testImg.width < 1) { window.console.warn("showChatImg.width < 1"); }
     }
-    window.console.error('showChatImg.~async');
+    window.console.warn('showChatImg.~async: ' + this.href);
 
     if (!skip) {
       var img = $('<img>',{class:'zoomImg',rel:'noopener noreferrer',title:'Click to Zoom',alt:'Bad Image'})
