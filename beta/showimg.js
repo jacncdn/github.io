@@ -98,7 +98,7 @@ const showChatImg = function() {
 
     // Check for Valid Image
     async ()=>{
-      window.console.info('showChatImg.async');
+      window.console.error('showChatImg.async');
       try {
         window.console.info('showChatImg.await');
         await waitForImage(this.href);
@@ -108,20 +108,21 @@ const showChatImg = function() {
       }
       window.console.info('showChatImg.after');
       if (testImg.width < 1) { window.console.error("showChatImg.width < 1"); }
+    }
+    window.console.error('showChatImg.~async');
 
-      if (!skip) {
-        var img = $('<img>',{class:'zoomImg',rel:'noopener noreferrer',title:'Click to Zoom',alt:'Bad Image'})
-          .attr('src', encodeURI(this.href))
-          .on('error', 'imgError(this)"')
-          .on('click', function(){
-            let popImg = $('<img>',{class:'zoomedImg',title:'Click to Close',src:encodeURI($(this).attr("src"))});
-            $zoomImgModal.html('').append(popImg).on('click', function(){$zoomImgModal.css({"display":"none"}).html('');});
-            $zoomImgModal.css({"display":"block"});
-          })
-          .load(()=>{ scrollChat(); });
-          
-        $(this).parent().html(img);
-      }
+    if (!skip) {
+      var img = $('<img>',{class:'zoomImg',rel:'noopener noreferrer',title:'Click to Zoom',alt:'Bad Image'})
+        .attr('src', encodeURI(this.href))
+        .on('error', 'imgError(this)"')
+        .on('click', function(){
+          let popImg = $('<img>',{class:'zoomedImg',title:'Click to Close',src:encodeURI($(this).attr("src"))});
+          $zoomImgModal.html('').append(popImg).on('click', function(){$zoomImgModal.css({"display":"none"}).html('');});
+          $zoomImgModal.css({"display":"block"});
+        })
+        .load(()=>{ scrollChat(); });
+        
+      $(this).parent().html(img);
     }
   });
 }
