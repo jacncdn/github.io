@@ -90,8 +90,8 @@ const showChatImg = function() {
     // Check for Valid Image
     let testImg = new Image(); 
     testImg.src = encodeURI(this.href);
-    testImg.onerror = function() { skip = true; window.console.error("testImg.OnError"); }
-    if (testImg.width < 1) { skip = true; window.console.error("testImg.width < 1"); }
+    testImg.onerror = function() { window.console.error("testImg.OnError"); }
+    if (testImg.width < 1) { window.console.error("testImg.width < 1"); }
 
     if (!skip) {
       var img = $('<img>',{class:'zoomImg',rel:'noopener noreferrer',title:'Click to Zoom',alt:'Bad Image'})
