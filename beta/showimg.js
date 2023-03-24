@@ -96,9 +96,9 @@ const showChatImg = function() {
        ) { skip = true; }
 
     waitForImage(this.href)
-      .catch(err => { window.console.error('waitForImage.error: ', err); })
+      .catch(err => { window.console.error('waitForImage.error: ' + this.href, err); })
       .then(img => {
-        window.console.warn(`width: ` + img.width);
+        window.console.warn(`width: `, img);
   
         if (!skip) {
           var chatImg = $('<img>',{class:'zoomImg',rel:'noopener noreferrer',title:'Click to Zoom',alt:'Bad Image'})
