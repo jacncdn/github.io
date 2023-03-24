@@ -101,23 +101,24 @@ const showChatImg = function() {
       try {
         await waitForImage(this.href);
       } catch(e) {
-        window.console.error('failed to load image', e);
+        skip = true;
+        window.console.error('showChatImg.OnError', e);
       }
-      if (testImg.width < 1) { window.console.error("testImg.width < 1"); }
-    };
+      if (testImg.width < 1) { window.console.error("showChatImg.width < 1"); }
 
-    if (!skip) {
-      var img = $('<img>',{class:'zoomImg',rel:'noopener noreferrer',title:'Click to Zoom',alt:'Bad Image'})
-        .attr('src', encodeURI(this.href))
-        .on('error', 'imgError(this)"')
-        .on('click', function(){
-          let popImg = $('<img>',{class:'zoomedImg',title:'Click to Close',src:encodeURI($(this).attr("src"))});
-          $zoomImgModal.html('').append(popImg).on('click', function(){$zoomImgModal.css({"display":"none"}).html('');});
-          $zoomImgModal.css({"display":"block"});
-        })
-        .load(()=>{ scrollChat(); });
-        
-      $(this).parent().html(img);
+      if (!skip) {
+        var img = $('<img>',{class:'zoomImg',rel:'noopener noreferrer',title:'Click to Zoom',alt:'Bad Image'})
+          .attr('src', encodeURI(this.href))
+          .on('error', 'imgError(this)"')
+          .on('click', function(){
+            let popImg = $('<img>',{class:'zoomedImg',title:'Click to Close',src:encodeURI($(this).attr("src"))});
+            $zoomImgModal.html('').append(popImg).on('click', function(){$zoomImgModal.css({"display":"none"}).html('');});
+            $zoomImgModal.css({"display":"block"});
+          })
+          .load(()=>{ scrollChat(); });
+          
+        $(this).parent().html(img);
+      }
     }
   });
 }
