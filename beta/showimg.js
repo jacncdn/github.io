@@ -67,7 +67,7 @@ var zoomImgCSS = `
 
 const waitForImage = (url) => new Promise((resolve, reject) => {
   const img = new Image();
-  img.addEventListener('load', () => resolve(img));
+  img.addEventListener('load', (img) => resolve(img));
   img.addEventListener('error', (err) => reject(err));
   img.src = url;
 });
@@ -98,7 +98,7 @@ const showChatImg = function() {
     waitForImage(this.href)
       .catch(err => { window.console.error('waitForImage.error: ', err); })
       .then(img => {
-        // window.console.warn(`width: ` + img.width);
+        window.console.warn(`width: ` + img.width);
   
         if (!skip) {
           var chatImg = $('<img>',{class:'zoomImg',rel:'noopener noreferrer',title:'Click to Zoom',alt:'Bad Image'})
