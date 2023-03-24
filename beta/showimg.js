@@ -8,14 +8,6 @@
 
 // ##################################################################################################################################
 
-// Replace source
-/*
-$('img').on("error", function() {
-  $(this).attr('src', '/images/missing.png');
-});
-*/
-
-// ##################################################################################################################################
 var $zoomImgMsg = $("#messagebuffer");
 
 var zoomImgCSS = `
@@ -73,6 +65,12 @@ var zoomImgCSS = `
 
 // ----------------------------------------------------------------------------------------------------------------------------------
 
+const imgError = function(image) {
+  image.onerror = "";
+  image.src = Root_URL + "emoji/x.webp";
+  return true;
+}
+
 const imageExtensions = 'a[href*=".jpg"], a[href*=".jpeg"], a[href*=".png"], a[href*=".pnj"], ' + 
   'a[href*=".gif"], a[href*=".gifv"], a[href*=".svg"], a[href*=".svgz"], a[href*=".webp"]';
 
@@ -89,9 +87,16 @@ const showChatImg = function() {
         ((this.href.indexOf("imgur.com") > -1) && (!this.href.indexOf("i.imgur.com")))
        ) { skip = true; }
 
+    // Check for Valid Image
+    let testImg = new Image(); 
+    testImg.onerror = function() { skip = true; }
+    testImg.src = this.href;
+    if (testImg.width < 1) { skip = true; }
+
     if (!skip) {
       var img = $('<img>',{class:'zoomImg',rel:'noopener noreferrer',title:'Click to Zoom',alt:'Bad Image'})
         .attr('src', encodeURI(this.href))
+        .on('error', 'imgError(this)"')
         .on('click', function(){
           let popImg = $('<img>',{class:'zoomedImg',title:'Click to Close',src:encodeURI($(this).attr("src"))});
           $zoomImgModal.html('').append(popImg).on('click', function(){$zoomImgModal.css({"display":"none"}).html('');});
