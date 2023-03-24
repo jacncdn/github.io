@@ -65,6 +65,15 @@ var zoomImgCSS = `
 
 // ----------------------------------------------------------------------------------------------------------------------------------
 
+const waitForImage = function(src) {
+  new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve(img);
+    img.onerror = reject(img);
+    img.src = src;
+  });
+}
+
 const imgError = function(image) {
   image.onerror = "";
   image.src = Root_URL + "emoji/x.webp";
@@ -88,10 +97,7 @@ const showChatImg = function() {
        ) { skip = true; }
 
     // Check for Valid Image
-    var testImg = new Image(); 
-    testImg.onerror = function() { window.console.error("testImg.OnError"); }
-    testImg.src = encodeURI(this.href);
-    window.console.error("testImg.src: " + testImg.src);
+    await waitForImage(this.href);
     if (testImg.width < 1) { window.console.error("testImg.width < 1"); }
 
     if (!skip) {
