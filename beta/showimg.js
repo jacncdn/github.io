@@ -95,13 +95,10 @@ const showChatImg = function() {
         ((this.href.indexOf("imgur.com") > -1) && (!this.href.indexOf("i.imgur.com")))
        ) { skip = true; }
 
-    // debugger;
-    
-    // skip = true;
     waitForImage(this.href)
-      .catch(err => { window.console.error('waitForImage: ', err); })
+      .catch(err => { window.console.warn('waitForImage: ', err); })
       .then(img => {
-        window.console.error(`width: ${img.width}`);
+        window.console.warn(`width: ` + img.width);
   
         if (!skip) {
           var chatImg = $('<img>',{class:'zoomImg',rel:'noopener noreferrer',title:'Click to Zoom',alt:'Bad Image'})
