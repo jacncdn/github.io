@@ -98,12 +98,15 @@ const showChatImg = function() {
 
     // Check for Valid Image
     async ()=>{
+      window.console.info('showChatImg.async');
       try {
+        window.console.info('showChatImg.await');
         await waitForImage(this.href);
       } catch(e) {
         skip = true;
         window.console.error('showChatImg.OnError', e);
       }
+      window.console.info('showChatImg.after');
       if (testImg.width < 1) { window.console.error("showChatImg.width < 1"); }
 
       if (!skip) {
