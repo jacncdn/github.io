@@ -89,8 +89,8 @@ const showChatImg = function() {
 
     // Check for Valid Image
     let testImg = new Image(); 
+    testImg.src = encodeURI(this.href);
     testImg.onerror = function() { skip = true; window.console.error("testImg.OnError"); }
-    testImg.src = this.href;
     if (testImg.width < 1) { skip = true; window.console.error("testImg.width < 1"); }
 
     if (!skip) {
