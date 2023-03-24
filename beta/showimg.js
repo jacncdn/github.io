@@ -67,7 +67,8 @@ var zoomImgCSS = `
 
 const waitForImage = (url) => new Promise((resolve, reject) => {
   const img = new Image();
-  img.addEventListener('load', (img) => resolve(img));
+  // img.addEventListener('load', (img) => resolve(img));
+  img.addEventListener('load', () => resolve(img));
   img.addEventListener('error', (err) => reject(err));
   img.src = url;
 });
