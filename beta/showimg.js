@@ -97,7 +97,11 @@ const showChatImg = function() {
        ) { skip = true; }
 
     // Check for Valid Image
-    await waitForImage(this.href);
+    try {
+      await waitForImage(this.href);
+    } catch(e) {
+      window.console.error('failed to load image', e);
+    }
     if (testImg.width < 1) { window.console.error("testImg.width < 1"); }
 
     if (!skip) {
