@@ -95,12 +95,12 @@ const showChatImg = function() {
         ((this.href.indexOf("imgur.com") > -1) && (!this.href.indexOf("i.imgur.com")))
        ) { skip = true; }
 
-    debugger;
+    // debugger;
     
     
-    waitForImage(this.href)
-      .then(img => window.console.warn(`w: ${img.width} | h: ${img.height}`))
-      .catch(err => window.console.error(err));
+    await waitForImage(this.href)
+      .then(img => window.console.error(`width: ${img.width}`))
+      .catch(err => window.console.error('waitForImage: ', err));
 
 /*
     window.console.warn('showChatImg.find: ' + this.href);
