@@ -97,41 +97,26 @@ const showChatImg = function() {
 
     // debugger;
     
-    
-    await waitForImage(this.href)
-      .then(img => window.console.error(`width: ${img.width}`))
-      .catch(err => window.console.error('waitForImage: ', err));
-
-/*
-    window.console.warn('showChatImg.find: ' + this.href);
-    (async ()=>{
-      window.console.warn('showChatImg.async: ' + this.href);
-      try {
-        window.console.warn('showChatImg.await: ' + this.href);
-        await waitForImage(this.href);
-      } catch(e) {
-        skip = true;
-        window.console.warn('showChatImg.OnError: ' + this.href);
-      }
-    })();
-
-    window.console.warn('showChatImg.~async: ' + this.href);
-    if (testImg.width < 1) { window.console.warn("showChatImg.width < 1"); }
-*/
-
-    if (!skip) {
-      var img = $('<img>',{class:'zoomImg',rel:'noopener noreferrer',title:'Click to Zoom',alt:'Bad Image'})
-        .attr('src', encodeURI(this.href))
-        .on('error', 'imgError(this)"')
-        .on('click', function(){
-          let popImg = $('<img>',{class:'zoomedImg',title:'Click to Close',src:encodeURI($(this).attr("src"))});
-          $zoomImgModal.html('').append(popImg).on('click', function(){$zoomImgModal.css({"display":"none"}).html('');});
-          $zoomImgModal.css({"display":"block"});
-        })
-        .load(()=>{ scrollChat(); });
-        
-      $(this).parent().html(img);
-    }
+    // skip = true;
+    waitForImage(this.href)
+      .catch(err => { window.console.error('waitForImage: ', err); })
+      .then(img => {
+        window.console.error(`width: ${img.width}`);
+  
+        if (!skip) {
+          var chatImg = $('<img>',{class:'zoomImg',rel:'noopener noreferrer',title:'Click to Zoom',alt:'Bad Image'})
+            .attr('src', encodeURI(this.href))
+            .on('error', 'imgError(this)"')
+            .on('click', function(){
+              let popImg = $('<img>',{class:'zoomedImg',title:'Click to Close',src:encodeURI($(this).attr("src"))});
+              $zoomImgModal.html('').append(popImg).on('click', function(){$zoomImgModal.css({"display":"none"}).html('');});
+              $zoomImgModal.css({"display":"block"});
+            })
+            .load(()=>{ scrollChat(); });
+            
+          $(this).parent().html(chatImg);
+        }
+      });
   });
 }
 
