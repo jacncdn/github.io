@@ -76,6 +76,7 @@ const waitForImage = function(src) {
 
 const imgError = function(image) {
   image.onerror = "";
+  window.console.error('imgError: ' + image.src);
   image.src = Root_URL + "emoji/x.webp";
   return true;
 }
