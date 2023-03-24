@@ -100,7 +100,7 @@ const showChatImg = function() {
       .then(img => {
         // window.console.warn(`width: `, img);
         img.keys(obj).forEach(function(key) {
-          console.warn(key, obj[key]);
+          console.warn(key, obj[key]); 
         });
   
         if (!skip) {
