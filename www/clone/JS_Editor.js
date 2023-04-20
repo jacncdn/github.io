@@ -4,7 +4,7 @@
 **@preserve
 */
 
-var ChannelName_Caption = 'Porn';
+var ChannelName_Caption = 'Clone';
 var Room_ID = 'clone';
 
 var BOT_NICK = "LarryFlynt";
