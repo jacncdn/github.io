@@ -70,7 +70,7 @@ let Logo_URL =  Room_URL + "logo.png";
 let Favicon_URL = Room_URL + "favicon.png";
 let CustomCSS_URL = Room_URL + 'custom.css';
 let Filters_URL = Room_URL + 'filters.json';
-let MOTD_URL = Room_URL + 'motd.html';
+let MOTD_URL = Room_URL + 'motd.html'
 
 // ##################################################################################################################################
 
