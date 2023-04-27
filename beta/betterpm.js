@@ -13,14 +13,15 @@
 
 (function(window, document, $, undefined) {
   if (typeof Storage === "undefined") {
-    console.error("[Better PMs]", "localStorage not supported. Aborting load.");
+    console.error("betterpm", "localStorage not supported. Aborting load.");
     return;
   } else if (typeof CLIENT.name === "undefined") {
-    console.error("[Better PMs]", "Client is an anonymous user. Aborting load.");
+    console.error("betterpm", "Client is an anonymous user. Aborting load.");
     return;
   } else {
-    console.info("[Better PMs]", "Loading Module.")
+    console.info("betterpm", "Loading")
   }
+
   if (!window[CHANNEL.name]) { window[CHANNEL.name] = {} }
   
   class BetterPrivateMessages {
@@ -33,16 +34,19 @@
       this.openCache = {};
       
       $("#pmbar").on("deployCache", ((ev, user) => {
+          debugData("betterpm.deployCache", user);
           this.deployCache(user);
           this.saveOpen();
         }));
         
       $("#pmbar").on("newMessage", ((ev, coresp, data) => {
+          debugData("betterpm.newMessage", data);
           this.newMessage(coresp, data);
           this.saveOpen();
         }));
         
       $(window).on("unload.openprivs", (() => {
+          debugData("betterpm.unload.openprivs");
           this.saveOpen();
           this.flushCache();
         }));
@@ -51,11 +55,13 @@
     
     flushCache() {
       Object.keys(this.openCache).forEach((coresp => {
+        debugData("betterpm.flushCache", this["openCache"][coresp]);
         localStorage.setItem(`${CHANNEL.name}_BetterPM_History_${CLIENT.name}_${coresp}`, JSON.stringify(this["openCache"][coresp]));
       }));
     }
     
     deployCache(coresp) {
+      debugData("betterpm.deployCache", coresp);
       if (localStorage.getItem(`${CHANNEL.name}_BetterPM_History_${CLIENT.name}_${coresp}`) === null) { return }
       this.initCache(coresp);
       this.openCache[coresp].slice(this.openCache[coresp].length > 50 ? this["openCache"][coresp].length - 50 : 0).forEach((i => {
@@ -66,6 +72,7 @@
     scheduleFlush() { this.flushCache() }
     
     initCache(coresp) {
+      debugData("betterpm.initCache", coresp);
       if (typeof this.openCache[coresp] === "undefined") {
         this.openCache[coresp] = JSON.parse(localStorage.getItem(`${CHANNEL.name}_BetterPM_History_${CLIENT.name}_${coresp}`))
       }
@@ -79,9 +86,11 @@
           .replace(/^pm-/, ""))
       });
       localStorage.setItem(`${CHANNEL.name}_BetterPM_PrevOpen_${CLIENT.name}`, JSON.stringify(currOpen));
+      debugData("betterpm.saveOpen", currOpen);
     }
     
     newMessage(coresp, msg) {
+      debugData("betterpm.newMessage", msg);
       if (localStorage.getItem(`${CHANNEL.name}_BetterPM_History_${CLIENT.name}_${coresp}`) === null) {
         localStorage.setItem(`${CHANNEL.name}_BetterPM_History_${CLIENT.name}_${coresp}`, JSON.stringify([]))
       }
@@ -101,11 +110,14 @@
         
       this.previouslyOpen.forEach((user => { initPm(user) }));
       localStorage.setItem(`${CHANNEL.name}_BetterPM_PrevOpen_${CLIENT.name}`, JSON.stringify([]));
+      debugData("betterpm.startUp", this);
       return this
     }
   }
   
   window.initPm = function(user) {
+    debugData("betterpm.initPm", user);
+      
     if ($("#pm-" + user).length > 0) { return $("#pm-" + user) }
     
     var pm = $("<div/>")
@@ -125,6 +137,7 @@
       .html("&times;")
       .appendTo(title)
       .click(function() {
+        debugData("betterpm.close", user);
         pm.remove();
         $("#pm-placeholder-" + user).remove()
       });
@@ -137,6 +150,8 @@
     var placeholder;
     
     title.click(function() {
+      debugData("betterpm.title.click", user);
+      
       body.toggle();
       pm.removeClass("panel-primary")
         .addClass("panel-default");
@@ -154,7 +169,7 @@
           .css("left", left)
       } else {
         pm.css("position", "");
-        $("#pm-placeholder-" + user).remove()
+        $("#pm-placeholder-" + user).remove();
       }
     });
     
@@ -171,15 +186,14 @@
       .appendTo(body);
       
     input.keydown(function(ev) {
+      debugData("betterpm.input.keydown", ev);
+
       if (ev.keyCode === 13) {
-        if (CHATTHROTTLE) {
-          return
-        }
+        if (CHATTHROTTLE) { return; }
+        
         var meta = {};
-        var msg = input.val();
-        if (msg.trim() === "") {
-          return
-        }
+        var msg = input.val().trim();
+        if (msg === "") { return; }
         
         if (USEROPTS.modhat && (CLIENT.rank >= Rank.Moderator)) {
           meta.modflair = CLIENT.rank
@@ -199,20 +213,22 @@
     
     ({
       startCheck: function(user) {
-        if (!$("#pm-" + user).length) {
-          return
-        }
+        debugData("betterpm.startCheck", user);
+        
+        if (!$("#pm-" + user).length) { return; }
+        
         var buffer = initPm(user).find(".pm-buffer");
         
         if (buffer.children()
-          .last()
-          .length) { buffer.children().last()[0].scrollIntoView() }
+              .last()
+              .length) {
+          buffer.children().last()[0].scrollIntoView();
+        }
         
         buffer[0].scrollTop = buffer[0].scrollHeight;
         
-        if (buffer[0].scrollHeight == this.scrollHeight && this.scrollHeight !== 0) {
-          return
-        } else {
+        if (buffer[0].scrollHeight == this.scrollHeight && this.scrollHeight !== 0) { return; }
+        else {
           this.scrollHeight = buffer[0].scrollHeight;
           setTimeout(this.startCheck.bind(this), this.timeout, user)
         }
@@ -225,10 +241,12 @@
   };
   
   window.Callbacks.pm = function(data, backlog) {
+    debugData("betterpm.Callbacks.pm", data);
+    debugData("betterpm.Callbacks.pm", backlog);
+    
     var name = data.username;
-    if (IGNORED.indexOf(name) !== -1) {
-      return
-    }
+    if (IGNORED.indexOf(name) !== -1) { return; }
+    
     if (data.username === CLIENT.name) {
       name = data.to
     } else {
