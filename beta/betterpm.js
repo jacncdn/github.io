@@ -111,6 +111,7 @@
       this.previouslyOpen.forEach((user => { initPm(user) }));
       localStorage.setItem(`${CHANNEL.name}_BetterPM_PrevOpen_${CLIENT.name}`, JSON.stringify([]));
       debugData("betterpm.startUp", this);
+      
       return this
     }
   }
@@ -186,14 +187,15 @@
       .appendTo(body);
       
     input.keydown(function(ev) {
-      debugData("betterpm.input.keydown", ev);
-
       if (ev.keyCode === 13) {
         if (CHATTHROTTLE) { return; }
         
         var meta = {};
         var msg = input.val().trim();
         if (msg === "") { return; }
+        
+        debugData("betterpm.input.keydown", msg);
+
         
         if (USEROPTS.modhat && (CLIENT.rank >= Rank.Moderator)) {
           meta.modflair = CLIENT.rank
@@ -237,12 +239,13 @@
       timeout: 250
     })
     .startCheck(user);
+    
     return pm
   };
   
   window.Callbacks.pm = function(data, backlog) {
-    debugData("betterpm.Callbacks.pm", data);
-    debugData("betterpm.Callbacks.pm", backlog);
+    // debugData("betterpm.Callbacks.pm", data);
+    // debugData("betterpm.Callbacks.pm", backlog);
     
     var name = data.username;
     if (IGNORED.indexOf(name) !== -1) { return; }
