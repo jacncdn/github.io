@@ -170,7 +170,7 @@ const hideVideoURLs = function(){
     $(".qe_title").each(function(idx,data){data.replaceWith(data.text);});
     if (window.CLIENT.rank > Rank.Member) {
       $("#queue li.queue_entry div.btn-group").hide();
-      $("div.btn-group > .qbtn-play").each(function(){ $(this).parent().parent().prepend(this);});
+      // $("div.btn-group > .qbtn-play").each(function(){ $(this).parent().parent().prepend(this);});
     }
   }, 2000);  
 };
