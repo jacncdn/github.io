@@ -78,7 +78,7 @@ window[CHANNEL.name].jsScriptsIdx = 0;
 window[CHANNEL.name].jsScripts = [
   Base_URL + "common.js",
   Base_URL + "showimg.js",
-  Base_URL + "betterpm.js";
+  Base_URL + "betterpm.js"
 ];
 
 // ----------------------------------------------------------------------------------------------------------------------------------
