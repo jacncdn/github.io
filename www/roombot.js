@@ -146,18 +146,13 @@ window.socket.on("chatMsg", (data)=>{
   if (user === null) return;
   if (user.rank > 1) return;  // Moderator
 
-  if ((data.msg.toLowerCase().indexOf("cunt") >= 0) ||
-      (data.msg.toLowerCase().indexOf("/shemalegangbang") >= 0) ||
-      (data.msg.toLowerCase().indexOf("/pornxxxroom") >= 0) ||
-      (data.msg.toLowerCase().indexOf("/babecockheaven") >= 0) ||
-      (data.msg.toLowerCase().indexOf("/hotninja") >= 0) ||
-      (data.msg.toLowerCase().indexOf("/gangbangporn") >= 0)) {
-    sMute(data.username);
+  if ((data.msg.toLowerCase().indexOf("cunt") >= 0)) {
+    // sMute(data.username);
   }
  
   if ((data.msg.toLowerCase().indexOf("rape") >= 0) ||
       (data.msg.toLowerCase().indexOf("catfish") >= 0)) {
-    ipBan(data.username, data.msg);
+    // ipBan(data.username, data.msg);
   }
 });
 
@@ -323,105 +318,6 @@ window.socket.on('changeMedia', window[CHANNEL.name].setupBOT_Callbacks);
 
 // ##################################################################################################################################
 
-const getOptions = function() {
-  $.getJSON(Options_URL, function(data) {
-      logTrace('roombot.getOptions', data);
-      socket.emit("setOptions", data);
-    })
-    .fail(function(data) {
-      errorData('roombot.getOptions Error', data.status + ": " + data.statusText);
-    });
-}
-
-// ##################################################################################################################################
-
-const getPermissions = function() {
-  $.getJSON(Permissions_URL, function(data) {
-      logTrace('roombot.getPermissions', data);
-      socket.emit("setPermissions", data);
-    })
-    .fail(function(data) {
-      errorData('roombot.getPermissions Error', data.status + ": " + data.statusText);
-    });
-}
-
-// ##################################################################################################################################
-
-const getFilters = function() {
-  $.getJSON(Filters_URL, function(data) {
-      logTrace('roombot.getFilters', data);
-      socket.emit("importFilters", data);
-    })
-    .fail(function(data) {
-      errorData('roombot.getFilters Error', data.status + ": " + data.statusText);
-    });
-}
-
-// ##################################################################################################################################
-
-const getEmotes = function() {
-  $.getJSON(Emotes_URL, function(data) {
-      logTrace('roombot.getEmotes', data);
-      socket.emit("importEmotes", data);
-    })
-    .fail(function(data) {
-      errorData('roombot.getEmotes Error', data.status + ": " + data.statusText);
-    });
-}
-
-// ##################################################################################################################################
-
-const getCSS = function() {
-  let blockerCSS = "";
-  let customCSS = "";
-  
-  function setCustomCSS() {
-    if (AGE_RESTRICT && blockerCSS.length < 1) return;
-    if (customCSS.length < 1) return;
-    
-    let data = customCSS;
-    if (AGE_RESTRICT) { data += blockerCSS; }
-    
-    logTrace('roombot.getCSS.setCustomCSS', data);
-    
-    socket.emit("setChannelCSS", { css: data });
-  }
-  
-  if (AGE_RESTRICT) {
-    $.ajax({
-      url: BlockerCSS_URL,
-      type: 'GET',
-      datatype: 'text',
-      cache: false,
-      error: function(data){
-        errorData('roombot.getBlockerCSS Error', data.status + ": " + data.statusText);
-      },
-      success: function(data){
-        logTrace('roombot.getBlockerCSS', data);
-        blockerCSS = data;
-        setCustomCSS();
-      }
-    });
-  }
-  
-  $.ajax({
-    url: CustomCSS_URL,
-    type: 'GET',
-    datatype: 'text',
-    cache: false,
-    error: function(data){
-      errorData('roombot.getCustomCSS Error', data.status + ": " + data.statusText);
-    },
-    success: function(data){
-      logTrace('roombot.getCustomCSS', data);
-      customCSS = data;
-      setCustomCSS();
-    }
-  });
-}
-
-// ##################################################################################################################################
-
 window[CHANNEL.name].randomMsgDelayMS = 45 * 60 * 1000;
 // if (CHANNEL_DEBUG) { window[CHANNEL.name].randomMsgDelayMS = 10 * 1000; }
 
@@ -560,12 +456,6 @@ setInterval(()=>{
 //  DOCUMENT READY
 $(document).ready(function() {
   debugData("roombot.documentReady", "");
-
-  getOptions();
-  getPermissions();
-  getCSS();
-  getEmotes();
-  getFilters();
 
   $("#chatline").css({"color":"crimson"});
 

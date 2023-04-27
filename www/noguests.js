@@ -12,13 +12,6 @@ const guestWarnMs = 6000;
 const guestKickMs = 60000;
 if (typeof BOT_NICK === "undefined") var BOT_NICK = "JackAndChatBot";
 
-//  0 - Anon
-//  1 - Registered
-//  1.5 - Leader
-//  2 - Moderator
-//  3 - Admin
-//  5 - Owner
-
 const guestWarn = function(data){ // Admin
   if (data.rank > 0 ) return;  // Registered
 
@@ -32,7 +25,7 @@ const guestWarn = function(data){ // Admin
     socket.emit("chatMsg", { msg: "/kick " + data.name + " " + guestKickMsg, meta: {} });
   }, guestKickMs);
 }
-if (CLIENT.rank == 3) { socket.on("addUser", guestWarn) }
+if (window.CLIENT.rank === Rank.Admin) { socket.on("addUser", guestWarn) }
 
 const guestKick = function(data){ // Moderators
   if (data.rank > 0 ) return;  // Registered
@@ -43,7 +36,7 @@ const guestKick = function(data){ // Moderators
     socket.emit("chatMsg", { msg: "/kick " + data.name + " " + guestKickMsg, meta: {} });
   }, (guestKickMs * 2));
 }
-if (CLIENT.rank == 2) { socket.on("addUser", guestKick); }
+if (window.CLIENT.rank === Rank.Moderator) { socket.on("addUser", guestKick); }
 
 // Guests should never get this far
 loadCSS(Base_URL + 'noguests.css');

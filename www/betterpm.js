@@ -181,11 +181,11 @@
           return
         }
         
-        if (USEROPTS.modhat && CLIENT.rank >= Rank.Moderator) {
+        if (USEROPTS.modhat && (CLIENT.rank >= Rank.Moderator)) {
           meta.modflair = CLIENT.rank
         }
         
-        if (CLIENT.rank >= 2 && msg.indexOf("/m ") === 0) {
+        if ((window.CLIENT.rank >= Rank.Moderator) && (msg.indexOf("/m ") === 0)) {
           meta.modflair = CLIENT.rank;
           msg = msg.substring(3)
         }
