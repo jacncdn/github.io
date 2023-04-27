@@ -143,7 +143,7 @@ window.socket.on("disconnect", function(msg){
 //  Room Announcements
 const roomAnnounce = function(msg){ 
   if (msg.length < 1) return;
-  if (window.CLIENT.rank < 1) return;
+  if (window.CLIENT.rank < Rank.Member) return;
   if (BOT_NICK.toLowerCase() == CLIENT.name.toLowerCase()) return;
 
   $(function() {
@@ -154,7 +154,7 @@ const roomAnnounce = function(msg){
 //  Moderator Announcements
 const modAnnounce = function(msg){ 
   if (msg.length < 1) return;
-  if (window.CLIENT.rank < 2) return;
+  if (window.CLIENT.rank < Rank.Moderator) return;
   if (BOT_NICK.toLowerCase() == CLIENT.name.toLowerCase()) return;
     
   $(function() {
@@ -168,7 +168,7 @@ const modAnnounce = function(msg){
 const hideVideoURLs = function(){
   setTimeout(()=>{
     $(".qe_title").each(function(idx,data){data.replaceWith(data.text);});
-    if (window.CLIENT.rank > 1) {
+    if (window.CLIENT.rank > Rank.Member) {
       $("#queue li.queue_entry div.btn-group").hide();
       $("div.btn-group > .qbtn-play").each(function(){ $(this).parent().parent().prepend(this);});
     }
@@ -251,7 +251,7 @@ window.socket.on("changeMedia", (data)=>{
 const pmAfkOff = function(data){
   if (isUserAFK(CLIENT.name)) {window.socket.emit("chatMsg", { msg: "/afk" });}
 };
-if (window.CLIENT.rank < 3) { window.socket.on("pm", pmAfkOff); } // Below Admin
+if (window.CLIENT.rank < Rank.Admin) { window.socket.on("pm", pmAfkOff); } // Below Admin
 
 // ##################################################################################################################################
 
@@ -262,7 +262,7 @@ const autoMsgExpire = function() {
   $messagebuffer.find("[class^=server-msg]:not([data-expire])").each(function(){ $(this).attr("data-expire", Date.now() + messageExpireTime);});
   $messagebuffer.find("div.poll-notify:not([data-expire])").attr("data-expire", Date.now() + (messageExpireTime * 2));
 
-  if (window.CLIENT.rank < 2) { // Mark Chat Messages
+  if (window.CLIENT.rank < Rank.Moderator) { // Mark Chat Messages
     $messagebuffer.find("[class*=chat-shadow]:not([data-expire])").each(function(){ $(this).attr("data-expire", Date.now() + messageExpireTime);});
     $messagebuffer.find("[class*=chat-msg-]:not([data-expire])").each(function(){ $(this).attr("data-expire", Date.now() + chatExpireTime);});
   }
@@ -407,7 +407,7 @@ $(document).ready(function() {
     $(".pm-input").css({"background-image":"none"});
   }, 1000);
   
-  if (window.CLIENT.rank > 0) { 
+  if (window.CLIENT.rank > Rank.Guest) { 
     let modflair = $("#modflair");
     if (modflair.hasClass("label-default")) { modflair.trigger("click"); }
 
@@ -417,7 +417,7 @@ $(document).ready(function() {
     chatline.focus();
   }
  
-  if (window.CLIENT.rank > 2) { 
+  if (window.CLIENT.rank > Rank.Moderator) { 
     $('<button class="btn btn-sm btn-default" id="clear" title="Clear Chat">Clear</button>')
       .appendTo("#leftcontrols")
       .on("click", function(){

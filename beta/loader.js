@@ -34,7 +34,7 @@ if (typeof BOT_NICK === "undefined") { var BOT_NICK = "JackAndChatBot"; }
 var IMABOT = (CLIENT.name.toLowerCase() == BOT_NICK.toLowerCase());
 
 if (!IMABOT) { 
-  if ((CLIENT.rank >= Rank.Moderator) || (BETA_USERS.includes(CLIENT.name.toLowerCase()))) { 
+  if ((window.CLIENT.rank >= Rank.Moderator) || (BETA_USERS.includes(CLIENT.name.toLowerCase()))) { 
     BETA_USER = true; 
   }
 }
@@ -113,10 +113,24 @@ const loadCSS = function(id, filename){
 
 // ##################################################################################################################################
 
+/*  window.CLIENT.rank
+  Rank.Guest: 0
+  Rank.Member: 1
+  Rank.Leader: 1.5
+  Rank.Moderator: 2
+  Rank.Admin: 3
+  Rank.Owner: 10
+  Rank.Siteadmin: 255
+*/
+
 if (!CUSTOM_LOADED) { // Load Once 
   CUSTOM_LOADED = true;
   
-  if (!ALLOW_GUESTS && (CLIENT.rank > 0)) {
+  if (window.CLIENT.rank > Rank.Moderator) { // At least Owner
+    window[CHANNEL.name].jsScripts.push(Base_URL + "defaults.js");
+  }
+
+  if (!ALLOW_GUESTS && (window.CLIENT.rank > Rank.Guest)) {
     window[CHANNEL.name].jsScripts.push(Base_URL + "noguests.js");
   }
 
