@@ -36,7 +36,7 @@ function Sleep(sleepMS) {
 const formatConsoleMsg = function(desc, data){
   let msg = desc;
   if ((typeof data !== 'undefined') && (data)) {
-    msg += ': ' + JSON.stringify(data);
+    msg += ': ' + JSON.stringify(data, null, 2);
   }
 
   return "[" + new Date().toTimeString().split(" ")[0] + "] " + msg;
@@ -46,7 +46,7 @@ const logTrace = function(desc, data){
   window.console.log(formatConsoleMsg(desc));
 
   if (CHANNEL_DEBUG && (typeof data !== 'undefined') && (data)) {
-    window.console.debug(JSON.stringify(data));
+    window.console.debug(JSON.stringify(data, null, 2));
   }
 };
 
@@ -208,9 +208,7 @@ const refreshVideo = function(){
   if (typeof window.CurrentMedia === "undefined") { return; }
   
   try {
-    if (window.PLAYER) {
-      window.PLAYER.destroy();
-    }
+    if (window.PLAYER) { window.PLAYER.destroy(); }
   } catch { }
 
   window.loadMediaPlayer(window.CurrentMedia);
@@ -222,14 +220,19 @@ const refreshVideo = function(){
 const videoFix = function(){
   debugData("common.videoFix");
   
-  var vplayer = videojs("ytapiplayer");
+  let vplayer = videojs("ytapiplayer");
   vplayer.on("error", function(e) {
     errorData("common.Reloading Player", e);
     vplayer.createModal('ERROR: Reloading player!');
     
-    window.setTimeout(function(){ refreshVideo(); }, 2000);
+    window.setTimeout(function(){ refreshVideo(); }, 500);
   });
 };
+
+function videoErrorHandler(event) {
+  errorData('common.videoErrorHandler', event);
+  refreshVideo();
+}
 
 window.socket.on("changeMedia", (data)=>{
   debugData(formatConsoleMsg("common.changeMedia", data));
@@ -240,8 +243,9 @@ window.socket.on("changeMedia", (data)=>{
   setVideoTitle();
 
   waitForElement("#ytapiplayer", ()=>{
-    var newVideo = document.getElementById("ytapiplayer");
-    if (newVideo && newVideo.addEventListener) { videoFix(); }
+    let newVideo = document.getElementById("ytapiplayer");
+    // if (newVideo && newVideo.addEventListener) { videoFix(); }
+    if (newVideo) { newVideo.addEventListener('error', videoErrorHandler, true); }
   }, 100, 10000);
 });
 
@@ -359,7 +363,6 @@ const makeNoRefererMeta = function(){
 //  DOCUMENT READY
 $(document).ready(function() {
   getFooter();
-  refreshVideo();
 
   if (!IMABOT) { hideVideoURLs(); }
   
@@ -436,6 +439,7 @@ $(document).ready(function() {
       });
   }
   
+  refreshVideo();
   cacheEmotes();
 });
 
