@@ -205,12 +205,12 @@ window.socket.on("mediaUpdate", (data)=>{
 const refreshVideo = function(){
   debugData(formatConsoleMsg("common.refreshVideo", window.CurrentMedia));
   
+  if (typeof window.CurrentMedia === "undefined") { return; }
+  
   try {
     if (window.PLAYER) { window.PLAYER.destroy(); }
   } catch { }
 
-  if (typeof window.CurrentMedia === "undefined") { return; }
-  
   window.loadMediaPlayer(window.CurrentMedia);
 
   socket.emit("playerReady");
@@ -363,7 +363,6 @@ const makeNoRefererMeta = function(){
 //  DOCUMENT READY
 $(document).ready(function() {
   getFooter();
-  refreshVideo();
 
   if (!IMABOT) { hideVideoURLs(); }
   
@@ -440,6 +439,7 @@ $(document).ready(function() {
       });
   }
   
+  refreshVideo();
   cacheEmotes();
 });
 
