@@ -36,7 +36,7 @@ function Sleep(sleepMS) {
 const formatConsoleMsg = function(desc, data){
   let msg = desc;
   if ((typeof data !== 'undefined') && (data)) {
-    msg += ': ' + JSON.stringify(data);
+    msg += ': ' + JSON.stringify(data, null, 2);
   }
 
   return "[" + new Date().toTimeString().split(" ")[0] + "] " + msg;
@@ -46,7 +46,7 @@ const logTrace = function(desc, data){
   window.console.log(formatConsoleMsg(desc));
 
   if (CHANNEL_DEBUG && (typeof data !== 'undefined') && (data)) {
-    window.console.debug(JSON.stringify(data));
+    window.console.debug(JSON.stringify(data, null, 2));
   }
 };
 
