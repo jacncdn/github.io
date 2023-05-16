@@ -15,15 +15,21 @@
 /* globals CHANNEL, CLIENT, Rank, CHATTHROTTLE, IGNORED, USEROPTS, initPm, pingMessage, formatChatMessage, Callbacks */
 /* globals debugData */
 
-// window.localStorage.clear()
-
 /*
+window.localStorage.clear()
+
 for (let key of Object.keys(localStorage)) { window.console.info(`${key} ${JSON.stringify(localStorage[key], null, 2)}`) }
 
 let now = new Date();
 console.log(now.toISOString());
 let then = now - monthMS;
 console.log((new Date(then)).toISOString());
+
+for (let key of Object.keys(localStorage)) {
+  if (key.toLowerCase().includes("prevopen")) {
+    window.console.info(`${key} ${JSON.stringify(localStorage[key], null, 2)}`);
+  }
+}
 
 */
 
@@ -47,7 +53,7 @@ console.log((new Date(then)).toISOString());
 
   if (!window[CHANNEL.name]) { window[CHANNEL.name] = {}; }
 
-  // Remove OLD BetterPM data
+  // Remove OLD BetterPM data TODO
   for (let key of Object.keys(localStorage)) {
     if (key.toLowerCase().includes("_betterpm_")) { localStorage.removeItem(key); }
   }
@@ -56,6 +62,8 @@ console.log((new Date(then)).toISOString());
   class BetterPrivateMessages {
     static get maxPMs() { return 50; }
     static get maxMS() { return 2592000000; } // 1 month
+
+    get historyID() { return `PM_History_${CHANNEL.name.toLowerCase()}_${CLIENT.name.toLowerCase()}_`; }
 
     constructor() {
       debugData("betterpm.constructor");
