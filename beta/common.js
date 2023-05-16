@@ -222,14 +222,19 @@ const refreshVideo = function(){
 const videoFix = function(){
   debugData("common.videoFix");
   
-  var vplayer = videojs("ytapiplayer");
+  let vplayer = videojs("ytapiplayer");
   vplayer.on("error", function(e) {
     errorData("common.Reloading Player", e);
     vplayer.createModal('ERROR: Reloading player!');
     
-    window.setTimeout(function(){ refreshVideo(); }, 2000);
+    window.setTimeout(function(){ refreshVideo(); }, 500);
   });
 };
+
+function videoErrorHandler(event) {
+  errorData('common.videoErrorHandler', event);
+  refreshVideo();
+}
 
 window.socket.on("changeMedia", (data)=>{
   debugData(formatConsoleMsg("common.changeMedia", data));
@@ -240,8 +245,9 @@ window.socket.on("changeMedia", (data)=>{
   setVideoTitle();
 
   waitForElement("#ytapiplayer", ()=>{
-    var newVideo = document.getElementById("ytapiplayer");
-    if (newVideo && newVideo.addEventListener) { videoFix(); }
+    let newVideo = document.getElementById("ytapiplayer");
+    // if (newVideo && newVideo.addEventListener) { videoFix(); }
+    if (newVideo) { newVideo.addEventListener('error', videoErrorHandler, true); }
   }, 100, 10000);
 });
 
