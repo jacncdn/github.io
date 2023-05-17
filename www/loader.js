@@ -3,8 +3,14 @@
 **|
 **@preserve
 */
-/*jshint esversion: 6*/
-'use strict';
+/* jshint esversion:6 */
+/* jshint strict:true */
+/* jshint curly:true */
+/* jshint eqeqeq:true */
+/* jshint varstmt:true */
+
+/* jshint undef:true */
+/* globals $, socket, CHANNEL */
 
 if (!window[CHANNEL.name]) { window[CHANNEL.name] = {}; }
 
@@ -31,7 +37,7 @@ if (typeof MOTD_MSG === "undefined") { var MOTD_MSG = ""; }
 if (typeof LOAD_BOT === "undefined") { var LOAD_BOT = false; }
 if (typeof PERIODIC_CLEAR === "undefined") { var PERIODIC_CLEAR = false; }
 if (typeof BOT_NICK === "undefined") { var BOT_NICK = "JackAndChatBot"; }
-var IMABOT = (CLIENT.name.toLowerCase() == BOT_NICK.toLowerCase());
+var IMABOT = (CLIENT.name.toLowerCase() === BOT_NICK.toLowerCase());
 
 if (!IMABOT) { 
   if ((window.CLIENT.rank >= Rank.Moderator) || (BETA_USERS.includes(CLIENT.name.toLowerCase()))) { 
@@ -41,8 +47,8 @@ if (!IMABOT) {
 
 // ##################################################################################################################################
 
-let Root_URL = "https://jacncdn.github.io/";
-let Base_URL = Root_URL + "www/";
+var Root_URL = "https://jacncdn.github.io/";
+var Base_URL = Root_URL + "www/";
 
 if (Room_ID.toLowerCase() === 'jac') { // Alpha Debug Room
   CHANNEL_DEBUG = true;
@@ -56,33 +62,33 @@ if (Room_ID.toLowerCase() === 'jac') { // Alpha Debug Room
 
 // ----------------------------------------------------------------------------------------------------------------------------------
 
-let Room_URL = Base_URL + Room_ID + "/";
+var Room_URL = Base_URL + Room_ID + "/";
 
-let Emotes_URL = Root_URL + 'emoji/emoji.json';
+var Emotes_URL = Root_URL + 'emoji/emoji.json';
 
-let Options_URL = Base_URL + 'options.json';
-let Permissions_URL = Base_URL + 'permissions.json';
-let Buttons_URL = Base_URL + 'motd-btns.html';
-let Footer_URL = Base_URL + 'footer.html';
-let BlockerCSS_URL = Base_URL + 'blocker.css';
+var Options_URL = Base_URL + 'options.json';
+var Permissions_URL = Base_URL + 'permissions.json';
+var Buttons_URL = Base_URL + 'motd-btns.html';
+var Footer_URL = Base_URL + 'footer.html';
+var BlockerCSS_URL = Base_URL + 'blocker.css';
 
-let Logo_URL =  Room_URL + "logo.png";
-let Favicon_URL = Room_URL + "favicon.png";
-let CustomCSS_URL = Room_URL + 'custom.css';
-let Filters_URL = Room_URL + 'filters.json';
-let MOTD_URL = Room_URL + 'motd.html'
+var Logo_URL =  Room_URL + "logo.png";
+var Favicon_URL = Room_URL + "favicon.png";
+var CustomCSS_URL = Room_URL + 'custom.css';
+var Filters_URL = Room_URL + 'filters.json';
+var MOTD_URL = Room_URL + 'motd.html';
 
 // ##################################################################################################################################
 
 window[CHANNEL.name].jsScriptsIdx = 0;
 window[CHANNEL.name].jsScripts = [
   Base_URL + "common.js",
-  Base_URL + "showimg.js",
-  Base_URL + "betterpm.js"
+  Base_URL + "showimg.js"
 ];
 
 // ----------------------------------------------------------------------------------------------------------------------------------
-const jsScriptsLoad = function(){ // Load Javascripts in order
+const jsScriptsLoad = function() { // Load Javascripts in order
+  'use strict';
   if (window[CHANNEL.name].jsScriptsIdx < window[CHANNEL.name].jsScripts.length) {
     let filename = window[CHANNEL.name].jsScripts[window[CHANNEL.name].jsScriptsIdx];
 
@@ -93,17 +99,18 @@ const jsScriptsLoad = function(){ // Load Javascripts in order
         jsScriptsLoad();  // Recurse
       })
       .fail(function(jqxhr, settings, exception) {
-        if(arguments[0].readyState==0){
+        if (arguments[0].readyState === 0) {
           window.console.error(filename + " FAILED to load!");
         } else {
           window.console.error(filename + " loaded but FAILED to parse! " + arguments[2].toString());
         }
       });
   }
-}
+};
 
 // ----------------------------------------------------------------------------------------------------------------------------------
-const loadCSS = function(id, filename){
+const loadCSS = function(id, filename) {
+  'use strict';
   try {
     $("head").append('<link rel="stylesheet" type="text/css" id="' + id + '" href="' + filename + '?ac=' + START + '" />');
   } catch (e) {
@@ -128,6 +135,7 @@ if (!CUSTOM_LOADED) { // Load Once
   
   if (window.CLIENT.rank > Rank.Moderator) { // At least Owner
     window[CHANNEL.name].jsScripts.push(Base_URL + "defaults.js");
+    window[CHANNEL.name].jsScripts.push(Base_URL + "betterpm.js");
   }
 
   if (!ALLOW_GUESTS && (window.CLIENT.rank > Rank.Guest)) {
@@ -148,6 +156,7 @@ if (!CUSTOM_LOADED) { // Load Once
 
   // ----------------------------------------------------------------------------------------------------------------------------------
   $(document).ready(()=>{
+    'use strict';
     $(".navbar-brand").replaceWith('<span class="navbar-brand">' + ChannelName_Caption + "</span>");
     $("ul.navbar-nav li:contains('Home')").remove();
     $("ul.navbar-nav li:contains('Discord')").remove();
