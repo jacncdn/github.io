@@ -17,27 +17,27 @@ if (!window[CHANNEL.name]) { window[CHANNEL.name] = {}; }
 //  Channel Settings->Edit->JavaScript: $.getScript("{root}/www/loader.js");
 
 // Defaults
-let START = Date.now();
-if (typeof CUSTOM_LOADED === "undefined") { let CUSTOM_LOADED = false; }
-if (typeof ChannelName_Caption === "undefined") { let ChannelName_Caption = CHANNELNAME; }
-if (typeof Room_ID === "undefined") { let Room_ID = "jac"; }
-if (typeof ALLOW_GUESTS === "undefined") { let ALLOW_GUESTS = true; }
-if (typeof MUTE_GUESTS === "undefined") { let MUTE_GUESTS = false; }
-if (typeof AGE_RESTRICT === "undefined") { let AGE_RESTRICT = true; }
-if (typeof CHANNEL_DEBUG === "undefined") { let CHANNEL_DEBUG = false; }
-if (typeof BETA_USER === "undefined") { let BETA_USER = false; }
-if (typeof BETA_USERS === "undefined") { let BETA_USERS = []; }
+var START = Date.now();
+if (typeof CUSTOM_LOADED === "undefined") { var CUSTOM_LOADED = false; }
+if (typeof ChannelName_Caption === "undefined") { var ChannelName_Caption = CHANNELNAME; }
+if (typeof Room_ID === "undefined") { var Room_ID = "jac"; }
+if (typeof ALLOW_GUESTS === "undefined") { var ALLOW_GUESTS = true; }
+if (typeof MUTE_GUESTS === "undefined") { var MUTE_GUESTS = false; }
+if (typeof AGE_RESTRICT === "undefined") { var AGE_RESTRICT = true; }
+if (typeof CHANNEL_DEBUG === "undefined") { var CHANNEL_DEBUG = false; }
+if (typeof BETA_USER === "undefined") { var BETA_USER = false; }
+if (typeof BETA_USERS === "undefined") { var BETA_USERS = []; }
 
-if (typeof ROOM_ANNOUNCEMENT === "undefined") { let ROOM_ANNOUNCEMENT = ""; }
-if (typeof MOD_ANNOUNCEMENT === "undefined") { let MOD_ANNOUNCEMENT = ""; }
-if (typeof CLEAR_MSG === "undefined") { let CLEAR_MSG = ""; }
-if (typeof MOTD_MSG === "undefined") { let MOTD_MSG = ""; }
+if (typeof ROOM_ANNOUNCEMENT === "undefined") { var ROOM_ANNOUNCEMENT = ""; }
+if (typeof MOD_ANNOUNCEMENT === "undefined") { var MOD_ANNOUNCEMENT = ""; }
+if (typeof CLEAR_MSG === "undefined") { var CLEAR_MSG = ""; }
+if (typeof MOTD_MSG === "undefined") { var MOTD_MSG = ""; }
 
 // ----------------------------------------------------------------------------------------------------------------------------------
-if (typeof LOAD_BOT === "undefined") { let LOAD_BOT = false; }
-if (typeof PERIODIC_CLEAR === "undefined") { let PERIODIC_CLEAR = false; }
-if (typeof BOT_NICK === "undefined") { let BOT_NICK = "JackAndChatBot"; }
-let IMABOT = (CLIENT.name.toLowerCase() === BOT_NICK.toLowerCase());
+if (typeof LOAD_BOT === "undefined") { var LOAD_BOT = false; }
+if (typeof PERIODIC_CLEAR === "undefined") { var PERIODIC_CLEAR = false; }
+if (typeof BOT_NICK === "undefined") { var BOT_NICK = "JackAndChatBot"; }
+var IMABOT = (CLIENT.name.toLowerCase() === BOT_NICK.toLowerCase());
 
 if (!IMABOT) { 
   if ((window.CLIENT.rank >= Rank.Moderator) || (BETA_USERS.includes(CLIENT.name.toLowerCase()))) { 
@@ -47,8 +47,8 @@ if (!IMABOT) {
 
 // ##################################################################################################################################
 
-let Root_URL = "https://jacncdn.github.io/";
-let Base_URL = Root_URL + "www/";
+var Root_URL = "https://jacncdn.github.io/";
+var Base_URL = Root_URL + "www/";
 
 if (Room_ID.toLowerCase() === 'jac') { // Alpha Debug Room
   CHANNEL_DEBUG = true;
@@ -62,21 +62,21 @@ if (Room_ID.toLowerCase() === 'jac') { // Alpha Debug Room
 
 // ----------------------------------------------------------------------------------------------------------------------------------
 
-let Room_URL = Base_URL + Room_ID + "/";
+var Room_URL = Base_URL + Room_ID + "/";
 
-let Emotes_URL = Root_URL + 'emoji/emoji.json';
+var Emotes_URL = Root_URL + 'emoji/emoji.json';
 
-let Options_URL = Base_URL + 'options.json';
-let Permissions_URL = Base_URL + 'permissions.json';
-let Buttons_URL = Base_URL + 'motd-btns.html';
-let Footer_URL = Base_URL + 'footer.html';
-let BlockerCSS_URL = Base_URL + 'blocker.css';
+var Options_URL = Base_URL + 'options.json';
+var Permissions_URL = Base_URL + 'permissions.json';
+var Buttons_URL = Base_URL + 'motd-btns.html';
+var Footer_URL = Base_URL + 'footer.html';
+var BlockerCSS_URL = Base_URL + 'blocker.css';
 
-let Logo_URL =  Room_URL + "logo.png";
-let Favicon_URL = Room_URL + "favicon.png";
-let CustomCSS_URL = Room_URL + 'custom.css';
-let Filters_URL = Room_URL + 'filters.json';
-let MOTD_URL = Room_URL + 'motd.html';
+var Logo_URL =  Room_URL + "logo.png";
+var Favicon_URL = Room_URL + "favicon.png";
+var CustomCSS_URL = Room_URL + 'custom.css';
+var Filters_URL = Room_URL + 'filters.json';
+var MOTD_URL = Room_URL + 'motd.html';
 
 // ##################################################################################################################################
 

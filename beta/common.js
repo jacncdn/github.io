@@ -16,15 +16,15 @@
 if (!window[CHANNEL.name]) { window[CHANNEL.name] = {}; }
 
 // Global Variables
-let $chatline = $("#chatline");
-let $currenttitle = $("#currenttitle");
-let $messagebuffer = $("#messagebuffer");
-let $userlist = $("#userlist");
-let $voteskip = $("#voteskip");
-let $ytapiplayer = $("#ytapiplayer");
-let _vPlayer = videojs("ytapiplayer");
-let messageExpireTime = 1000 * 60 * 2;
-let chatExpireTime = 1000 * 60 * 60 * 2;
+var $chatline = $("#chatline");
+var $currenttitle = $("#currenttitle");
+var $messagebuffer = $("#messagebuffer");
+var $userlist = $("#userlist");
+var $voteskip = $("#voteskip");
+var $ytapiplayer = $("#ytapiplayer");
+var _vPlayer = videojs("ytapiplayer");
+var messageExpireTime = 1000 * 60 * 2;
+var chatExpireTime = 1000 * 60 * 60 * 2;
 
 // ##################################################################################################################################
 
@@ -229,7 +229,7 @@ if (!IMABOT) {
 
 window[CHANNEL.name].VideoInfo = {title: "None", current: 0, duration: 0};
 
-let VIDEO_TITLE = {title: "None", current: 0, duration: 0};
+var VIDEO_TITLE = {title: "None", current: 0, duration: 0};
 
 const setVideoTitle = function() {
   'use strict';

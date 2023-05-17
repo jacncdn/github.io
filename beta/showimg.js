@@ -14,9 +14,9 @@
 
 // ##################################################################################################################################
 
-let $zoomImgMsg = $("#messagebuffer");
+var $zoomImgMsg = $("#messagebuffer");
 
-let zoomImgCSS = `
+var zoomImgCSS = `
 <style>
 .zoomImg {
   cursor: zoom-in;
@@ -94,7 +94,7 @@ const imageExtensions = `a[href*=".jpg"], a[href*=".jpeg"], a[href*=".png"], a[h
 
 $('head').append(zoomImgCSS);
 $('footer').after('<div id="zoomImgModal" class="zoomImgModal"></div>');
-let $zoomImgModal = $('#zoomImgModal');
+var $zoomImgModal = $('#zoomImgModal');
 
 const showChatImg = function() {
   'use strict'; 
