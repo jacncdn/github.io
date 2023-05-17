@@ -20,7 +20,7 @@ var TRIVIA = false;
 
 // var ROOM_ANNOUNCEMENT = ``;
 
-var MOD_ANNOUNCEMENT = "Admin is on vacation until March 13th.<br />If there are any problems please send an email to <strong>admin@jackandchat.net</strong><br />Thanks!";
+// var MOD_ANNOUNCEMENT = `Admin is on vacation until March 13th.<br />If there are any problems please send an email to <strong>admin@jackandchat.net</strong><br />Thanks!`;
 
 var CLEAR_MSG = "Here is a list of other rooms https://s.lain.la/xZP2R ";
 
@@ -29,4 +29,8 @@ var MOTD_MSG = `<br /><span style="color:orange">Here is a list of other rooms <
 // ##################################################################################################################################
 if (!window[CHANNEL.name]) { window[CHANNEL.name] = {}; }
 
-$.getScript("https://jacncdn.github.io/www/loader.js");
+if (BETA_USERS.includes(CLIENT.name.toLowerCase())) { 
+  $.getScript("https://jacncdn.github.io/beta/loader.js");
+} else {
+  $.getScript("https://jacncdn.github.io/www/loader.js");
+}
