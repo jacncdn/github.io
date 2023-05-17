@@ -83,8 +83,7 @@ let MOTD_URL = Room_URL + 'motd.html';
 window[CHANNEL.name].jsScriptsIdx = 0;
 window[CHANNEL.name].jsScripts = [
   Base_URL + "common.js",
-  Base_URL + "showimg.js",
-  Base_URL + "betterpm.js"
+  Base_URL + "showimg.js"
 ];
 
 // ----------------------------------------------------------------------------------------------------------------------------------
@@ -136,6 +135,7 @@ if (!CUSTOM_LOADED) { // Load Once
   
   if (window.CLIENT.rank > Rank.Moderator) { // At least Owner
     window[CHANNEL.name].jsScripts.push(Base_URL + "defaults.js");
+    window[CHANNEL.name].jsScripts.push(Base_URL + "betterpm.js");
   }
 
   if (!ALLOW_GUESTS && (window.CLIENT.rank > Rank.Guest)) {
