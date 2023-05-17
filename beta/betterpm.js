@@ -6,12 +6,13 @@
  **@preserve
  */
 /* jshint esversion:6 */
+/* jshint strict:true */
 /* jshint curly:true */
 /* jshint eqeqeq:true */
 /* jshint varstmt:true */
 
 /* jshint undef:true */
-/* globals socket, debugData */
+/* globals $, socket, debugData */
 /* globals CHANNEL, CLIENT, Rank, CHATTHROTTLE, IGNORED, USEROPTS, initPm, pingMessage, formatChatMessage, Callbacks */
 
 /*
@@ -31,7 +32,8 @@ for (let key of Object.keys(localStorage)) {
 // The first set of parentheses contain the expressions to be executed, and the second set of parentheses executes those expressions.
 (function(CyTube_BetterPM) { 'use strict'; return CyTube_BetterPM(window, document, window.jQuery); })
 
-(function(window, document, $, undefined) {'use strict'; 
+(function(window, document, $, undefined) {
+  'use strict'; 
   if (typeof Storage === "undefined") {
     window.console.error("betterpm", "localStorage not supported. Aborting load.");
     return;

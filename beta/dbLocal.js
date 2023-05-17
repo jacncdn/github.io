@@ -3,6 +3,15 @@
 **|
 **@preserve
 */
+/* jshint esversion:6 */
+/* jshint strict:true */
+/* jshint curly:true */
+/* jshint eqeqeq:true */
+/* jshint varstmt:true */
+
+/* jshint undef:true */
+/* globals $, socket, debugData, CHANNEL */
+
 if (!window[CHANNEL.name]) { window[CHANNEL.name] = {}; }
 
 const maxDate = new Date(8640000000000000);
@@ -13,10 +22,11 @@ const personMaxIdle = 20; // Minutes
 const idleKickMsg = "Maximum Idle Time Elapsed";
 
 function storageAvailable(type) {
-  var storage;
+  'use strict'; 
+  let storage;
   try {
     storage = window[type];
-    var x = '__storage_test__';
+    let x = '__storage_test__';
     storage.setItem(x, x);
     storage.removeItem(x);
     return true;
@@ -32,7 +42,8 @@ function storageAvailable(type) {
 }
 window[CHANNEL.name].localStorageAvail = storageAvailable("localStorage");
 
-window[CHANNEL.name].defaultPerson = function(nick){
+window[CHANNEL.name].defaultPerson = function(nick) {
+  'use strict'; 
   return person = { 
     nick: nick,
     firstseen: Date.now(),
@@ -41,57 +52,62 @@ window[CHANNEL.name].defaultPerson = function(nick){
     idlesince: maxDate,
     smuteuntil: minDate,
     banuntil: minDate
-  }
-}
+  };
+};
 
-window[CHANNEL.name].getPerson = function(nick){
+window[CHANNEL.name].getPerson = function(nick) {
+  'use strict'; 
   let person = null;
-  if (window[CHANNEL.name].localStorageAvail){
+  if (window[CHANNEL.name].localStorageAvail) {
     let personJSON = localStorage.getItem(personPrefix + nick.toLowerCase());
     try {
       person = JSON.parse(personJSON);
     } catch (e) { }
   }
-  if (person === null || person === "null"){
+  if (person === null || person === "null") {
     person = window[CHANNEL.name].defaultPerson(nick);
   }
   return person;
-}
+};
 
-window[CHANNEL.name].updatePerson = function(person){
-  if (!window[CHANNEL.name].localStorageAvail) return;
-  if (person === null || person === "null") return;
+window[CHANNEL.name].updatePerson = function(person) {
+  'use strict'; 
+  if (!window[CHANNEL.name].localStorageAvail) { return; }
+  if (person === null || person === "null") { return; }
   
   person.lastseen = Date.now();
   let personJSON = JSON.stringify(person);
   localStorage.setItem(personPrefix + person.nick.toLowerCase(), personJSON);
-}
+};
 
-window[CHANNEL.name].lastseenPerson = function(nick){
+window[CHANNEL.name].lastseenPerson = function(nick) {
+  'use strict'; 
   let person = window[CHANNEL.name].getPerson(nick);
   // person.lastseen = Date.now(); // Set by updatePerson
   person.idlesince = maxDate;   
   window[CHANNEL.name].updatePerson(person);
-}
+};
 
-window[CHANNEL.name].banPerson = function(nick, until){
-  if (!window[CHANNEL.name].localStorageAvail) return;
-  if (until === null || until === "null") until = maxDate;
+window[CHANNEL.name].banPerson = function(nick, until) {
+  'use strict'; 
+  if (!window[CHANNEL.name].localStorageAvail) { return; }
+  if ((until === null) || (until === "null")) { until = maxDate; }
   
   let person = window[CHANNEL.name].getPerson(nick);
   person.banuntil = until;
   window[CHANNEL.name].updatePerson(person);
-}
+};
 
-window[CHANNEL.name].unbanPersons = function(){
-  if (!window[CHANNEL.name].localStorageAvail) return;
+window[CHANNEL.name].unbanPersons = function() {
+  'use strict'; 
+  if (!window[CHANNEL.name].localStorageAvail) { return; }
   
   //  banlist: [{ "id":123, "ip":"*", "name":"nick", "reason":"asshole", "bannedby":"me" }]
   socket.once("banlist", (data)=>{
-    $.each(data, function(index, entry){
+    $.each(data, function(index, entry) {
       let person = window[CHANNEL.name].getPerson(entry.name);
       
-      if ((person.banuntil > minDate) && (person.banuntil < Date.now())){
+      if ((person.banuntil > minDate) && (person.banuntil < Date.now())) {
         socket.emit("unban", {id: entry.id, name: entry.name});
         person.banuntil = minDate;
         window[CHANNEL.name].updatePerson(person);
@@ -99,21 +115,23 @@ window[CHANNEL.name].unbanPersons = function(){
     });
   });
   socket.emit("requestBanlist");
-}
+};
 
-window[CHANNEL.name].smutePerson = function(nick, until){
-  if (!window[CHANNEL.name].localStorageAvail) return;
-  if (until === null || until === "null") until = maxDate;
+window[CHANNEL.name].smutePerson = function(nick, until) {
+  'use strict'; 
+  if (!window[CHANNEL.name].localStorageAvail) { return; }
+  if ((until === null) || (until === "null")) { until = maxDate; }
   
   let person = window[CHANNEL.name].getPerson(nick);
   person.smuteuntil = until;
   window[CHANNEL.name].updatePerson(person);
-}
+};
 
-window[CHANNEL.name].unmutePersons = function(){
+window[CHANNEL.name].unmutePersons = function() {
+  'use strict'; 
   socket.once("channelRanks", (data)=>{
-    $.each(data, function(index, person){
-       if ((person.smuteuntil > minDate) && (person.smuteuntil < Date.now())){
+    $.each(data, function(index, person) {
+       if ((person.smuteuntil > minDate) && (person.smuteuntil < Date.now())) {
         socket.emit("chatMsg", {msg: "/unmute " + person.name, meta:{}});
         person.smuteuntil = minDate;
         window[CHANNEL.name].updatePerson(person);
@@ -121,39 +139,43 @@ window[CHANNEL.name].unmutePersons = function(){
     });
   });
   socket.emit("requestChannelRanks");
-}
+};
 
 // Move to common.js
-function addMinutes(date, minutes){
+function addMinutes(date, minutes) {
+  'use strict'; 
   let checkTime = date ? date.getTime() : new Date().getTime();
   return new Date(checkTime + (minutes * 60 * 1000));
 }
-function addDays(date, days){
+function addDays(date, days) {
+  'use strict'; 
   let checkTime = date ? date.getTime() : new Date().getTime();
   return new Date(checkTime + (days * 24 * 60 * 1000));
 }
 
-window[CHANNEL.name].initPersons = function(){
+window[CHANNEL.name].initPersons = function() {
+  'use strict'; 
   // Update Current Users
   socket.once("channelRanks", (data)=>{
-    $.each(data, function(index, entry){
+    $.each(data, function(index, entry) {
       window[CHANNEL.name].lastseenPerson(entry.name);
     });
   });
   socket.emit("requestChannelRanks");
   
   // Remove Old Persons
-  $.each(localStorage, function(key, person){
-    if (key.startsWith(personPrefix)){
-      if (Date.now() > addDays(person.lastseen, personMaxAge)){
+  $.each(localStorage, function(key, person) {
+    if (key.startsWith(personPrefix)) {
+      if (Date.now() > addDays(person.lastseen, personMaxAge)) {
         localStorage.removeItem(key);
       }
     }
   }); 
-}
+};
 
-window[CHANNEL.name].afkPerson = function(data){
-  if (!window[CHANNEL.name].localStorageAvail) return;
+window[CHANNEL.name].afkPerson = function(data) {
+  'use strict'; 
+  if (!window[CHANNEL.name].localStorageAvail) { return; }
   let person = window[CHANNEL.name].getPerson(data.name);
   
   if (data.afk) {
@@ -166,11 +188,12 @@ window[CHANNEL.name].afkPerson = function(data){
   }
   
   window[CHANNEL.name].updatePerson(person);
-}
+};
 
-window[CHANNEL.name].kickIdlePersons = function(){
+window[CHANNEL.name].kickIdlePersons = function() {
+  'use strict'; 
   socket.once("channelRanks", (data)=>{
-    $.each(data, function(index, entry){
+    $.each(data, function(index, entry) {
       if (entry.rank < 1) {
         let person = window[CHANNEL.name].getPerson(entry.name);
         if (person.idlesince < maxDate) {
@@ -182,15 +205,16 @@ window[CHANNEL.name].kickIdlePersons = function(){
     });
   });
   socket.emit("requestChannelRanks"); // Get All Users
-}
+};
 
 /********************  DOCUMENT READY  ********************/
-if (window[CHANNEL.name].localStorageAvail){
-  $(document).ready(function(){
-    socket.on("addUser", (data)=>{window[CHANNEL.name].lastseenPerson(data.name)});
-    socket.on("userLeave", (data)=>{window[CHANNEL.name].lastseenPerson(data.name)});
-    // socket.on("chatMsg", (data)=>{window[CHANNEL.name].lastseenPerson(data.username)});
-    socket.on("setAFK", (data)=>{window[CHANNEL.name].afkPerson(data)});
+if (window[CHANNEL.name].localStorageAvail) {
+  $(document).ready(function() {
+    'use strict'; 
+    socket.on("addUser", (data)=>{window[CHANNEL.name].lastseenPerson(data.name);});
+    socket.on("userLeave", (data)=>{window[CHANNEL.name].lastseenPerson(data.name);});
+    // socket.on("chatMsg", (data)=>{window[CHANNEL.name].lastseenPerson(data.username);});
+    socket.on("setAFK", (data)=>{window[CHANNEL.name].afkPerson(data);});
     
     window[CHANNEL.name].initPersons();
     

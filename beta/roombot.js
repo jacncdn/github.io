@@ -3,13 +3,19 @@
 **|
 **@preserve
 */
-/*jshint esversion: 6*/
-'use strict';
+/* jshint esversion:6 */
+/* jshint strict:true */
+/* jshint curly:true */
+/* jshint eqeqeq:true */
+/* jshint varstmt:true */
+
+/* jshint undef:true */
+/* globals $, socket, debugData, CHANNEL */
 
 if (!window[CHANNEL.name]) { window[CHANNEL.name] = {}; }
 
-if (typeof TRIVIA === "undefined") { var TRIVIA = false; }
-if (typeof HIGHLIGHT === "undefined") { var HIGHLIGHT = []; }
+if (typeof TRIVIA === "undefined") { let TRIVIA = false; }
+if (typeof HIGHLIGHT === "undefined") { let HIGHLIGHT = []; }
 
 // https://en.wikipedia.org/wiki/List_of_Unicode_characters
 window[CHANNEL.name].botReplyMsg = "I'm a bot! Don't expect a reply.";
@@ -21,7 +27,8 @@ window[CHANNEL.name].lastVideo = "";
 
 // ##################################################################################################################################
 
-window[CHANNEL.name].botPlayerDefaults = function(){
+window[CHANNEL.name].botPlayerDefaults = function() {
+  'use strict'; 
   try { PLAYER.setVolume(0.0); } catch (e) {}
   removeVideo(event);
 };
@@ -30,8 +37,9 @@ waitForElement("#ytapiplayer", window[CHANNEL.name].botPlayerDefaults, 100, 1000
 // ##################################################################################################################################
 
 window[CHANNEL.name].doBotReply = function(data) {
+  'use strict'; 
   debugData("roombot.doBotReply", data);
-  if (data.username.toLowerCase() == CLIENT.name.toLowerCase()) return; // Don't talk to yourself
+  if (data.username.toLowerCase() === CLIENT.name.toLowerCase()) { return; }// Don't talk to yourself
 
   if (data.msg.startsWith(window[CHANNEL.name].botPrefixInfo)) { // Internal Message
     debugData("roombot.botPrefixInfo", data);
@@ -45,7 +53,7 @@ window[CHANNEL.name].doBotReply = function(data) {
     debugData("roombot.botPrefixIgnore", data);
     return; // NOT the Warning
   }
-  // if (!data.msg.startsWith("FYI: Guest")) return; // NOT the Warning
+  // if (!data.msg.startsWith("FYI: Guest")) { return; }// NOT the Warning
 
   setTimeout(()=>{ // Remove PM
     $("#pm-" + data.username).remove();
@@ -56,21 +64,24 @@ window.socket.on("pm", window[CHANNEL.name].doBotReply);
 
 // ##################################################################################################################################
 
-const ipBan = function(username, reason){
+const ipBan = function(username, reason) {
+  'use strict'; 
   setTimeout(()=>{
     window.socket.emit("chatMsg", { msg: "/ipban " + username + " " + reason + " " + (new Date()).toISOString(), meta: {} });
   }, 1500);
 };
 
-const sMute = function(username){
+const sMute = function(username) {
+  'use strict'; 
   window.socket.emit("chatMsg", { msg: "/smute " + username, meta: {} });
 };
 
 // addUser: {"name":"username","rank":0,"profile":{"image":"","text":""},"meta":{"afk":false,"muted":false,"smuted":false,"aliases":["username"],"ip":"Ia3B:q149:PVBy:8MYI"}}
 
-window[CHANNEL.name].userJoin = function(data){
+window[CHANNEL.name].userJoin = function(data) {
+  'use strict'; 
   debugData("roombot.userJoin", data);
-  if (data.rank > 1) return;  // Moderator
+  if (data.rank > 1) { return; } // Moderator
 
   let alias = data.meta.aliases.join(",").toLowerCase();
   debugData("roombot.userJoin.alias", alias);
@@ -136,6 +147,7 @@ window.socket.on("addUser", window[CHANNEL.name].userJoin);
 // ##################################################################################################################################
 
 window.socket.on("chatMsg", (data)=>{
+  'use strict'; 
   if (data.username.startsWith('[')) { return; } // Ignore Server Messages
   if (data.username.toLowerCase() === BOT_NICK.toLowerCase()) { return; } // Ignore Bot
   debugData("roombot.chatMsg", data);
@@ -143,8 +155,8 @@ window.socket.on("chatMsg", (data)=>{
   window[CHANNEL.name].lastChatMsgTime = Date.now();
 
   let user = getUser(data.username);
-  if (user === null) return;
-  if (user.rank > 1) return;  // Moderator
+  if (user === null) { return; }
+  if (user.rank > 1) { return; } // Moderator
 
   if ((data.msg.toLowerCase().indexOf("cunt") >= 0)) {
     // sMute(data.username);
@@ -158,8 +170,9 @@ window.socket.on("chatMsg", (data)=>{
 
 // ##################################################################################################################################
 
-const pauseVideo = function(userCount){
-  return;
+const pauseVideo = function(userCount) {
+  'use strict'; 
+  return; // TODO:
   
   let $entry = $('#queue > li.queue_entry:contains("Video Paused")');
   let uid = $entry.data("uid") || -1;
@@ -168,7 +181,7 @@ const pauseVideo = function(userCount){
   if (uid > 0) { // Video Paused
     if (userCount > 1) { // Restart Videos
       debugData("roombot.pauseVideo.Restart", 0);
-      try { socket.emit("delete", uid); } catch (e){}
+      try { socket.emit("delete", uid); } catch (e) {}
     }
   }
   else if (userCount <= 1) { // Pause Videos
@@ -191,19 +204,21 @@ const pauseVideo = function(userCount){
 // ##################################################################################################################################
 // Replacement Callbacks
 
-const tryReconnect = function(){
+const tryReconnect = function() {
+  'use strict'; 
   setTimeout(()=>{
     debugData("roombot.tryReconnect", "");
-    if (window.socket && window.socket.connected) return;
+    if (window.socket && window.socket.connected) { return; }
     window.location.reload(true);
   }, 10000);
 };
 
 const BOT_Callbacks = {
 
-  disconnect: function(){
+  disconnect: function() {
+    'use strict'; 
     debugData("roombot.BOT_Callbacks.disconnect", KICKED);
-    if (KICKED) return;
+    if (KICKED) { return; }
 
     $("<div/>")
       .addClass("server-msg-disconnect")
@@ -217,6 +232,7 @@ const BOT_Callbacks = {
 
   // Socket.IO error callback
   error: function(msg) {
+    'use strict'; 
     errorData("roombot.BOT_Callbacks.errorMsg", msg);
 
     window.SOCKET_ERROR_REASON = msg;
@@ -231,6 +247,7 @@ const BOT_Callbacks = {
   },
 
   errorMsg: function(data) {
+    'use strict'; 
     errorData("roombot.BOT_Callbacks.errorMsg", data);
 
     $("<div/>")
@@ -242,26 +259,29 @@ const BOT_Callbacks = {
   },
 
   pm: function(data) {
+    'use strict'; 
     debugData("roombot.BOT_Callbacks.pm", data);
-    if (data.username === CLIENT.name) return;
+    if (data.username === CLIENT.name) { return; }
 
-    var chatMsg = { time: Date.now(), username: data.username, msg: "ToBot: " + data.msg,
+    let chatMsg = { time: Date.now(), username: data.username, msg: "ToBot: " + data.msg,
           meta:{ shadow: false, addClass: "action", addClassToNameAndTimestamp: true} };
     addChatMessage(chatMsg);
     return;
   },
 
   announcement: function(data) {
+    'use strict'; 
     debugData("roombot.BOT_Callbacks.announcement", data);
     return;
   },
 
   usercount: function(userCount) {
+    'use strict'; 
     debugData("roombot.BOT_Callbacks.userCount", userCount);
 
     CHANNEL.usercount = userCount;
-    var countText = userCount + " connected user";
-    if(userCount != 1) {
+    let countText = userCount + " connected user";
+    if(userCount !== 1) {
       countText += "s";
     }
     $("#usercount").text(countText);
@@ -271,15 +291,17 @@ const BOT_Callbacks = {
   },
 
   chatMsg: function(data) {
+    'use strict'; 
     if ((data.username === "[server]") && (data.msg.indexOf("joined") >= 0)) { return; }
     addChatMessage(data);
   },
 
   // changeMedia: {"id":"https://files.catbox.moe/3cqnvd.mp4","title":"The Young Like It Hot (1983) s1","seconds":412,"duration":"06:52","type":"fi","meta":{"codec":"mov/h264","bitrate":760.093},"currentTime":-3,"paused":true}
   changeMedia: function(data) {
+    'use strict'; 
     debugData("roombot.BOT_Callbacks.changeMedia", data);
     window[CHANNEL.name].botPlayerDefaults();
-    var chatMsg = { time: Date.now(), username: "Video", msg: data.title + " [" + data.duration + "]",
+    let chatMsg = { time: Date.now(), username: "Video", msg: data.title + " [" + data.duration + "]",
           meta:{ shadow: false, addClass: "action", addClassToNameAndTimestamp: true} };
     addChatMessage(chatMsg);
 
@@ -299,15 +321,17 @@ const BOT_Callbacks = {
   },
 
   mediaUpdate: function(data) {
+    'use strict'; 
     // debugData("roombot.BOT_Callbacks.mediaUpdate", data);
     return;
   }
 };
 
 // ----------------------------------------------------------------------------------------------------------------------------------
-window[CHANNEL.name].setupBOT_Callbacks = function(data){
+window[CHANNEL.name].setupBOT_Callbacks = function(data) {
+  'use strict'; 
   debugData("roombot.setupCallbacks", data);
-  for (var key in BOT_Callbacks) {
+  for (let key in BOT_Callbacks) {
     if (BOT_Callbacks.hasOwnProperty(key)) {
       debugData("roombot.setupCallbacks.key", key);
       window.Callbacks[key] = BOT_Callbacks[key];
@@ -379,6 +403,7 @@ window[CHANNEL.name].sexFacts = [
 
 // ----------------------------------------------------------------------------------------------------------------------------------
 function shuffleArray(array) {
+  'use strict'; 
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [array[i], array[j]] = [array[j], array[i]];
@@ -387,6 +412,7 @@ function shuffleArray(array) {
 
 // ----------------------------------------------------------------------------------------------------------------------------------
 window[CHANNEL.name].randomMsgInit = function() {
+  'use strict'; 
   if (Room_ID.toLowerCase() !== 'hwm') {
     window[CHANNEL.name].botMsgs.push(`:cyan:If you like _HotWife and MILF_ videos check out https://s.lain.la/SDYgW `);
   }
@@ -415,10 +441,11 @@ window[CHANNEL.name].randomMsgInit = function() {
   }
   
   shuffleArray(window[CHANNEL.name].botMsgs);
-}
+};
 
 // ----------------------------------------------------------------------------------------------------------------------------------
-window[CHANNEL.name].randomMsg = function(){
+window[CHANNEL.name].randomMsg = function() {
+  'use strict'; 
   window[CHANNEL.name].lastRandomMsgTime = Date.now();
   if (CHANNEL.usercount < 2) { return; }
 
@@ -435,6 +462,7 @@ window[CHANNEL.name].randomMsg = function(){
 
 // Check every 2 seconds
 setInterval(()=>{
+  'use strict'; 
   if (PERIODIC_CLEAR && (window[CHANNEL.name].lastChatMsgTime + window[CHANNEL.name].clearDelayMS) < Date.now()) {
     window.socket.emit("chatMsg", { msg: "/clear", meta: {} });
     if (CLEAR_MSG.length > 0) {
@@ -455,6 +483,7 @@ setInterval(()=>{
 
 //  DOCUMENT READY
 $(document).ready(function() {
+  'use strict'; 
   debugData("roombot.documentReady", "");
 
   $("#chatline").css({"color":"crimson"});

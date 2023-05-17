@@ -3,6 +3,15 @@
 **|
 **@preserve
 */
+/* jshint esversion:6 */
+/* jshint strict:true */
+/* jshint curly:true */
+/* jshint eqeqeq:true */
+/* jshint varstmt:true */
+
+/* jshint undef:false */
+/* globals $, socket, debugData */
+
 if (!window[CHANNEL.name]) { window[CHANNEL.name] = {}; }
 
 const guestWarnMsg = 'Register to chat.\nNO email required, just a password!\n<a href="https://cytu.be/register">https://cytu.be/register</a>';
@@ -10,32 +19,34 @@ const guestKickMsg = 'No guests allowed. Please register <a href="https://cytu.b
 
 const guestWarnMs = 6000;
 const guestKickMs = 60000;
-if (typeof BOT_NICK === "undefined") var BOT_NICK = "JackAndChatBot";
+if (typeof BOT_NICK === "undefined") { let BOT_NICK = "JackAndChatBot"; }
 
-const guestWarn = function(data){ // Admin
-  if (data.rank > 0 ) return;  // Registered
+const guestWarn = function(data) { // Admin
+  'use strict'; 
+  if (data.rank > 0 ) { return; }  // Registered
 
   setTimeout(()=>{
-    if (!getUser(data.name)) return;
+    if (!getUser(data.name)) { return; }
     socket.emit("pm", { to: data.name, msg: guestWarnMsg, meta: {} });
   }, guestWarnMs);
 
   setTimeout(()=>{
-    if (!getUser(data.name)) return;
+    if (!getUser(data.name)) { return; }
     socket.emit("chatMsg", { msg: "/kick " + data.name + " " + guestKickMsg, meta: {} });
   }, guestKickMs);
-}
-if (window.CLIENT.rank === Rank.Admin) { socket.on("addUser", guestWarn) }
+};
+if (window.CLIENT.rank === Rank.Admin) { socket.on("addUser", guestWarn); }
 
-const guestKick = function(data){ // Moderators
-  if (data.rank > 0 ) return;  // Registered
-  if (getUser(BOT_NICK)) return; // Let Bot handle it if here
+const guestKick = function(data) { // Moderators
+  'use strict'; 
+  if (data.rank > 0 ) { return; }  // Registered
+  if (getUser(BOT_NICK)) { return; } // Let Bot handle it if here
   
   setTimeout(()=>{
-    if (!getUser(data.name)) return;
+    if (!getUser(data.name)) { return; }
     socket.emit("chatMsg", { msg: "/kick " + data.name + " " + guestKickMsg, meta: {} });
   }, (guestKickMs * 2));
-}
+};
 if (window.CLIENT.rank === Rank.Moderator) { socket.on("addUser", guestKick); }
 
 // Guests should never get this far
