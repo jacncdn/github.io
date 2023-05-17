@@ -20,11 +20,6 @@ window.localStorage.clear()
 
 for (let key of Object.keys(localStorage)) { window.console.info(`${key} ${JSON.stringify(localStorage[key], null, 2)}`) }
 
-let now = new Date();
-console.log(now.toISOString());
-let then = now - monthMS;
-console.log((new Date(then)).toISOString());
-
 for (let key of Object.keys(localStorage)) {
   if (key.toLowerCase().includes("prevopen")) {
     window.console.info(`${key} ${JSON.stringify(localStorage[key], null, 2)}`);
@@ -168,6 +163,8 @@ for (let key of Object.keys(localStorage)) {
   }
   
   // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
   window.initPm = function(user) {
     debugData("betterpm.initPm", user);
 
@@ -263,8 +260,7 @@ for (let key of Object.keys(localStorage)) {
 
     $("#pmbar").trigger("deployCache", user);
 
-    ({
-      startCheck: function(user) {
+    ({startCheck: function(user) {
         debugData("betterpm.startCheck", user);
 
         if (!$("#pm-" + user).length) { return; }
@@ -289,6 +285,75 @@ for (let key of Object.keys(localStorage)) {
     .startCheck(user);
 
     return pm;
+  };
+  
+  // ----------------------------------------------------------------------------------------------------------------------------------
+  window.formatChatMessage = function(data, last) {
+    // Backwards compatibility
+    if (!data.meta || data.msgclass) {
+      data.meta = {
+        addClass: data.msgclass,
+        addClassToNameAndTimestamp: data.msgclass
+      };
+    }
+    
+    // Phase 1: Determine whether to show the username or not
+    let skip = data.username === last.name;
+    if (data.meta.addClass === "server-whisper") { skip = true; }
+
+    // Prevent impersonation by abuse of the bold filter
+    if (data.msg.match(/^\s*<strong>\w+\s*:\s*<\/strong>\s*/)) { skip = false; }
+    if (data.meta.forceShowName) { skip = false; }
+
+    data.msg = stripImages(data.msg);
+    data.msg = execEmotes(data.msg);
+
+    last.name = data.username;
+    let div = $("<div/>");
+    
+    /* drink is a special case because the entire container gets the class, not just the message */
+    if (data.meta.addClass === "drink") {
+      div.addClass("drink");
+      data.meta.addClass = "";
+    }
+
+    // Add timestamps (unless disabled)
+    if (USEROPTS.show_timestamps) {
+      let time = $("<span/>").addClass("timestamp").appendTo(div);
+      time.text("[" + timeString(data.time) + "] ");
+      if (data.meta.addClass && data.meta.addClassToNameAndTimestamp) {
+        time.addClass(data.meta.addClass);
+      }
+    }
+
+    // Add username
+    let name = $("<span/>");
+    if (!skip) { name.appendTo(div); }
+    
+    $("<strong/>").addClass("username").text(data.username + ": ").appendTo(name);
+    if (data.meta.modflair) { name.addClass(getNameColor(data.meta.modflair)); }
+    if (data.meta.addClass && data.meta.addClassToNameAndTimestamp) { name.addClass(data.meta.addClass); }
+    if (data.meta.superadminflair) {
+      name.addClass("label").addClass(data.meta.superadminflair.labelclass);
+      $("<span/>").addClass(data.meta.superadminflair.icon)
+        .addClass("glyphicon")
+        .css("margin-right", "3px")
+        .prependTo(name);
+    }
+
+    // Add the message itself
+    let message = $("<span/>").appendTo(div);
+    message[0].innerHTML = data.msg;
+
+    // For /me the username is part of the message
+    if (data.meta.action) {
+      name.remove();
+      message[0].innerHTML = data.username + " " + data.msg;
+    }
+    if (data.meta.addClass) { message.addClass(data.meta.addClass); }
+    if (data.meta.shadow) { div.addClass("chat-shadow"); }
+    
+    return div;
   };
 
   // ----------------------------------------------------------------------------------------------------------------------------------
@@ -320,4 +385,4 @@ for (let key of Object.keys(localStorage)) {
       $("#pmbar").trigger("newMessage", [coresp, data]);
     }
   };
-});
+});
