@@ -331,7 +331,7 @@ const getCustomMOTD = function() {
 }
 
 window.socket.on("setMotd", (data)=>{
-  debugData((common.socket.on(setMotd)", data);
+  debugData(common.socket.on(setMotd), data);
   setCustomMOTD();
 });
 
