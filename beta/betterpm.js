@@ -13,7 +13,6 @@
 /* jshint undef:true */
 /* globals socket, debugData */
 /* globals CHANNEL, CLIENT, Rank, CHATTHROTTLE, IGNORED, USEROPTS, initPm, pingMessage, formatChatMessage, Callbacks */
-/* globals debugData */
 
 /*
 window.localStorage.clear()
