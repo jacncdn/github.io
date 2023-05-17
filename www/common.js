@@ -205,7 +205,11 @@ window.socket.on("mediaUpdate", (data)=>{
 const refreshVideo = function(){
   debugData(formatConsoleMsg("common.refreshVideo", window.CurrentMedia));
   
-  if (typeof window.CurrentMedia === "undefined") { return; }
+  if (typeof window.CurrentMedia === "undefined") {
+    errorData("common.refreshVideo: CurrentMedia undefined");
+    window.socket.emit("playNext");
+    return;
+  }
   
   try {
     if (window.PLAYER) { window.PLAYER.destroy(); }
@@ -213,7 +217,7 @@ const refreshVideo = function(){
 
   window.loadMediaPlayer(window.CurrentMedia);
 
-  socket.emit("playerReady");
+  window.socket.emit("playerReady");
 };
 
 // Player Error Reload
