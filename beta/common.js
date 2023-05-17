@@ -33,6 +33,22 @@ function Sleep(sleepMS) {
 
 // ----------------------------------------------------------------------------------------------------------------------------------
 
+const timeString = function(datetime) {
+  if (!(datetime instanceof Date)) { datetime = new Date(datetime); }
+  
+  let now = new Date();
+  let localDT = new Intl.DateTimeFormat('default', {
+      month: '2-digit', day: '2-digit',
+      hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false,
+    }).format(datetime);
+    
+  let parts = localDT.split(/[\s,]+/);
+  let tsStr = parts[1];
+  if (datetime.toDateString() !== now.toDateString()) { tsStr = parts[0] + " " + tsStr; }
+
+  return "[" + tsStr + "]";
+}
+
 const formatConsoleMsg = function(desc, data){
   let msg = desc;
   if ((typeof data !== 'undefined') && (data)) {
