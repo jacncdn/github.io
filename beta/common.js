@@ -3,8 +3,14 @@
 **|
 **@preserve
 */
-/*jshint esversion: 6*/
-'use strict';
+/* jshint esversion:6 */
+/* jshint curly:true */
+/* jshint eqeqeq:true */
+/* jshint varstmt:true */
+
+/* jshint undef:true */
+/* globals $, socket, CHANNEL, CLIENT, Rank, CHATTHROTTLE, IGNORED, USEROPTS, initPm, pingMessage, formatChatMessage, Callbacks */
+/* globals videojs, CHANNEL_DEBUG, BOT_NICK, IMABOT, MOTD_MSG */
 
 if (!window[CHANNEL.name]) { window[CHANNEL.name] = {}; }
 
@@ -21,10 +27,10 @@ let chatExpireTime = 1000 * 60 * 60 * 2;
 
 // ##################################################################################################################################
 
-const isNullOrEmpty = function(data){
-  if (typeof data === 'undefined') return true;
+const isNullOrEmpty = function(data) {
+  if (typeof data === 'undefined') { return true; }
   return !(data);
-}
+};
 
 function Sleep(sleepMS) {
   // USE: await Sleep(2000);
@@ -47,7 +53,7 @@ const timeString = function(datetime) {
   if (datetime.toDateString() !== now.toDateString()) { tsStr = parts[0] + " " + tsStr; }
 
   return "[" + tsStr + "]";
-}
+};
 
 const formatConsoleMsg = function(desc, data){
   let msg = desc;
@@ -68,7 +74,7 @@ const logTrace = function(desc, data){
 
 // Send debug msg to console
 const debugData = function(desc, data){
-  if (!CHANNEL_DEBUG) return;
+  if (!CHANNEL_DEBUG) { return; }
   window.console.debug(formatConsoleMsg(desc, data));
 };
 
@@ -84,14 +90,14 @@ const logData = function(desc, data){
 
 // Admin Debugger
 const debugListener = function(eventName, data){ 
-  if (eventName.toLowerCase() == "mediaupdate") return;
+  if (eventName.toLowerCase() === "mediaupdate") { return; }
   window.console.info(formatConsoleMsg(eventName, data));
 };
 
 // ##################################################################################################################################
 
 const hmsToSeconds = function(hms) {
-  var part = hms.split(':'), secs = 0, mins = 1;
+  let part = hms.split(':'), secs = 0, mins = 1;
   while (part.length > 0) {
     secs += (mins * parseInt(part.pop(), 10));
     mins *= 60;
@@ -119,7 +125,7 @@ const waitForElement = function(selector, callback, checkFreqMs, timeoutMs){
     }
     else {
       setTimeout(()=>{
-        if (timeoutMs && ((Date.now() - startTimeMs) > timeoutMs)) return;
+        if (timeoutMs && ((Date.now() - startTimeMs) > timeoutMs)) { return; }
         loopSearch();
       }, checkFreqMs);
     }
@@ -133,7 +139,7 @@ const getUser = function(name){
   let user = null;
   $("#userlist .userlist_item").each(function(index, item) {
     let data = $(item).data();
-    if (data.name.toLowerCase() == name.toLowerCase()) { user = data; }
+    if (data.name.toLowerCase() === name.toLowerCase()) { user = data; }
   });
   return user;
 };
@@ -150,7 +156,7 @@ const isUserAFK = function(name){
 
 // Remove Video on KICK
 window.socket.on("disconnect", function(msg){
-  if (!window.KICKED) return;
+  if (!window.KICKED) { return; }
   removeVideo(event);  
 });
 
@@ -158,9 +164,9 @@ window.socket.on("disconnect", function(msg){
 
 //  Room Announcements
 const roomAnnounce = function(msg){ 
-  if (msg.length < 1) return;
-  if (window.CLIENT.rank < Rank.Member) return;
-  if (BOT_NICK.toLowerCase() == CLIENT.name.toLowerCase()) return;
+  if (msg.length < 1) { return; }
+  if (window.CLIENT.rank < Rank.Member) { return; }
+  if (BOT_NICK.toLowerCase() === CLIENT.name.toLowerCase()) { return; }
 
   $(function() {
     makeAlert("Message from Admin", msg).attr("id","roomAnnounce").appendTo("#announcements");
@@ -169,9 +175,9 @@ const roomAnnounce = function(msg){
 
 //  Moderator Announcements
 const modAnnounce = function(msg){ 
-  if (msg.length < 1) return;
-  if (window.CLIENT.rank < Rank.Moderator) return;
-  if (BOT_NICK.toLowerCase() == CLIENT.name.toLowerCase()) return;
+  if (msg.length < 1) { return; }
+  if (window.CLIENT.rank < Rank.Moderator) { return; }
+  if (BOT_NICK.toLowerCase() === CLIENT.name.toLowerCase()) { return; }
     
   $(function() {
     makeAlert("Moderators", msg).attr("id","modAnnounce").appendTo("#announcements");
@@ -204,7 +210,7 @@ if (!IMABOT) {
 
 window[CHANNEL.name].VideoInfo = {title: "None", current: 0, duration: 0};
 
-var VIDEO_TITLE = {title: "None", current: 0, duration: 0};
+let VIDEO_TITLE = {title: "None", current: 0, duration: 0};
 
 const setVideoTitle = function(){
   if (VIDEO_TITLE.duration < 1) { VIDEO_TITLE.duration = VIDEO_TITLE.current; }
@@ -304,13 +310,13 @@ const autoMsgExpire = function() {
 
 const cacheEmotes = function() {
   for (let loop in CHANNEL.emotes) {
-    var _img = document.createElement('img');
+    let _img = document.createElement('img');
     _img.src = CHANNEL.emotes[loop].image;
     _img.onerror = function() {
       window.console.error("Error loading '" + this.src + "'");
-    }
+    };
   }
-}
+};
 
 // ##################################################################################################################################
 
@@ -320,10 +326,10 @@ const setCustomMOTD = function() {
   CHANNEL.motd += window[CHANNEL.name].commonMotd;
   $("#motd").html(CHANNEL.motd);
 
-  if (MOTD_MSG === null) return;
-  if (MOTD_MSG.length < 1) return;
+  if (MOTD_MSG === null) { return; }
+  if (MOTD_MSG.length < 1) { return; }
   $("#motd div:first").append(MOTD_MSG);
-}
+};
 
 const getCustomMOTD = function() {
   $.ajax({
@@ -340,7 +346,7 @@ const getCustomMOTD = function() {
       setCustomMOTD();
     }
   });
-}
+};
 
 window.socket.on("setMotd", (data)=>{
   debugData(formatConsoleMsg("common.socket.on(setMotd)", data));
@@ -363,7 +369,7 @@ const getFooter = function() {
       $("p.credit").html(data);
     }
   });
-}
+};
 
 // ##################################################################################################################################
 
@@ -372,7 +378,7 @@ const makeNoRefererMeta = function(){
   meta.name='referrer';
   meta.content='no-referrer';
   document.head.append(meta);
-}
+};
 
 // ##################################################################################################################################
 
@@ -394,8 +400,8 @@ $(document).ready(function() {
 
   $('<link id="roomfavicon" href="' + Favicon_URL + '?ac=' + START + '" type="image/x-icon" rel="shortcut icon" />').appendTo("head");
 
-  if (ROOM_ANNOUNCEMENT !== null) roomAnnounce(ROOM_ANNOUNCEMENT);
-  if (MOD_ANNOUNCEMENT !== null) modAnnounce(MOD_ANNOUNCEMENT);
+  if (ROOM_ANNOUNCEMENT !== null) { roomAnnounce(ROOM_ANNOUNCEMENT); }
+  if (MOD_ANNOUNCEMENT !== null) { modAnnounce(MOD_ANNOUNCEMENT); }
   setTimeout(()=>{$("#announcements").fadeOut(800, ()=>{$(this).remove();});}, 90000);
 
   if (typeof ADVERTISEMENT !== "undefined") {
@@ -404,7 +410,7 @@ $(document).ready(function() {
 
   window.socket.on("addUser", (data)=>{
     $("#pm-" + data.name + " .panel-heading").removeClass("pm-gone");
-    if (BOT_NICK.toLowerCase() != CLIENT.name.toLowerCase()) {
+    if (BOT_NICK.toLowerCase() !== CLIENT.name.toLowerCase()) {
       setTimeout(()=>{ $(".userlist_owner:contains('"+ BOT_NICK + "')").parent().css("display","none"); }, 6000);
     }
   });
