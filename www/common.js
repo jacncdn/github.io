@@ -207,7 +207,7 @@ const refreshVideo = function(){
   
   if (typeof window.CurrentMedia === "undefined") {
     errorData("common.refreshVideo: CurrentMedia undefined");
-    window.socket.emit("playNext");
+    // window.socket.emit("playNext");
     return;
   }
   
