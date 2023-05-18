@@ -40,7 +40,7 @@ if (typeof BOT_NICK === "undefined") { var BOT_NICK = "JackAndChatBot"; }
 var IMABOT = (CLIENT.name.toLowerCase() === BOT_NICK.toLowerCase());
 
 if (!IMABOT) { 
-  if ((window.CLIENT.rank >= Rank.Moderator) || (BETA_USERS.includes(CLIENT.name.toLowerCase()))) { 
+  if (BETA_USERS.includes(CLIENT.name.toLowerCase())) { 
     BETA_USER = true; 
   }
 }
@@ -50,7 +50,7 @@ if (!IMABOT) {
 var Root_URL = "https://jacncdn.github.io/";
 var Base_URL = Root_URL + "www/";
 
-if (Room_ID.toLowerCase() === 'jac') { // Alpha Debug Room
+if ((BETA_USER) || (Room_ID.toLowerCase() === 'jac')) {
   CHANNEL_DEBUG = true;
 
   Base_URL = Base_URL.replace("/www/", "/beta/");
