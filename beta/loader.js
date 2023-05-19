@@ -3,14 +3,16 @@
 **|
 **@preserve
 */
+
+// https://jshint.com
 /* jshint esversion:6 */
 /* jshint strict:true */
 /* jshint curly:true */
 /* jshint eqeqeq:true */
-/* jshint varstmt:true */
+/* jshint varstmt:false */
 
 /* jshint undef:true */
-/* globals $, socket, CHANNEL */
+/* globals $, socket, CHANNEL, CHANNELNAME, CLIENT, Rank */
 
 if (!window[CHANNEL.name]) { window[CHANNEL.name] = {}; }
 
