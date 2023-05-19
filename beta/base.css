@@ -124,7 +124,7 @@ strike {
   color: SpringGreen;
 }
 
-#showsearch, #showcustomembed, #showplaylistmanager, #qlockbtn, #getplaylist, #showmediaupload, #showplaylist {
+#showcustomembed, #showplaylistmanager, #qlockbtn, #getplaylist, #showmediaupload, #showplaylist {
   visibility: hidden;
   width: 0;
   margin: 0;
