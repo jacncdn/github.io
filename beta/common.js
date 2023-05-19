@@ -3,6 +3,8 @@
 **|
 **@preserve
 */
+
+// https://jshint.com
 /* jshint esversion:6 */
 /* jshint strict:true */
 /* jshint curly:true */
@@ -240,18 +242,18 @@ const setVideoTitle = function() {
 
 window.socket.on("mediaUpdate", (data)=>{
   'use strict';
-  // debugData(formatConsoleMsg("common.mediaUpdate", data));
+  // debugData("common.mediaUpdate", data);
   VIDEO_TITLE.current = data.currentTime;
   setVideoTitle();
 });
 
 const refreshVideo = function() {
   'use strict';
-  debugData(formatConsoleMsg("common.refreshVideo", window.CurrentMedia));
+  debugData("common.refreshVideo", window.CurrentMedia);
   
   if (typeof window.CurrentMedia === "undefined") {
     errorData("common.refreshVideo: CurrentMedia undefined");
-    window.socket.emit("playNext");
+    // window.socket.emit("playNext");
     return;
   }
   
@@ -274,7 +276,7 @@ const videoFix = function() {
     errorData("common.Reloading Player", e);
     vplayer.createModal('ERROR: Reloading player!');
     
-    window.setTimeout(function() { refreshVideo(); }, 500);
+    window.setTimeout(function() { refreshVideo(); }, 2000);
   });
 };
 
@@ -286,7 +288,7 @@ function videoErrorHandler(event) {
 
 window.socket.on("changeMedia", (data)=>{
   'use strict';
-  debugData(formatConsoleMsg("common.changeMedia", data));
+  debugData("common.changeMedia", data);
   window.CurrentMedia = data;
   VIDEO_TITLE.title = data.title;
   VIDEO_TITLE.current = data.currentTime;
@@ -384,7 +386,7 @@ const getCustomMOTD = function() {
 
 window.socket.on("setMotd", (data)=>{
   'use strict';
-  debugData(formatConsoleMsg("common.socket.on(setMotd)", data));
+  debugData(common.socket.on(setMotd), data);
   setCustomMOTD();
 });
 
@@ -463,7 +465,7 @@ $(document).ready(function() {
 
   window.setInterval(()=>{  // Check every second
     autoMsgExpire();
-    makeNoRefererMeta();
+                        
     
     // Remove LastPass Icon. TODO There MUST be a better way!
     $("#chatline").css({"background-image":"none"});
@@ -499,6 +501,7 @@ $(document).ready(function() {
       });
   }
   
+  makeNoRefererMeta();
   refreshVideo();
   cacheEmotes();
 });
