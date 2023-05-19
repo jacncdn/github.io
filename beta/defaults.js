@@ -74,8 +74,8 @@ const getCSS = function() {
   let customCSS = "";
   
   function setCustomCSS() {
-    if (AGE_RESTRICT && blockerCSS.length < 1){ return; }
-    if (customCSS.length < 1){ return; }
+    if (AGE_RESTRICT && (blockerCSS.length < 1)) { return; }
+    if (customCSS.length < 1) { return; }
     
     let data = customCSS;
     if (AGE_RESTRICT) { data += blockerCSS; }
@@ -91,10 +91,10 @@ const getCSS = function() {
       type: 'GET',
       datatype: 'text',
       cache: false,
-      error: function(data){
+      error: function(data) {
         errorData('defaults.getBlockerCSS Error', data.status + ": " + data.statusText);
       },
-      success: function(data){
+      success: function(data) {
         logTrace('defaults.getBlockerCSS', data);
         blockerCSS = data;
         setCustomCSS();
@@ -107,10 +107,10 @@ const getCSS = function() {
     type: 'GET',
     datatype: 'text',
     cache: false,
-    error: function(data){
+    error: function(data) {
       errorData('defaults.getCustomCSS Error', data.status + ": " + data.statusText);
     },
-    success: function(data){
+    success: function(data) {
       logTrace('defaults.getCustomCSS', data);
       customCSS = data;
       setCustomCSS();
