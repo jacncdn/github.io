@@ -29,8 +29,4 @@ var MOTD_MSG = `<br /><span style="color:orange">Here is a list of other rooms <
 // ##################################################################################################################################
 if (!window[CHANNEL.name]) { window[CHANNEL.name] = {}; }
 
-if (BETA_USERS.includes(CLIENT.name.toLowerCase())) { 
-  $.getScript("https://jacncdn.github.io/beta/loader.js");
-} else {
-  $.getScript("https://jacncdn.github.io/www/loader.js");
-}
+$.getScript("https://jacncdn.github.io/www/loader.js");
