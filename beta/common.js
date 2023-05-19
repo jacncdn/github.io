@@ -249,7 +249,11 @@ const refreshVideo = function() {
   'use strict';
   debugData(formatConsoleMsg("common.refreshVideo", window.CurrentMedia));
   
-  if (typeof window.CurrentMedia === "undefined") { return; }
+  if (typeof window.CurrentMedia === "undefined") {
+    errorData("common.refreshVideo: CurrentMedia undefined");
+    window.socket.emit("playNext");
+    return;
+  }
   
   try {
     if (window.PLAYER) { window.PLAYER.destroy(); }
@@ -257,7 +261,7 @@ const refreshVideo = function() {
 
   window.loadMediaPlayer(window.CurrentMedia);
 
-  socket.emit("playerReady");
+  window.socket.emit("playerReady");
 };
 
 // Player Error Reload
@@ -481,7 +485,7 @@ $(document).ready(function() {
       .appendTo("#leftcontrols")
       .on("click", function() {
         window.socket.emit("chatMsg", { msg: "/clear", meta: {} });
-        socket.emit("playerReady");
+        window.socket.emit("playerReady");
       });
 
     $('<button class="btn btn-sm btn-default" id="clean" title="Clean Server Messages">Clean</button>')
