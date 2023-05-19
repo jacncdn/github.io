@@ -490,6 +490,10 @@ $(document).ready(function() {
   }
  
   if (window.CLIENT.rank > Rank.Moderator) { 
+    $('<button class="btn btn-sm btn-default" id="nextvid" title="Force Skip">Skip</button>')
+      .appendTo("#leftcontrols")
+      .on("click", function() { window.socket.emit("playNext"); });
+
     $('<button class="btn btn-sm btn-default" id="clear" title="Clear Chat">Clear</button>')
       .appendTo("#leftcontrols")
       .on("click", function() {
