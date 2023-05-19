@@ -3,8 +3,14 @@
 **|
 **@preserve
 */
-/*jshint esversion: 6*/
-'use strict';
+/* jshint esversion:6 */
+/* jshint strict:true */
+/* jshint curly:true */
+/* jshint eqeqeq:true */
+/* jshint varstmt:true */
+
+/* jshint undef:true */
+/* globals $, socket, debugData */
 
 // ##################################################################################################################################
 
@@ -66,20 +72,22 @@ var zoomImgCSS = `
 // ----------------------------------------------------------------------------------------------------------------------------------
 
 const imgError = function(img) {
+  'use strict'; 
   img.onerror = "";
   window.console.error('imgError: ' + img.src);
   img.src = Root_URL + "emoji/x.webp";
   return true;
-}
+};
 
 const waitForImage = function(url) {
+  'use strict'; 
   return new Promise((resolve, reject) => {
     let img = new Image();
     img.onload = () => resolve(img);
     img.onerror = () => reject(img);
     img.src = url;
-  })
-}
+  });
+};
   
 const imageExtensions = `a[href*=".jpg"], a[href*=".jpeg"], a[href*=".png"], a[href*=".pnj"], ` + 
   `a[href*=".gif"], a[href*=".gifv"], a[href*=".svg"], a[href*=".svgz"], a[href*=".webp"]`;
@@ -89,12 +97,13 @@ $('footer').after('<div id="zoomImgModal" class="zoomImgModal"></div>');
 var $zoomImgModal = $('#zoomImgModal');
 
 const showChatImg = function() {
+  'use strict'; 
   if ($(window).width() <= 800) { return; }
 
   $zoomImgMsg.find(imageExtensions).each(function() {
     waitForImage(this.href)
       .then(img => {
-        var chatImg = $('<img>',{class:'zoomImg',rel:'noopener noreferrer',title:'Click to Zoom',alt:'Bad Image'})
+        let chatImg = $('<img>',{class:'zoomImg',rel:'noopener noreferrer',title:'Click to Zoom',alt:'Bad Image'})
           .attr('src', encodeURI(this.href))
           .on('error', 'imgError(this)"')
           .on('click', function(){
@@ -107,15 +116,16 @@ const showChatImg = function() {
         $(this).parent().html(chatImg);
       });
   });
-}
+};
 
 // ----------------------------------------------------------------------------------------------------------------------------------
 $(document).ready(function() {
+  'use strict'; 
   window.socket.on('chatMsg', (data)=>{
-    if (typeof data === 'undefined') return;
-    if (data === null) return;
-    if (typeof data.msg === 'undefined') return;
-    if (data.msg === null) return;
+    if (typeof data === 'undefined') { return; }
+    if (data === null) { return; }
+    if (typeof data.msg === 'undefined') { return; }
+    if (data.msg === null) { return; }
     if (data.msg.includes('https')) { showChatImg(); }
   });
   showChatImg();
@@ -151,11 +161,11 @@ $('<img>',{id:'img01',class:'modal-content',$img.attr('src')})
     errorData("showChatImg.this", this.toString());
     errorData("showChatImg.this", thisParent.html());
     
-    var ext = 'mp4';
+    let ext = 'mp4';
     if (this.toString().toLowerCase().includes(".webm")) { ext = 'webm'; }
     if (this.toString().toLowerCase().includes(".ogg"))  { ext = 'ogg'; }
     
-    var video = `<a href="#" rel="noopener noreferrer" onClick='window.open("` + this.href + `");return false;'>` +
+    let video = `<a href="#" rel="noopener noreferrer" onClick='window.open("` + this.href + `");return false;'>` +
       '<video muted inline style="max-height: 72px; max-width: 160px;" src="' + this.href + '" type="video/' + ext + '"  title=" Click to Open in a Tab" /></a>';
     thisParent.html(video)
   });
