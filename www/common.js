@@ -348,8 +348,7 @@ const cacheEmotes = function() {
     _img.src = CHANNEL.emotes[loop].image;
     _img.onerror = function() {
       window.console.error("Error loading '" + this.src + "'");
-    };
-  
+    };  
   }
 };
 
