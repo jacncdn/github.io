@@ -433,7 +433,7 @@ $(document).ready(function() {
   'use strict';
   getFooter();
 
-  if (window.CLIENT.rank > Rank.Moderator) { hideVideoURLs(); }
+  if (window.CLIENT.rank < Rank.Admin) { hideVideoURLs(); }
   
   getCustomMOTD();
 
