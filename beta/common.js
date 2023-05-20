@@ -462,6 +462,7 @@ $(document).ready(function() {
       setTimeout(()=>{ $(".userlist_owner:contains('"+ BOT_NICK + "')").parent().css("display","none"); }, 6000);
     }
   });
+
   window.socket.on("userLeave", (data)=>{ 
     $("#pm-" + data.name + " .panel-heading").addClass("pm-gone"); 
   });
