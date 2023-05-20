@@ -213,12 +213,11 @@ const hideVideoURLs = function() {
     $(".qe_title").each(function(idx,data) {data.replaceWith(data.text);});
     if (window.CLIENT.rank > Rank.Member) {
       $("#queue li.queue_entry div.btn-group").hide();
-      // $("div.btn-group > .qbtn-play").each(function() { $(this).parent().parent().prepend(this);});
     }
   }, 2000);  
 };
 
-if (!IMABOT) {
+if (window.CLIENT.rank < Rank.Admin) {
   window.socket.on("changeMedia", hideVideoURLs);
   window.socket.on("playlist", hideVideoURLs); //
   window.socket.on("setPlaylistMeta", hideVideoURLs);
@@ -252,8 +251,7 @@ const refreshVideo = function() {
   debugData("common.refreshVideo", window.CurrentMedia);
   
   if (typeof window.CurrentMedia === "undefined") {
-    errorData("common.refreshVideo: CurrentMedia undefined");
-    // window.socket.emit("playNext");
+    debugData("common.refreshVideo: CurrentMedia undefined");
     return;
   }
   
@@ -348,7 +346,7 @@ const cacheEmotes = function() {
     _img.src = CHANNEL.emotes[loop].image;
     _img.onerror = function() {
       window.console.error("Error loading '" + this.src + "'");
-    };  
+    };
   }
 };
 
@@ -420,13 +418,22 @@ const makeNoRefererMeta = function() {
 };
 
 // ##################################################################################################################################
+/*  window.CLIENT.rank
+  Rank.Guest: 0
+  Rank.Member: 1
+  Rank.Leader: 1.5
+  Rank.Moderator: 2
+  Rank.Admin: 3
+  Rank.Owner: 10
+  Rank.Siteadmin: 255
+*/
 
 //  DOCUMENT READY
 $(document).ready(function() {
   'use strict';
   getFooter();
 
-  if (!IMABOT) { hideVideoURLs(); }
+  if (window.CLIENT.rank < Rank.Admin) { hideVideoURLs(); }
   
   getCustomMOTD();
 
@@ -448,6 +455,7 @@ $(document).ready(function() {
     $("#pollwrap").after('<div id="adwrap" class="col-lg-12 col-md-12">' + ADVERTISEMENT + '</div>');
   }
 
+  // Enhanced PM Box
   window.socket.on("addUser", (data)=>{
     $("#pm-" + data.name + " .panel-heading").removeClass("pm-gone");
     if (BOT_NICK.toLowerCase() !== CLIENT.name.toLowerCase()) {
@@ -465,8 +473,7 @@ $(document).ready(function() {
 
   window.setInterval(()=>{  // Check every second
     autoMsgExpire();
-                        
-    
+        
     // Remove LastPass Icon. TODO There MUST be a better way!
     $("#chatline").css({"background-image":"none"});
     $(".pm-input").css({"background-image":"none"});
@@ -483,6 +490,10 @@ $(document).ready(function() {
   }
  
   if (window.CLIENT.rank > Rank.Moderator) { 
+    $('<button class="btn btn-sm btn-default" id="nextvid" title="Force Skip">Skip</button>')
+      .appendTo("#leftcontrols")
+      .on("click", function() { window.socket.emit("playNext"); });
+
     $('<button class="btn btn-sm btn-default" id="clear" title="Clear Chat">Clear</button>')
       .appendTo("#leftcontrols")
       .on("click", function() {
