@@ -66,8 +66,6 @@ if ((BETA_USER) || (Room_ID.toLowerCase() === 'jac')) {
 
 // ----------------------------------------------------------------------------------------------------------------------------------
 
-                                        
-
 var Emotes_URL = Root_URL + 'emoji/emoji.json';
 
 var Options_URL = Base_URL + 'options.json';
