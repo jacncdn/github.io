@@ -16,6 +16,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <base href="https://jacncdn.github.io">
 
+  <script>
+    if (window.location.href.indexOf('?') > 0) {
+      let urlParams = new URLSearchParams(window.location.search);
+      let room = urlParams.get('room');
+      if (room !== null) {
+        window.location.replace("https://cytube." + "x" + "yz/r/" + room);
+      }
+    }
+  </script>
+
   <link type="image/x-icon" rel="shortcut icon" href="https://jacncdn.github.io/img/favicon.png">
   <link rel="stylesheet" id="StickyCSS" href="https://cytube.xyz/css/sticky-footer-navbar.min.css">
   <link rel="stylesheet" id="CytubeCSS" href="https://cytube.xyz/css/cytube.min.css">
@@ -99,14 +109,6 @@
   <!-- JavaScript -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
   <script>
-    if (window.location.href.indexOf('?') > 0) {
-      let urlParams = new URLSearchParams(window.location.search);
-      let room = urlParams.get('room');
-      if (room !== null) {
-        window.location.replace("https://cytube." + "x" + "yz/r/" + room);
-      }
-    }
-    
     $(document).ready(function(){
        $('#cytubexyz').load("/inc/cytubexyz.html");
        $('#oldcytube').load("/inc/oldcytube.html");
