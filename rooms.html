@@ -99,11 +99,19 @@
   <!-- JavaScript -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
   <script>
-  $(document).ready(function(){
-     $('#cytubexyz').load("/inc/cytubexyz.html");
-     $('#oldcytube').load("/inc/oldcytube.html");
-     $('#otherlists').load("/inc/otherlists.html");
-  });
+    if (window.location.href.indexOf('?') > 0) {
+      let urlParams = new URLSearchParams(window.location.search);
+      let room = urlParams.get('room');
+      if (room !== null) {
+        window.location.replace("https://cytube." + "x" + "yz/r/" + room);
+      }
+    }
+    
+    $(document).ready(function(){
+       $('#cytubexyz').load("/inc/cytubexyz.html");
+       $('#oldcytube').load("/inc/oldcytube.html");
+       $('#otherlists').load("/inc/otherlists.html");
+    });
   </script>
 </body>
 </html>
