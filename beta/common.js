@@ -250,7 +250,7 @@ const refreshVideo = function() {
   'use strict';
   debugData("common.refreshVideo", window.CurrentMedia);
   
-  if (typeof window.CurrentMedia === "undefined") {
+  if (typeof window.CurrentMedia === 'undefined') {
     debugData("common.refreshVideo: CurrentMedia undefined");
     return;
   }
@@ -261,7 +261,7 @@ const refreshVideo = function() {
 
   window.loadMediaPlayer(window.CurrentMedia);
 
-  window.socket.emit("playerReady");
+  window.socket.emit('playerReady');
 };
 
 // Player Error Reload
@@ -269,10 +269,10 @@ const videoFix = function() {
   'use strict';
   debugData("common.videoFix");
   
-  let vplayer = videojs("ytapiplayer");
+  let vplayer = videojs('ytapiplayer');
   vplayer.on("error", function(e) {
     errorData("common.Reloading Player", e);
-    vplayer.createModal('ERROR: Reloading player!');
+    vplayer.createModal("ERROR: Reloading player!");
     
     window.setTimeout(function() { refreshVideo(); }, 2000);
   });
@@ -284,7 +284,7 @@ function videoErrorHandler(event) {
   refreshVideo();
 }
 
-window.socket.on("changeMedia", (data)=>{
+window.socket.on('changeMedia', (data)=>{
   'use strict';
   debugData("common.changeMedia", data);
   window.CurrentMedia = data;
@@ -293,8 +293,8 @@ window.socket.on("changeMedia", (data)=>{
   VIDEO_TITLE.duration = data.seconds;
   setVideoTitle();
 
-  waitForElement("#ytapiplayer", ()=>{
-    let newVideo = document.getElementById("ytapiplayer");
+  waitForElement('#ytapiplayer', ()=>{
+    let newVideo = document.getElementById('ytapiplayer');
     // if (newVideo && newVideo.addEventListener) { videoFix(); }
     if (newVideo) { newVideo.addEventListener('error', videoErrorHandler, true); }
   }, 100, 10000);
@@ -384,7 +384,7 @@ const getCustomMOTD = function() {
 
 window.socket.on("setMotd", (data)=>{
   'use strict';
-  debugData(common.socket.on(setMotd), data);
+  debugData("common.socket.on(setMotd)", data);
   setCustomMOTD();
 });
 
@@ -412,8 +412,8 @@ const getFooter = function() {
 const makeNoRefererMeta = function() {
   'use strict';
   let meta = document.createElement('meta');
-  meta.name='referrer';
-  meta.content='no-referrer';
+  meta.name = 'referrer';
+  meta.content = 'no-referrer';
   document.head.append(meta);
 };
 
