@@ -241,7 +241,13 @@ const setVideoTitle = function() {
 
 window.socket.on("mediaUpdate", (data)=>{
   'use strict';
-  // debugData("common.mediaUpdate", data);
+  // debugData('common.mediaUpdate', data);
+
+  if ((window.PLAYER) && (window.PLAYER.player) && (window.PLAYER.player.error_)) {
+    refreshVideo();
+    return;
+  }
+  
   VIDEO_TITLE.current = data.currentTime;
   setVideoTitle();
 });
@@ -249,18 +255,15 @@ window.socket.on("mediaUpdate", (data)=>{
 const refreshVideo = function() {
   'use strict';
   debugData("common.refreshVideo", window.CurrentMedia);
-  
-  if (typeof window.CurrentMedia === 'undefined') {
-    debugData("common.refreshVideo: CurrentMedia undefined");
-    return;
+
+  if (window.PLAYER) { 
+    PLAYER.mediaType = "";
+    PLAYER.mediaId = "";
+  } else if (typeof window.CurrentMedia !== 'undefined') {
+    window.loadMediaPlayer(window.CurrentMedia);
   }
   
-  try {
-    if (window.PLAYER) { window.PLAYER.destroy(); }
-  } catch { }
-
-  window.loadMediaPlayer(window.CurrentMedia);
-
+  // playerReady triggers server to send changeMedia which reloads player
   window.socket.emit('playerReady');
 };
 
@@ -295,7 +298,6 @@ window.socket.on('changeMedia', (data)=>{
 
   waitForElement('#ytapiplayer', ()=>{
     let newVideo = document.getElementById('ytapiplayer');
-    // if (newVideo && newVideo.addEventListener) { videoFix(); }
     if (newVideo) { newVideo.addEventListener('error', videoErrorHandler, true); }
   }, 100, 10000);
 });
@@ -341,7 +343,7 @@ const autoMsgExpire = function() {
 
 const cacheEmotes = function() {
   'use strict';
-  for (let loop in CHANNEL.emotes) {
+  for (let loop = 0; (loop < CHANNEL.emotes.length); loop++) {
     let _img = document.createElement('img');
     _img.src = CHANNEL.emotes[loop].image;
     _img.onerror = function() {
