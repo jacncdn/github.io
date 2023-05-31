@@ -33,7 +33,7 @@
   "playlistdeletemyself": 3,
   "playlistjump": 1.5,
   "playlistlock": 3,
-  "playlistmove": 3,
+  "playlistmove": 1.5,
   "playlistnext": 1.5,
   "playlistshuffle": 2,
   "pollctl": 2,
