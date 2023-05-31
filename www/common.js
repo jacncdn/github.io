@@ -217,7 +217,7 @@ const hideVideoURLs = function() {
   }, 2000);  
 };
 
-if (window.CLIENT.rank < Rank.Admin) {
+if (window.CLIENT.rank < Rank.Moderator) {
   window.socket.on("changeMedia", hideVideoURLs);
   window.socket.on("playlist", hideVideoURLs); //
   window.socket.on("setPlaylistMeta", hideVideoURLs);
@@ -435,7 +435,7 @@ $(document).ready(function() {
   'use strict';
   getFooter();
 
-  if (window.CLIENT.rank < Rank.Admin) { hideVideoURLs(); }
+  if (window.CLIENT.rank < Rank.Moderator) { hideVideoURLs(); }
   
   getCustomMOTD();
 
@@ -491,11 +491,13 @@ $(document).ready(function() {
     chatline.focus();
   }
  
-  if (window.CLIENT.rank > Rank.Moderator) { 
+  if (window.CLIENT.rank >= Rank.Moderator) { 
     $('<button class="btn btn-sm btn-default" id="nextvid" title="Force Skip">Skip</button>')
       .appendTo("#leftcontrols")
       .on("click", function() { window.socket.emit("playNext"); });
-
+  }
+  
+  if (window.CLIENT.rank > Rank.Moderator) { 
     $('<button class="btn btn-sm btn-default" id="clear" title="Clear Chat">Clear</button>')
       .appendTo("#leftcontrols")
       .on("click", function() {
