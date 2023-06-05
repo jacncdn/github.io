@@ -139,7 +139,7 @@ var Videos = [
   {}
 ]; 
  
-var defDelay = 1000; 
+var defDelay = 500; 
 var delay = defDelay; 
 var count = 0;
  
