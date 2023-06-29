@@ -51,5 +51,8 @@
 {"name":"Y_yellow","source":":yellow:(.*)","flags":"gi","replace":"<span style='color:Gold'>\\1</span>","active":true,"filterlinks":false},
 {"name":"Y_zstop","source":":z:","flags":"gi","replace":"</span><span>","active":true,"filterlinks":false},
 
+{"name":"Vix","source":"(https?\\:\\/\\/)?(cytu\\.be\\/r\\/)(\\S*)","replace":"<a href=\"https://jacncdn.github.io\" target=\"_blank\">\\1\\2\\3</a>",
+  "flags":"gi","active":true,"filterlinks":true},
+
 {"name":"Z_9999","source":"xyzzy","flags":"gi","replace":"XYZZY","active":true,"filterlinks":false}
 ]
