@@ -4,12 +4,10 @@
 **@preserve
 */
 
-var ChannelName_Caption = 'Nice Cocks';
-var Room_ID = 'nc';
+var ChannelName_Caption = 'Playboy Party';
+var Room_ID = 'pb';
 
-var AGE_RESTRICT = true;
-
-var MOTD_MSG = `<br /><span style="color:orange">Here is a list of other rooms <a style="color:orange;font-weight:600" target=_blank" href="https://s.lain.la/xZP2R">https://s.lain.la/xZP2R</a></span>`;
+var LOAD_BOT = true;
 
 // ##################################################################################################################################
 if (!window[CHANNEL.name]) { window[CHANNEL.name] = {}; }
