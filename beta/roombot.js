@@ -14,8 +14,8 @@
 
 if (!window[CHANNEL.name]) { window[CHANNEL.name] = {}; }
 
-if (typeof TRIVIA === "undefined") { let TRIVIA = false; }
-if (typeof HIGHLIGHT === "undefined") { let HIGHLIGHT = []; }
+if (typeof TRIVIA === "undefined") { var TRIVIA = false; }
+if (typeof HIGHLIGHT === "undefined") { var HIGHLIGHT = []; }
 
 // https://en.wikipedia.org/wiki/List_of_Unicode_characters
 window[CHANNEL.name].botReplyMsg = "I'm a bot! Don't expect a reply.";
