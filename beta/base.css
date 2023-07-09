@@ -60,7 +60,7 @@ body {
 }
 .rooms-container {
   display: flex;
-  width: 90%;
+  width: 96%;
 }
 .rooms-child {
   flex: 1;
@@ -93,7 +93,7 @@ a:visited.new, a:active.new { color: #008242 !important; }
 .rooms li {
   list-style: none;
   display: inline-block;
-  width: 33%;
+  width: 25%;
   padding: 0.2em;
 }
 strike {
