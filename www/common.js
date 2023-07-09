@@ -495,15 +495,6 @@ $(document).ready(function() {
     $('<button class="btn btn-sm btn-default" id="nextvid" title="Force Skip">Skip</button>')
       .appendTo("#leftcontrols")
       .on("click", function() { window.socket.emit("playNext"); });
-  }
-  
-  if (window.CLIENT.rank > Rank.Moderator) { 
-    $('<button class="btn btn-sm btn-default" id="clear" title="Clear Chat">Clear</button>')
-      .appendTo("#leftcontrols")
-      .on("click", function() {
-        window.socket.emit("chatMsg", { msg: "/clear", meta: {} });
-        window.socket.emit("playerReady");
-      });
 
     $('<button class="btn btn-sm btn-default" id="clean" title="Clean Server Messages">Clean</button>')
       .appendTo("#leftcontrols")
@@ -513,6 +504,15 @@ $(document).ready(function() {
         $messagebuffer.find("[class^=server-msg]").each(function() { $(this).remove(); });
         $(".chat-msg-Video:not(:last)").each(function() { $(this).remove(); });
         $(".chat-msg-" + BOT_NICK).each(function() { $(this).remove(); });
+      });
+  }
+  
+  if (window.CLIENT.rank > Rank.Moderator) { 
+    $('<button class="btn btn-sm btn-default" id="clear" title="Clear Chat">Clear</button>')
+      .appendTo("#leftcontrols")
+      .on("click", function() {
+        window.socket.emit("chatMsg", { msg: "/clear", meta: {} });
+        window.socket.emit("playerReady");
       });
   }
   
