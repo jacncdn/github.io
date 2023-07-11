@@ -453,8 +453,9 @@ $(document).ready(function() {
   if (MOD_ANNOUNCEMENT !== null) { modAnnounce(MOD_ANNOUNCEMENT); }
   setTimeout(()=>{$("#announcements").fadeOut(800, ()=>{$(this).remove();});}, 90000);
 
-  if (typeof ADVERTISEMENT !== "undefined") {
-    $("#pollwrap").after('<div id="adwrap" class="col-lg-12 col-md-12">' + ADVERTISEMENT + '</div>');
+  if ((typeof ADVERTISEMENT !== "undefined") &&
+      (window.CLIENT.rank < Rank.Moderator)) { 
+    $("#customembed").before('<div id="adwrap" class="col-lg-7 col-md-7"' + ADVERTISEMENT + '</div>');
   }
 
   // Enhanced PM Box
