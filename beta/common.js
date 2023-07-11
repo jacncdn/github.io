@@ -455,7 +455,7 @@ $(document).ready(function() {
 
   if ((typeof ADVERTISEMENT !== "undefined") &&
       (window.CLIENT.rank < Rank.Moderator)) { 
-    $("#customembed").before('<div id="adwrap" class="col-lg-7 col-md-7"' + ADVERTISEMENT + '</div>');
+    $("#customembed").before('<div id="adwrap" class="col-lg-7 col-md-7">' + ADVERTISEMENT + '</div>');
   }
 
   // Enhanced PM Box
