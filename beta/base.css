@@ -250,15 +250,10 @@ strike {
 }
 
 #adwrap img {
-  width: 100%;
-  height: 100%;
+  max-width: 480px;
+  max-height: 240px;
   object-fit: contain;
   overflow: hidden;
-}
-#adwrap img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
   border: 1px solid #343a4a;
   border-radius: 10px;
 }
