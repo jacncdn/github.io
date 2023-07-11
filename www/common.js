@@ -481,7 +481,7 @@ $(document).ready(function() {
     $("#chatline").css({"background-image":"none"});
     $(".pm-input").css({"background-image":"none"});
   }, 1000);
-  
+
   if (window.CLIENT.rank > Rank.Guest) { 
     let modflair = $("#modflair");
     if (modflair.hasClass("label-default")) { modflair.trigger("click"); }
@@ -492,10 +492,9 @@ $(document).ready(function() {
     chatline.focus();
   }
  
-  if (window.CLIENT.rank >= Rank.Moderator) { 
-    $('<button class="btn btn-sm btn-default" id="nextvid" title="Force Skip">Skip</button>')
-      .appendTo("#leftcontrols")
-      .on("click", function() { window.socket.emit("playNext"); });
+  if (window.CLIENT.rank < Rank.Moderator) { 
+    $('#showsearch').remove() ;
+    $('#showmediaurl').remove() ;
   }
   
   if (window.CLIENT.rank > Rank.Moderator) { 
