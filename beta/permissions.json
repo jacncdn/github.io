@@ -39,7 +39,7 @@
   "pollctl": 2,
   "pollvote": 1,
   "randomplay": 2,
-  "seehistlist": 3,
+  "seehistlist": 1000000,
   "seeplaylist": 1,
   "seeplaylist2": 1,
   "settemp": 3,
