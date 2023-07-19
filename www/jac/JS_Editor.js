@@ -22,6 +22,10 @@ var ADVERTISEMENT = `<a href="http://www.swinglifestyle.com/?signup=FunWorksCoup
   `<img src="https://jacncdn.github.io/ads/sls04.gif" alt="SwingLifeStyle" border="0"></a>` +
   `<br /><a href="http://www.swinglifestyle.com/?signup=FunWorksCouple" target="_blank">Sponsor</a>`;
 
+var ADVERTISEMENT = `<script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" ` + 
+  `data-name="bmc-button" data-slug="JackAndChat" data-color="#ff76bc" data-emoji=""  data-font="Comic" ` +
+  `data-text="Support this Room" data-outline-color="#000000" data-font-color="#000000" data-coffee-color="#FFDD00" ></script>`;
+
 /*
 var ROOM_ANNOUNCEMENT = `<br /><span style="color:blue;font-weight:bold;">Welcome back!</span> ` +
   `Cytu.be is closing down rooms again, so we moved to Cytube.XYZ<br /><br />` +
@@ -41,3 +45,4 @@ var ROOM_ANNOUNCEMENT = `<br /><span style="color:blue;font-weight:bold;">Welcom
 if (!window[CHANNEL.name]) { window[CHANNEL.name] = {}; }
 
 $.getScript("https://jacncdn.github.io/beta/loader.js");
+
