@@ -24,7 +24,7 @@ var ADVERTISEMENT = `<a href="http://www.swinglifestyle.com/?signup=FunWorksCoup
   `<br /><a href="http://www.swinglifestyle.com/?signup=FunWorksCouple" target="_blank">Sponsor</a>`;
 
 var ADVERTISEMENT = `<a href="https://www.buymeacoffee.com/JackAndChat" target="_blank">` + 
-  `<img src="https://jacncdn.github.io/img/jac-button-support_sm.png" alt="Support this Room" height="100" border="0"></a>`;
+  `<img src="https://jacncdn.github.io/img/jac-button-support_sm.png" alt="Support this Room" height="60" border="0"></a>`;
 
 /*
 var ROOM_ANNOUNCEMENT = `<br /><span style="color:blue;font-weight:bold;">Welcome back!</span> ` +
