@@ -10,7 +10,7 @@ var Room_ID = 'clx';
 var LOAD_BOT = false;
 var AGE_RESTRICT = true;
 
-var MOTD_MSG = `<br /><span style="color:orange">Here is a list of other rooms <a style="color:orange;font-weight:600" target=_blank" href="https://s.lain.la/xZP2R">https://s.lain.la/xZP2R</a></span>`;
+var MOTD_MSG = `<br /><span style="color:orange">This is a temporary room until CyTube XYZ comes back up.</span>`;
 
 // ##################################################################################################################################
 if (!window[CHANNEL.name]) { window[CHANNEL.name] = {}; }
