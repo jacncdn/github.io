@@ -4,11 +4,12 @@
 **@preserve
 */
 
-var ChannelName_Caption = 'Clone';
+var ChannelName_Caption = 'Emily Monks';
 var Room_ID = 'clone';
 
-var BOT_NICK = "LarryFlynt";
-var LOAD_BOT = true;
+var ALLOW_GUESTS = true;
+var AGE_RESTRICT = false;
+var LOAD_BOT = false;
 
 // ##################################################################################################################################
 if (!window[CHANNEL.name]) { window[CHANNEL.name] = {}; }
