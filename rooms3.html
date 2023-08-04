@@ -127,9 +127,8 @@
         $('a[href^="https://"]').each(function() {
           let oldUrl = $(this).attr("href");
           console.info("EACH href: " + oldUrl);
-          // $(this).attr('link', href);
+          $(this).attr('link', oldUrl);
           // $(this).attr('href', '#no');
-          // $(this).attr("href", newUrl);
 
           $(this).on('click', function(event) {
             event.preventDefault();
