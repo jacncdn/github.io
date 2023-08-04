@@ -125,16 +125,16 @@
       $('#oldcytube').load('/inc/oldcytube.html', () => {
 
         $('a[href^="https://"]').each(function() {
-          let saveUrl = $(this).attr("href");
-          $(this).attr('link', saveUrl);
-          $(this).attr('href', '#');
+          // let saveUrl = $(this).attr("href");
+          // $(this).attr('link', saveUrl);
+          // $(this).attr('href', '#');
 
           $(this).on('click', function(event) {
             event.preventDefault();
 
-            let $target = $(event.target);
-            let link = $target.attr('link');
-
+            // let $target = $(event.target);
+            // let link = $target.attr('link');
+            
             window.open(link, '_blank', 'noreferrer');
           });
         });
