@@ -124,8 +124,8 @@
       
       $('#oldcytube').load('/inc/oldcytube.html', () => {
         $("a").attr('data', $(this).attr('href'));
-        $("a").attr('href', '#');
-        
+        // $("a").attr('href', '#');
+    
         $("a").click(function(e) {
           e.preventDefault();
           
