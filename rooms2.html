@@ -125,11 +125,11 @@
 
       $("a").click(function(e) {
         // e.preventDefault();
-        let href = target.getAttribute('href');
+        let href = e.getAttribute('href');
         if (! href.startsWith("http")) { href = window.location.origin + href; }
         console.debug(href);
 
-        let link = target.getAttribute('link');
+        let link = e.getAttribute('link');
         console.debug(href);
 
         // window.open(href, '_blank', 'noreferrer');
