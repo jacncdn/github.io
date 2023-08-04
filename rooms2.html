@@ -121,7 +121,11 @@
   <script>
     $(document).ready(() => {
       $('#otherlists').load('/inc/otherlists.html');
+      
       $('#oldcytube').load('/inc/oldcytube.html', () => {
+        $("a").attr('data', $(this).attr('href'));
+        $("a").attr('href', '#');
+        
         $("a").click(function(e) {
           e.preventDefault();
           
@@ -132,7 +136,7 @@
           let data = $(this).attr('data');
           console.debug(data);
 
-          // window.open(href, '_blank', 'noreferrer');
+          window.open(href, '_blank', 'noreferrer');
         });
       });
     });
