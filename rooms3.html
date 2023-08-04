@@ -133,6 +133,7 @@
             element.preventDefault();
             
             var href = $(this).attr('href');
+            console.debug(typeof href);
             console.debug(href);
             if (! href.startsWith('http')) { href = window.location.origin + href; }
 
