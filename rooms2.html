@@ -123,20 +123,24 @@
       $('#otherlists').load('/inc/otherlists.html');
       
       $('#oldcytube').load('/inc/oldcytube.html', () => {
-        $("a").attr('data', $(this).attr('href'));
-        // $("a").attr('href', '#');
-    
-        $("a").click(function(e) {
-          e.preventDefault();
-          
+
+        $('a').each(() => {
           let href = $(this).attr('href');
-          if (! href.startsWith("http")) { href = window.location.origin + href; }
-          console.debug(href);
+          $(this).attr('data', href);
+          // $(this).attr('href', '#no');
 
-          let data = $(this).attr('data');
-          console.debug(data);
+          $(this).on('click', () => {
+            e.preventDefault();
+            
+            let href = $(this).attr('href');
+            if (! href.startsWith('http')) { href = window.location.origin + href; }
+            console.debug(href);
 
-          window.open(href, '_blank', 'noreferrer');
+            let data = $(this).attr('data');
+            console.debug(data);
+
+            // window.open(href, '_blank', 'noreferrer');
+          });
         });
       });
     });
