@@ -127,16 +127,15 @@
         $('a[href^="https://"]').each(function() {
           let saveUrl = $(this).attr("href");
           $(this).attr('link', saveUrl);
-          $(this).attr('href', '#no');
+          $(this).attr('href', '#');
 
           $(this).on('click', function(event) {
             event.preventDefault();
 
             let $target = $(event.target);
             let link = $target.attr('link');
-            console.debug("CLICK link: " + link);
 
-            // window.open(link, '_blank', 'noreferrer');
+            window.open(link, '_blank', 'noreferrer');
           });
         });
       });
