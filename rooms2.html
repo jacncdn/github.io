@@ -124,12 +124,13 @@
       $('#otherlists').load('/inc/otherlists.html');
 
       $("a").click(function(e) {
-        // e.preventDefault();
-        let href = e.getAttribute('href');
+        e.preventDefault();
+        
+        let href = $(this).attr('href');
         if (! href.startsWith("http")) { href = window.location.origin + href; }
         console.debug(href);
 
-        let link = e.getAttribute('link');
+        let link = = $(this).attr('link');
         console.debug(href);
 
         // window.open(href, '_blank', 'noreferrer');
