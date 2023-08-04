@@ -109,7 +109,7 @@
       To add or remove links email <a href="mailto:admin@jackandchat.net">admin@jackandchat.net</a>
     </p>
     <p>
-      <a style="color:rgb(92,92,92)" href="/dmca.html" target="_blank" data="ZZZ">DMCA</a>
+      <a style="color:rgb(92,92,92)" href="/dmca.html" target="_blank">DMCA</a>
     </p>
     <p>
       <a style="color:rgb(64,64,64)" href="https://stats.uptimerobot.com/72MDDIzJZV" target="_blank">Status</a>
@@ -125,24 +125,18 @@
       $('#oldcytube').load('/inc/oldcytube.html', () => {
 
         $('a[href^="https://"]').each(function() {
-          let oldUrl = $(this).attr("href");
-          console.info("EACH href: " + oldUrl);
-          $(this).attr('link', oldUrl);
-          // $(this).attr('href', '#no');
+          let saveUrl = $(this).attr("href");
+          $(this).attr('link', saveUrl);
+          $(this).attr('href', '#no');
 
           $(this).on('click', function(event) {
             event.preventDefault();
 
             let $target = $(event.target);
-
-            let href = $target.attr('href');
-            if (! href.startsWith('http')) { href = window.location.origin + href; }
-            console.debug("CLICK href: " + href);
-
             let link = $target.attr('link');
             console.debug("CLICK link: " + link);
 
-            // window.open(href, '_blank', 'noreferrer');
+            // window.open(link, '_blank', 'noreferrer');
           });
         });
       });
