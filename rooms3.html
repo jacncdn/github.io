@@ -124,14 +124,19 @@
       
       $('#oldcytube').load('/inc/oldcytube.html', () => {
 
-        $('a').each(() => {
-          let href = $(this).attr('href');
-          console.info("EACH href: " + href);
+  var oldUrl = $(this).attr("href"); // Get current url
+  var newUrl = oldUrl.replace("http://", "https://"); // Create new url
+  $(this).attr("href", newUrl); // Set herf value
+        
+
+        $('a[href^="https://"]').each(function() {
+          let oldUrl = $(this).attr("href");
+          console.info("EACH href: " + oldUrl);
           // $(this).attr('link', href);
           // $(this).attr('href', '#no');
-          console.debug("href: " + href);
+          // $(this).attr("href", newUrl);
 
-          $(this).on('click', (event) => {
+          $(this).on('click', function(event) {
             event.preventDefault();
 
             let $target = $(event.target);
