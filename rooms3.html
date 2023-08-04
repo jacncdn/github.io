@@ -126,7 +126,7 @@
 
         $('a').each(() => {
           let href = $(this).attr('href');
-          $(this).data('link', href);
+          $(this).attr('link', href);
           // $(this).attr('href', '#no');
 
           $(this).on('click', (event) => {
@@ -136,10 +136,10 @@
 
             let href = $target.attr('href');
             if (! href.startsWith('http')) { href = window.location.origin + href; }
-            console.debug(href);
+            console.debug("Href: " + href);
 
-            let data = $target.attr('data');
-            console.debug(data);
+            let link = $target.attr('link');
+            console.debug("link: " + link);
 
             // window.open(href, '_blank', 'noreferrer');
           });
