@@ -126,8 +126,10 @@
 
         $('a').each(() => {
           let href = $(this).attr('href');
-          $(this).attr('link', href);
+          console.info("EACH href: " + href);
+          // $(this).attr('link', href);
           // $(this).attr('href', '#no');
+          console.debug("href: " + href);
 
           $(this).on('click', (event) => {
             event.preventDefault();
@@ -136,10 +138,10 @@
 
             let href = $target.attr('href');
             if (! href.startsWith('http')) { href = window.location.origin + href; }
-            console.debug("Href: " + href);
+            console.debug("CLICK href: " + href);
 
             let link = $target.attr('link');
-            console.debug("link: " + link);
+            console.debug("CLICK link: " + link);
 
             // window.open(href, '_blank', 'noreferrer');
           });
