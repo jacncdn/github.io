@@ -132,11 +132,11 @@
           $(this).on('click', (element) => {
             element.preventDefault();
             
-            let href = $(this).attr('href');
-            if (! href.startsWith('http')) { href = window.location.origin + href; }
+            var href = $(this).attr('href');
             console.debug(href);
+            if (! href.startsWith('http')) { href = window.location.origin + href; }
 
-            let data = $(this).attr('data');
+            var data = $(this).attr('data');
             console.debug(data);
 
             // window.open(href, '_blank', 'noreferrer');
