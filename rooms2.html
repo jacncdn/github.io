@@ -108,7 +108,7 @@
       To add or remove links email <a href="mailto:admin@jackandchat.net">admin@jackandchat.net</a>
     </p>
     <p>
-      <a style="color:rgb(92,92,92)" href="/dmca.html" target="_blank">DMCA</a>
+      <a style="color:rgb(92,92,92)" href="/dmca.html" target="_blank" link="ZZZ">DMCA</a>
     </p>
     <p>
       <a style="color:rgb(64,64,64)" href="https://stats.uptimerobot.com/72MDDIzJZV" target="_blank">Status</a>
@@ -123,10 +123,15 @@
       $('#otherlists').load('/inc/otherlists.html');
 
       $("a").click(function(e) {
-        e.preventDefault();
+        // e.preventDefault();
         let href = target.getAttribute('href');
-        window.console.debug(href);
-        window.open(href, '_blank', 'noreferrer');
+        if (! href.startsWith("http") { href = window.location.origin + href; }
+        console.debug(href);
+
+        let link = target.getAttribute('link');
+        console.debug(href);
+
+        // window.open(href, '_blank', 'noreferrer');
       });
     });
   </script>
