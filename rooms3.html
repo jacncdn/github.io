@@ -129,15 +129,21 @@
           $(this).attr('data', href);
           // $(this).attr('href', '#no');
 
-          $(this).on('click', (element) => {
-            element.preventDefault();
-            
-            var href = $(this).attr('href');
+          $(this).on('click', (event) => {
+            event.preventDefault();
+            let $target = $(event.target);
+            $target.data("somedata")
+
+            let href2 = $target.attr('href');
+            console.debug(typeof href2);
+            console.debug(href2);
+      
+            let href = $(this).attr('href');
             console.debug(typeof href);
             console.debug(href);
             if (! href.startsWith('http')) { href = window.location.origin + href; }
 
-            var data = $(this).attr('data');
+            let data = $(this).attr('data');
             console.debug(data);
 
             // window.open(href, '_blank', 'noreferrer');
