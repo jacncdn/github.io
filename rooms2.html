@@ -13,6 +13,7 @@
   <meta http-equiv='expires' content='0'>
   <meta http-equiv='pragma' content='no-cache'>
   <meta http-equiv="refresh" content="300">
+  <meta http-equiv="Permissions-Policy" content="interest-cohort=()">
   <meta name="referrer" content="never">
   <meta name="referrer" content="no-referrer">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -125,7 +126,7 @@
       $("a").click(function(e) {
         // e.preventDefault();
         let href = target.getAttribute('href');
-        if (! href.startsWith("http") { href = window.location.origin + href; }
+        if (! href.startsWith("http")) { href = window.location.origin + href; }
         console.debug(href);
 
         let link = target.getAttribute('link');
