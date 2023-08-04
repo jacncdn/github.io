@@ -126,7 +126,7 @@
 
         $('a').each(() => {
           let href = $(this).attr('href');
-          $(this).attr('data', href);
+          $(this).data('link', href);
           // $(this).attr('href', '#no');
 
           $(this).on('click', (event) => {
