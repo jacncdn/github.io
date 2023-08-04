@@ -124,11 +124,6 @@
       
       $('#oldcytube').load('/inc/oldcytube.html', () => {
 
-  var oldUrl = $(this).attr("href"); // Get current url
-  var newUrl = oldUrl.replace("http://", "https://"); // Create new url
-  $(this).attr("href", newUrl); // Set herf value
-        
-
         $('a[href^="https://"]').each(function() {
           let oldUrl = $(this).attr("href");
           console.info("EACH href: " + oldUrl);
