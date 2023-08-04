@@ -129,8 +129,8 @@
           $(this).attr('data', href);
           // $(this).attr('href', '#no');
 
-          $(this).on('click', () => {
-            e.preventDefault();
+          $(this).on('click', (element) => {
+            element.preventDefault();
             
             let href = $(this).attr('href');
             if (! href.startsWith('http')) { href = window.location.origin + href; }
