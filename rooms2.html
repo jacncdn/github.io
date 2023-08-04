@@ -109,7 +109,7 @@
       To add or remove links email <a href="mailto:admin@jackandchat.net">admin@jackandchat.net</a>
     </p>
     <p>
-      <a style="color:rgb(92,92,92)" href="/dmca.html" target="_blank" link="ZZZ">DMCA</a>
+      <a style="color:rgb(92,92,92)" href="/dmca.html" target="_blank" data="ZZZ">DMCA</a>
     </p>
     <p>
       <a style="color:rgb(64,64,64)" href="https://stats.uptimerobot.com/72MDDIzJZV" target="_blank">Status</a>
@@ -119,21 +119,21 @@
   <!-- JavaScript -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
   <script>
-    $(document).ready(function() {
-      $('#oldcytube').load('/inc/oldcytube.html');
+    $(document).ready(() => {
       $('#otherlists').load('/inc/otherlists.html');
+      $('#oldcytube').load('/inc/oldcytube.html', () => {
+        $("a").click(function(e) {
+          e.preventDefault();
+          
+          let href = $(this).attr('href');
+          if (! href.startsWith("http")) { href = window.location.origin + href; }
+          console.debug(href);
 
-      $("a").click(function(e) {
-        e.preventDefault();
-        
-        let href = $(this).attr('href');
-        if (! href.startsWith("http")) { href = window.location.origin + href; }
-        console.debug(href);
+          let data = $(this).attr('data');
+          console.debug(data);
 
-        let link = $(this).attr('link');
-        console.debug(href);
-
-        // window.open(href, '_blank', 'noreferrer');
+          // window.open(href, '_blank', 'noreferrer');
+        });
       });
     });
   </script>
