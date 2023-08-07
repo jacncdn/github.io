@@ -37,6 +37,11 @@ body {
   }
 }
 
+.ytapiplayer {
+  max-width: 1280px;
+  max-height: 720px;
+}
+
 .adminnick, .userlist_owner, .userlist_owner > .username { color: DeepPink !important; }
 .userlist_op, .userlist_op > .username { color: DeepSkyBlue !important; }
 

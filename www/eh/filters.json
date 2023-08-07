@@ -12,7 +12,7 @@
 {"name":"MILF","source":"milf","flags":"gi","replace":"MILF","active":true,"filterlinks":false},
 {"name":"XXX","source":"xxx","flags":"gi","replace":"XXX","active":true,"filterlinks":false},
 
-{"name":"W_pead0","source":"peado","flags":"gi","replace":"ped0","active":true,"filterlinks":false},
+{"name":"W_pead0","source":"peado","flags":"gi","replace":"pead0","active":true,"filterlinks":false},
 {"name":"W_ped0","source":"pedo","flags":"gi","replace":"ped0","active":true,"filterlinks":false},
 {"name":"X_rape","source":"(^|\\W)r\\W?a\\W?p\\W?e","flags":"gi","replace":"\\1@#$%!","active":true,"filterlinks":false},
 
@@ -26,11 +26,15 @@
 {"name":"Y_gray","source":":gray:(.*)","flags":"gi","replace":"<span style='color:Gray'>\\1</span>","active":true,"filterlinks":false},
 {"name":"Y_green","source":":green:(.*)","flags":"gi","replace":"<span style='color:SpringGreen'>\\1</span>","active":true,"filterlinks":false},
 {"name":"Y_high","source":"~(.+?)~","flags":"gi","replace":"<span style='font-weight:600;color:Gold'>\\1</span>","active":true,"filterlinks":false},
+{"name":"Y_hot","source":"(^|\\W)(hott+)($|\\W)","flags":"gi","replace":"\\1\\2 :fire: ","active":true,"filterlinks":false},
 {"name":"Y_italic","source":"\\*(.+?)\\*","flags":"gi","replace":"<em>\\1</em>","active":true,"filterlinks":false},
+{"name":"Y_orange","source":":orange:(.*)","flags":"gi","replace":"<span style='color:Orange'>\\1</span>","active":true,"filterlinks":false},
 {"name":"Y_red","source":":red:(.*)","flags":"gi","replace":"<span style='color:Crimson'>\\1</span>","active":true,"filterlinks":false},
 {"name":"Y_yellow","source":":yellow:(.*)","flags":"gi","replace":"<span style='color:Gold'>\\1</span>","active":true,"filterlinks":false},
 {"name":"Y_zstop","source":":z:","flags":"gi","replace":"</span><span>","active":true,"filterlinks":false},
-{"name":"Y_hot","source":"(^|\\W)(hott+)($|\\W)","flags":"gi","replace":"\\1\\2 :fire: ","active":true,"filterlinks":false},
+
+{"name":"ctTrap","source":"(https?\\:\\/\\/)?(.www.)?(cytu\\.be\\/r\\/)(\\S*)","replace":"<a href=\"https://jacncdn.github.io/rooms.html?room=\\4\" target=\"_blank\">\\3\\4</a>",
+  "flags":"gi","active":true,"filterlinks":true},
 
 {"name":"Z_9999","source":"xyzzy","flags":"gi","replace":"XYZZY","active":true,"filterlinks":false}
 ]

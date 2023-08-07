@@ -1,4 +1,21 @@
 @charset "UTF-8";
+/*!
+ * Cinema-Blue v1.0.0
+ * Copyright 2021-2023 Bv5t3r
+ * Licensed under MIT
+*/
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  :root {
+    scroll-behavior: smooth;
+  }
+}
 
 body {
   line-height: 1.2;

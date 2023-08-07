@@ -39,8 +39,8 @@ body {
 }
 
 .ytapiplayer {
-  max-width: 854px;
-  max-height: 480px;
+  max-width: 1280px;
+  max-height: 720px;
 }
 
 .adminnick, .userlist_owner, .userlist_owner > .username { color: DeepPink !important; }
