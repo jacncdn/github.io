@@ -55,7 +55,7 @@
 {"name":"Y_zstop","source":":z:","flags":"gi","replace":"</span><span>","active":true,"filterlinks":false},
 {"name":"Y_hot","source":"(^|\\W)(hott+)($|\\W)","flags":"gi","replace":"\\1\\2 :fire: ","active":true,"filterlinks":false},
 
-{"name":"Vix","source":"(https?\\:\\/\\/)?(cytu\\.be\\/r\\/)(\\S*)","replace":"<a href=\"https://jacncdn.github.io\" target=\"_blank\">\\1\\2\\3</a>",
+{"name":"ctTrap","source":"(https?\\:\\/\\/)?(.www.)?(cytu\\.be\\/r\\/)(\\S*)","replace":"<a href=\"https://jacncdn.github.io/rooms.html?room=\\4\" target=\"_blank\">\\3\\4</a>",
   "flags":"gi","active":true,"filterlinks":true},
 
 {"name":"Z_9999","source":"xyzzy","flags":"gi","replace":"XYZZY","active":true,"filterlinks":false}
