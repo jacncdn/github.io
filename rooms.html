@@ -18,16 +18,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <base href="https://jacncdn.github.io">
 
-  <script>
-    if (window.location.href.indexOf('?') > 0) {
-      let urlParams = new URLSearchParams(window.location.search);
-      let room = urlParams.get('room');
-      if (room !== null) {
-        window.location.replace("https://cytube." + "x" + "yz/r/" + room);
-      }
-    }
-  </script>
-
   <link type="image/x-icon" rel="shortcut icon" href="/img/favicon.png">
   <link rel="stylesheet" id="CytubeTheme" href="/inc/slate.min.css">
   <link rel="stylesheet" id="JaCTheme" href="/www/base.css">
@@ -39,7 +29,7 @@
     }
         
     h6, .h6, h5, .h5, h4, .h4, h3, .h3, h2, .h2, h1, .h1 {
-      color: orange;
+      color: Orange;
       border: 1px solid #343a4a;
       background-color: #1c1e22;
       padding: 0.2em 0.2em 0.2em 0.4em;
@@ -62,6 +52,10 @@
     .alert {
       color: Red !important;
       font-size: 120%;
+    }
+    .highlight {
+      color: Yellow !important;
+      font-size: 110%;
     }
     .small { font-size: 50%; }
     .strong { font-weight: 900; }
@@ -116,12 +110,21 @@
   <!-- JavaScript -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
   <script>
-    $(document).ready(function(){
-       $('#cytube_x').load("/inc/cytube_x.html");
-       $('#cytube_pg').load("/inc/cytube_pg.html");
-       $('#cytube_nn').load("/inc/cytube_nn.html");
-       $('#cytube_to').load("/inc/cytube_to.html");
-       $('#otherlists').load("/inc/otherlists.html");
+    $(document).ready(()=>{
+      $('#cytube_x').load("/inc/cytube_x.html");
+      $('#cytube_pg').load("/inc/cytube_pg.html");
+      $('#cytube_nn').load("/inc/cytube_nn.html");
+      $('#cytube_to').load("/inc/cytube_to.html");
+
+      $('#otherlists').load('/inc/otherlists.html', ()=>{
+        if (window.location.href.indexOf('?') > 0) {
+          let urlParams = new URLSearchParams(window.location.search);
+          let room = urlParams.get('room').toLowerCase();
+          if (room !== null) {
+            $('a[href$=' + room + ']:first').addClass("highlight")
+          }
+        }
+      });
     });
   </script>
 </body>
