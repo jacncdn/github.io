@@ -56,6 +56,7 @@
     .highlight {
       color: Yellow !important;
       font-size: 110%;
+      font-weight: 900;
     }
     .small { font-size: 50%; }
     .strong { font-weight: 900; }
@@ -121,7 +122,7 @@
           let urlParams = new URLSearchParams(window.location.search);
           let room = urlParams.get('room').toLowerCase();
           if (room !== null) {
-            $('a[href$=' + room + ']:first').addClass("highlight")
+            $('a[href$=' + room + ']:first').addClass("highlight throb_text");
           }
         }
       });
