@@ -112,17 +112,17 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
   <script>
     $(document).ready(()=>{
-      $('#cytube_x').load("/inc/cytube_x.html");
-      $('#cytube_pg').load("/inc/cytube_pg.html");
-      $('#cytube_nn').load("/inc/cytube_nn.html");
-      $('#cytube_to').load("/inc/cytube_to.html");
+      $('#cytube_x').load('/inc/cytube_x.html');
+      $('#cytube_pg').load('/inc/cytube_pg.html');
+      $('#cytube_nn').load('/inc/cytube_nn.html');
+      $('#cytube_to').load('/inc/cytube_to.html');
 
       $('#otherlists').load('/inc/otherlists.html', ()=>{
         if (window.location.href.indexOf('?') > 0) {
           let urlParams = new URLSearchParams(window.location.search);
           let room = urlParams.get('room').toLowerCase();
           if (room !== null) {
-            $('a[href$=' + room + ']:first').addClass("highlight throb_text");
+            $('a[href$=' + room + ']:first').removeClass('new').addClass('highlight throb_text');
           }
         }
       });
