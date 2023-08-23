@@ -11,6 +11,8 @@ var ALLOW_GUESTS = true;
 var AGE_RESTRICT = false;
 var LOAD_BOT = false;
 
+var ROOM_ANNOUNCEMENT = `This popular room disappeared. To reclaim it send an email to <strong>admin@jackandchat.net</strong>`;
+
 // ##################################################################################################################################
 if (!window[CHANNEL.name]) { window[CHANNEL.name] = {}; }
 
