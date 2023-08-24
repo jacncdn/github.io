@@ -555,9 +555,12 @@ $(document).ready(function() {
     let modflair = $("#modflair");
     if (modflair.hasClass("label-default")) { modflair.trigger("click"); }
 
-    let chatline = $("#chatline");
-    chatline.attr("placeholder", "Type here to Chat");
-    chatline.attr("spellcheck", "true");
+    $("#chatline")
+      .attr("placeholder", "Type here to Chat")
+      .attr("spellcheck", "true")
+      .attr("autocapitalize", "sentences")
+      .focus();
+
     chatline.focus();
   }
  
