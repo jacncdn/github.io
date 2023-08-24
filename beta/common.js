@@ -560,8 +560,6 @@ $(document).ready(function() {
       .attr("spellcheck", "true")
       .attr("autocapitalize", "sentences")
       .focus();
-
-    chatline.focus();
   }
  
   if (window.CLIENT.rank >= Rank.Moderator) { 
