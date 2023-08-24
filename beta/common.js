@@ -27,6 +27,7 @@ var $ytapiplayer = $("#ytapiplayer");
 var _vPlayer = videojs("ytapiplayer");
 var messageExpireTime = 1000 * 60 * 2;
 var chatExpireTime = 1000 * 60 * 60 * 2;
+var oldEmit = null;
 
 // ##################################################################################################################################
 
@@ -562,6 +563,11 @@ $(document).ready(function() {
     .attr("spellcheck", "true")
     .attr("autocapitalize", "sentences")
     .focus();
+
+  socket.emit = function() {
+    console.log('***', 'emit', Array.prototype.slice.call(arguments));
+    oldEmit.apply(socket, arguments);
+  };
 
   if (window.CLIENT.rank > Rank.Guest) { 
     let modflair = $("#modflair");
