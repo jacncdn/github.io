@@ -551,15 +551,21 @@ $(document).ready(function() {
     $(".pm-input").css({"background-image":"none"});
   }, 1000);
   
+  $("body").keypress(function(evt) {
+    // Skip if editing input (label, title, description, etc.)
+    if ($(evt.target).is(':input, [contenteditable]')) { return; }
+    $("#chatline").focus();
+  });
+
+  $("#chatline")
+    .attr("placeholder", "Type here to Chat")
+    .attr("spellcheck", "true")
+    .attr("autocapitalize", "sentences")
+    .focus();
+
   if (window.CLIENT.rank > Rank.Guest) { 
     let modflair = $("#modflair");
     if (modflair.hasClass("label-default")) { modflair.trigger("click"); }
-
-    $("#chatline")
-      .attr("placeholder", "Type here to Chat")
-      .attr("spellcheck", "true")
-      .attr("autocapitalize", "sentences")
-      .focus();
   }
  
   if (window.CLIENT.rank >= Rank.Moderator) { 
