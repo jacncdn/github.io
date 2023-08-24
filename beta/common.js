@@ -149,6 +149,22 @@ const waitForElement = function(selector, callback, checkFreqMs, timeoutMs) {
 
 // ##################################################################################################################################
 
+const notifyPing = function() {
+  'use strict';
+  try {
+    new Audio('https://cdn.freesound.org/previews/25/25879_37876-lq.mp3').play();
+  } catch {}
+}
+
+const msgPing = function() {
+  'use strict';
+  try {
+    new Audio('https://cdn.freesound.org/previews/662/662411_11523868-lq.mp3').play();
+  } catch {}
+}
+
+// ##################################################################################################################################
+
 // Get User from UserList
 const getUser = function(name) {
   'use strict';
@@ -168,6 +184,58 @@ const isUserAFK = function(name) {
   if (!user) { afk = false; } else { afk = user.meta.afk; }
   return afk;
 };
+
+// ##################################################################################################################################
+
+async function notifyMe(chan, title, msg) {
+  'use strict';
+
+  if (document.hasFocus()) { msgPing(); return; }
+
+  if (!("Notification" in window)) { return; } // NOT supported
+    if (Notification.permission === 'denied') { return; }
+
+  if (Notification.permission !== "granted") {
+    let permission = await Notification.requestPermission();
+  }
+
+  if (Notification.permission !== "granted") { return; }
+
+  const notify = new Notification(chan + ': ' + title, {
+    body: msg,
+    tag: chan,
+    lang: "en-US",
+    icon: 'https://jacncdn.github.io/img/favicon.png',
+    silent: false,
+  });
+
+  document.addEventListener("visibilitychange", (evt) => {
+      try {
+        notify.close();
+      } catch {}
+    }, { once: true });
+
+  notify.onclick = function() {
+    window.parent.focus();
+    notify.close();
+  }
+
+  setTimeout(() => notify.close(), 20000);
+
+  notifyPing();
+}
+
+socket.on("pm", function(data) {
+  'use strict';
+  if (data.username.toLowerCase() === window.CLIENT.name.toLowerCase()) { return; } // Don't talk to yourself
+  notifyMe(window.CHANNELNAME, data.username, data.msg);
+});
+
+socket.on("chatMsg", function(data) { 
+  'use strict';
+  if (data.username.toLowerCase() === window.CLIENT.name.toLowerCase()) { return; } // Don't talk to yourself
+  msgPing();
+});
 
 // ##################################################################################################################################
 
@@ -332,7 +400,7 @@ const autoMsgExpire = function() {
         $(this).remove();
       }});
 
-  if (document.hidden) { // delay if hidden
+  if (document.visibilityState === "hidden") { // delay if hidden
     $messagebuffer.find("div[data-expire]").each(function() {
       $(this).attr("data-expire", parseInt($(this).attr("data-expire")) + 400);
     });
