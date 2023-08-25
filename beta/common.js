@@ -27,14 +27,14 @@ var $ytapiplayer = $("#ytapiplayer");
 var _vPlayer = videojs("ytapiplayer");
 var messageExpireTime = 1000 * 60 * 2;
 var chatExpireTime = 1000 * 60 * 60 * 2;
-var oldEmit = null;
+var _originalEmit = null;
 
 // ##################################################################################################################################
 
 const isNullOrEmpty = function(data) {
   'use strict';
   if (typeof data === 'undefined') { return true; }
-  return !(data);
+  return (!(data));
 };
 
 function Sleep(sleepMS) {
@@ -140,7 +140,7 @@ const waitForElement = function(selector, callback, checkFreqMs, timeoutMs) {
       return;
     }
     else {
-      setTimeout(()=>{
+      setTimeout(() => {
         if (timeoutMs && ((Date.now() - startTimeMs) > timeoutMs)) { return; }
         loopSearch();
       }, checkFreqMs);
@@ -278,7 +278,7 @@ const modAnnounce = function(msg) {
 // Remove Video URLs
 const hideVideoURLs = function() {
   'use strict';
-  setTimeout(()=>{
+  setTimeout(() => {
     $(".qe_title").each(function(idx,data) {data.replaceWith(data.text);});
     if (window.CLIENT.rank > Rank.Member) {
       $("#queue li.queue_entry div.btn-group").hide();
@@ -308,7 +308,7 @@ const setVideoTitle = function() {
   $currenttitle.html("Playing: <strong>" + VIDEO_TITLE.title + "</strong> &nbsp; (" + secondsToHMS(remaining) + ")");  
 };
 
-window.socket.on("mediaUpdate", (data)=>{
+window.socket.on("mediaUpdate", (data) => {
   'use strict';
   // debugData('common.mediaUpdate', data);
 
@@ -356,7 +356,7 @@ function videoErrorHandler(event) {
   refreshVideo();
 }
 
-window.socket.on('changeMedia', (data)=>{
+window.socket.on('changeMedia', (data) => {
   'use strict';
   debugData("common.changeMedia", data);
   window.CurrentMedia = data;
@@ -365,7 +365,7 @@ window.socket.on('changeMedia', (data)=>{
   VIDEO_TITLE.duration = data.seconds;
   setVideoTitle();
 
-  waitForElement('#ytapiplayer', ()=>{
+  waitForElement('#ytapiplayer', () => {
     let newVideo = document.getElementById('ytapiplayer');
     if (newVideo) { newVideo.addEventListener('error', videoErrorHandler, true); }
   }, 100, 10000);
@@ -396,7 +396,7 @@ const autoMsgExpire = function() {
   }
   
   // Remove Expired Messages
-  $messagebuffer.find("div[data-expire]").each(()=>{
+  $messagebuffer.find("div[data-expire]").each(() => {
       if (Date.now() > parseInt($(this).attr("data-expire"))) { 
         $(this).remove();
       }});
@@ -453,7 +453,7 @@ const getCustomMOTD = function() {
   });
 };
 
-window.socket.on("setMotd", (data)=>{
+window.socket.on("setMotd", (data) => {
   'use strict';
   debugData("common.socket.on(setMotd)", data);
   setCustomMOTD();
@@ -508,6 +508,7 @@ $(document).ready(function() {
   
   getCustomMOTD();
 
+  // --------------------------------------------------------------------------------
   // Move Title to full width
   $('<div id="titlerow" class="row" />').insertBefore("#main").html($("#videowrap-header").detach());
   VIDEO_TITLE.title = $currenttitle.text().replace("Currently Playing: ", "");
@@ -518,9 +519,10 @@ $(document).ready(function() {
 
   $('<link id="roomfavicon" href="' + Favicon_URL + '?ac=' + START + '" type="image/x-icon" rel="shortcut icon" />').appendTo("head");
 
+  // --------------------------------------------------------------------------------
   if (ROOM_ANNOUNCEMENT !== null) { roomAnnounce(ROOM_ANNOUNCEMENT); }
   if (MOD_ANNOUNCEMENT !== null) { modAnnounce(MOD_ANNOUNCEMENT); }
-  setTimeout(()=>{$("#announcements").fadeOut(800, ()=>{$(this).remove();});}, 90000);
+  setTimeout(() => {$("#announcements").fadeOut(800, () => {$(this).remove();});}, 90000);
 
   if ((typeof ADVERTISEMENT !== "undefined") &&
       (window.CLIENT.rank < Rank.Moderator)) { 
@@ -528,28 +530,30 @@ $(document).ready(function() {
     $("#customembed").before('<div id="adwrap" class="col-lg-7 col-md-7">' + ADVERTISEMENT + '</div>');
   }
 
+  // --------------------------------------------------------------------------------
+
   // Enhanced PM Box
-  window.socket.on("addUser", (data)=>{
+  window.socket.on("addUser", (data) => {
     $("#pm-" + data.name + " .panel-heading").removeClass("pm-gone");
     if (BOT_NICK.toLowerCase() !== CLIENT.name.toLowerCase()) {
-      setTimeout(()=>{ $(".userlist_owner:contains('"+ BOT_NICK + "')").parent().css("display","none"); }, 6000);
+      setTimeout(() => { $(".userlist_owner:contains('"+ BOT_NICK + "')").parent().css("display","none"); }, 6000);
     }
   });
 
-  window.socket.on("userLeave", (data)=>{ 
+  window.socket.on("userLeave", (data) => { 
     $("#pm-" + data.name + " .panel-heading").addClass("pm-gone"); 
   });
   
-  $(window).on("focus", ()=>{
-    $("#chatline").focus();    
+  $(window).on("focus", () => { $("#chatline").focus();    
   });
 
-  window.setInterval(()=>{  // Check every second
+  // --------------------------------------------------------------------------------
+  window.setInterval(() => {  // Check every second
     autoMsgExpire();
     
     // Remove LastPass Icon. TODO There MUST be a better way!
-    $("#chatline").css({"background-image":"none"});
-    $(".pm-input").css({"background-image":"none"});
+    $("#chatline").attr("spellcheck", "true").css({"background-image":"none"});
+    $(".pm-input").attr("spellcheck", "true").css({"background-image":"none"});
   }, 1000);
   
   $("body").keypress(function(evt) {
@@ -558,20 +562,27 @@ $(document).ready(function() {
     $("#chatline").focus();
   });
 
-  $("#chatline")
-    .attr("placeholder", "Type here to Chat")
-    .attr("spellcheck", "true")
-    .attr("autocapitalize", "sentences")
-    .focus();
+  $("#chatline").attr("placeholder", "Type here to Chat").focus();
 
-/*
-  socket.emit = function() {
-    let args = Array.prototype.slice.call(arguments);
-    console.log('#####  emit', args);
-    oldEmit.apply(socket, args);
+  // --------------------------------------------------------------------------------
+  if (isNullOrEmpty(_originalEmit) {
+    socket.emit = function() {
+      let args = Array.prototype.slice.call(arguments);
+      
+      if ((args[0] === "chatMsg") || (args[0] === "pm")) {
+        let msg = args[1].msg.trim();
+        if (msg[0] !== '/') {
+          msg = msg[0].toLocaleUpperCase() + msg.slice(1); // Capitalize
+          console.debug('#####  MSG: ', args[1].msg);
+          args[1].msg = msg;
+        }
+      }
+
+      _originalEmit.apply(socket, args);
+    }
   }
-*/
 
+  // --------------------------------------------------------------------------------
   if (window.CLIENT.rank > Rank.Guest) { 
     let modflair = $("#modflair");
     if (modflair.hasClass("label-default")) { modflair.trigger("click"); }
@@ -583,6 +594,7 @@ $(document).ready(function() {
       .on("click", function() { window.socket.emit("playNext"); });
   }
   
+  // --------------------------------------------------------------------------------
   if (window.CLIENT.rank > Rank.Moderator) { 
     $('<button class="btn btn-sm btn-default" id="clear" title="Clear Chat">Clear</button>')
       .appendTo("#leftcontrols")
@@ -602,6 +614,7 @@ $(document).ready(function() {
       });
   }
   
+  // --------------------------------------------------------------------------------
   makeNoRefererMeta();
   refreshVideo();
   cacheEmotes();
