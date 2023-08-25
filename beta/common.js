@@ -467,7 +467,8 @@ const CustomCallbacks = {
 
   pm: function(data) {
     debugData("CustomCallbacks.pm", data);
-    if (data.username === BOT_NICK) { return; }
+    if (data.to === BOT_NICK) { return; }
+    if (data.msg.startsWith(PREFIX_INFO)) { return; }
 
     if (data.username.toLowerCase() !== window.CLIENT.name.toLowerCase()) { // Don't talk to yourself
       notifyMe(window.CHANNELNAME, data.username, data.msg);
@@ -583,7 +584,7 @@ $(document).ready(function() {
         let pmMsg = args[1].msg.trim();
         if (pmMsg[0] !== '/') {
           pmMsg = pmMsg[0].toLocaleUpperCase() + pmMsg.slice(1); // Capitalize
-          console.debug('common.emit.upCase: ', args[1].pmMsg);
+          console.debug('common.emit.upCase: ', args[1].msg);
           args[1].msg = pmMsg;
         }
       }
