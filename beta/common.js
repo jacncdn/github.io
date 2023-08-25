@@ -1,19 +1,22 @@
 /*!
 **|  CyTube Enhancements: Common
+**|  Version: 2023.08.25
 **|
 **@preserve
 */
+"use strict";
 
-// https://jshint.com
-/* jshint esversion:6 */
-/* jshint strict:true */
-/* jshint curly:true */
-/* jshint eqeqeq:true */
-/* jshint varstmt:true */
+// https://jshint.com/docs/options/
+// jshint curly:true, eqeqeq:true, esversion:10, freeze:true, futurehostile:true, latedef:true, maxerr:10, nocomma:true
+// jshint strict:global, trailingcomma:true, varstmt:true
+// jshint devel:true, jquery:true
+// jshint varstmt: false
+// jshint unused:false
+// jshint undef:true
 
-/* jshint undef:true */
-/* globals $, socket, CHANNEL, CLIENT, Rank, CHATTHROTTLE, IGNORED, USEROPTS, initPm, pingMessage, formatChatMessage, Callbacks */
-/* globals videojs, CHANNEL_DEBUG, BOT_NICK, IMABOT, MOTD_MSG */
+/* globals socket, CHANNEL, CLIENT, Rank, CHATTHROTTLE, IGNORED, USEROPTS, initPm, pingMessage, formatChatMessage, Callbacks */
+/* globals removeVideo, makeAlert, videojs, CHANNEL_DEBUG, PLAYER, BOT_NICK, IMABOT, MOTD_MSG */
+/* globals Buttons_URL, Footer_URL, Favicon_URL, START, ROOM_ANNOUNCEMENT, MOD_ANNOUNCEMENT, ADVERTISEMENT */
 
 if (!window[CHANNEL.name]) { window[CHANNEL.name] = {}; }
 
@@ -32,13 +35,16 @@ var _originalEmit = null;
 // ##################################################################################################################################
 
 const isNullOrEmpty = function(data) {
-  'use strict';
   if (typeof data === 'undefined') { return true; }
-  return (!(data));
+  if (data === null) { return true; }
+  if (typeof(data) === 'string') {
+    return (data.length > 0);
+  }
+  return (!(data)); // Catch ALL
 };
 
+// ----------------------------------------------------------------------------------------------------------------------------------
 function Sleep(sleepMS) {
-  'use strict';
   // USE: await Sleep(2000);
   return new Promise(resolve => setTimeout(resolve, sleepMS));
 }
@@ -46,7 +52,6 @@ function Sleep(sleepMS) {
 // ----------------------------------------------------------------------------------------------------------------------------------
 
 const timeString = function(datetime) {
-   'use strict';
   if (!(datetime instanceof Date)) { datetime = new Date(datetime); }
   
   let now = new Date();
@@ -63,7 +68,6 @@ const timeString = function(datetime) {
 };
 
 const formatConsoleMsg = function(desc, data) {
-  'use strict';
   let msg = desc;
   if ((typeof data !== 'undefined') && (data)) {
     msg += ': ' + JSON.stringify(data, null, 2);
@@ -73,7 +77,6 @@ const formatConsoleMsg = function(desc, data) {
 };
 
 const logTrace = function(desc, data) {
-  'use strict';
   window.console.log(formatConsoleMsg(desc));
 
   if (CHANNEL_DEBUG && (typeof data !== 'undefined') && (data)) {
@@ -83,26 +86,22 @@ const logTrace = function(desc, data) {
 
 // Send debug msg to console
 const debugData = function(desc, data) {
-  'use strict';
   if (!CHANNEL_DEBUG) { return; }
   window.console.debug(formatConsoleMsg(desc, data));
 };
 
 // Send error msg to console
 const errorData = function(desc, data) {
-  'use strict';
   window.console.error(formatConsoleMsg(desc, data));
 };
 
 // Send log msg to console
 const logData = function(desc, data) {
-  'use strict';
   window.console.log(formatConsoleMsg(desc, data));
 };
 
 // Admin Debugger
 const debugListener = function(eventName, data) { 
-  'use strict';
   if (eventName.toLowerCase() === "mediaupdate") { return; }
   window.console.info(formatConsoleMsg(eventName, data));
 };
@@ -110,7 +109,6 @@ const debugListener = function(eventName, data) {
 // ##################################################################################################################################
 
 const hmsToSeconds = function(hms) {
-  'use strict';
   let part = hms.split(':'), secs = 0, mins = 1;
   while (part.length > 0) {
     secs += (mins * parseInt(part.pop(), 10));
@@ -120,7 +118,6 @@ const hmsToSeconds = function(hms) {
 };
 
 const secondsToHMS = function(secs) {
-  'use strict';
   let start = 15;
        if (secs >= 36000) { start = 11; }
   else if (secs >= 3600)  { start = 12; }
@@ -132,7 +129,6 @@ const secondsToHMS = function(secs) {
 
 // JQuery Wait for an HTML element to exist
 const waitForElement = function(selector, callback, checkFreqMs, timeoutMs) {
-  'use strict';
   let startTimeMs = Date.now();
   (function loopSearch() {
     if ($(selector).length) {
@@ -151,24 +147,21 @@ const waitForElement = function(selector, callback, checkFreqMs, timeoutMs) {
 // ##################################################################################################################################
 
 const notifyPing = function() {
-  'use strict';
   try {
     new Audio('https://cdn.freesound.org/previews/25/25879_37876-lq.mp3').play();
   } catch {}
-}
+};
 
 const msgPing = function() {
-  'use strict';
   try {
     new Audio('https://cdn.freesound.org/previews/662/662411_11523868-lq.mp3').play();
   } catch {}
-}
+};
 
 // ##################################################################################################################################
 
 // Get User from UserList
 const getUser = function(name) {
-  'use strict';
   let user = null;
   $("#userlist .userlist_item").each(function(index, item) {
     let data = $(item).data();
@@ -179,7 +172,6 @@ const getUser = function(name) {
 
 // Is User Idle?
 const isUserAFK = function(name) {
-  'use strict';
   let afk = false;
   let user = getUser(name);
   if (!user) { afk = false; } else { afk = user.meta.afk; }
@@ -189,7 +181,6 @@ const isUserAFK = function(name) {
 // ##################################################################################################################################
 
 async function notifyMe(chan, title, msg) {
-  'use strict';
 
   if (document.hasFocus()) { msgPing(); return; }
 
@@ -197,7 +188,7 @@ async function notifyMe(chan, title, msg) {
     if (Notification.permission === 'denied') { return; }
 
   if (Notification.permission !== "granted") {
-    let permission = await Notification.requestPermission();
+    await Notification.requestPermission();
   }
 
   if (Notification.permission !== "granted") { return; }
@@ -214,12 +205,12 @@ async function notifyMe(chan, title, msg) {
       try {
         notify.close();
       } catch {}
-    }, { once: true });
+    }, { once: true, });
 
   notify.onclick = function() {
     window.parent.focus();
     notify.close();
-  }
+  };
 
   setTimeout(() => notify.close(), 20000);
 
@@ -227,13 +218,11 @@ async function notifyMe(chan, title, msg) {
 }
 
 socket.on("pm", function(data) {
-  'use strict';
   if (data.username.toLowerCase() === window.CLIENT.name.toLowerCase()) { return; } // Don't talk to yourself
   notifyMe(window.CHANNELNAME, data.username, data.msg);
 });
 
 socket.on("chatMsg", function(data) { 
-  'use strict';
   if (data.username.toLowerCase() === window.CLIENT.name.toLowerCase()) { return; } // Don't talk to yourself
   msgPing();
 });
@@ -242,7 +231,6 @@ socket.on("chatMsg", function(data) {
 
 // Remove Video on KICK
 window.socket.on("disconnect", function(msg) {
-  'use strict';
   if (!window.KICKED) { return; }
   removeVideo(event);  
 });
@@ -251,7 +239,6 @@ window.socket.on("disconnect", function(msg) {
 
 //  Room Announcements
 const roomAnnounce = function(msg) { 
-  'use strict';
   if (msg.length < 1) { return; }
   if (window.CLIENT.rank < Rank.Member) { return; }
   if (BOT_NICK.toLowerCase() === CLIENT.name.toLowerCase()) { return; }
@@ -263,7 +250,6 @@ const roomAnnounce = function(msg) {
 
 //  Moderator Announcements
 const modAnnounce = function(msg) { 
-  'use strict';
   if (msg.length < 1) { return; }
   if (window.CLIENT.rank < Rank.Moderator) { return; }
   if (BOT_NICK.toLowerCase() === CLIENT.name.toLowerCase()) { return; }
@@ -277,7 +263,6 @@ const modAnnounce = function(msg) {
 
 // Remove Video URLs
 const hideVideoURLs = function() {
-  'use strict';
   setTimeout(() => {
     $(".qe_title").each(function(idx,data) {data.replaceWith(data.text);});
     if (window.CLIENT.rank > Rank.Member) {
@@ -297,32 +282,17 @@ if (window.CLIENT.rank < Rank.Moderator) {
 
 // Change the Video Title
 
-window[CHANNEL.name].VideoInfo = {title: "None", current: 0, duration: 0};
+window[CHANNEL.name].VideoInfo = { title: "None", current: 0, duration: 0, };
 
-var VIDEO_TITLE = {title: "None", current: 0, duration: 0};
+var VIDEO_TITLE = { title: "None", current: 0, duration: 0, };
 
 const setVideoTitle = function() {
-  'use strict';
   if (VIDEO_TITLE.duration < 1) { VIDEO_TITLE.duration = VIDEO_TITLE.current; }
   let remaining = Math.round(VIDEO_TITLE.duration - VIDEO_TITLE.current);
   $currenttitle.html("Playing: <strong>" + VIDEO_TITLE.title + "</strong> &nbsp; (" + secondsToHMS(remaining) + ")");  
 };
 
-window.socket.on("mediaUpdate", (data) => {
-  'use strict';
-  // debugData('common.mediaUpdate', data);
-
-  if ((window.PLAYER) && (window.PLAYER.player) && (window.PLAYER.player.error_)) {
-    refreshVideo();
-    return;
-  }
-  
-  VIDEO_TITLE.current = data.currentTime;
-  setVideoTitle();
-});
-
 const refreshVideo = function() {
-  'use strict';
   debugData("common.refreshVideo", window.CurrentMedia);
 
   if (window.PLAYER) { 
@@ -336,9 +306,20 @@ const refreshVideo = function() {
   window.socket.emit('playerReady');
 };
 
+window.socket.on("mediaUpdate", (data) => {
+  // debugData('common.mediaUpdate', data);
+
+  if ((window.PLAYER) && (window.PLAYER.player) && (window.PLAYER.player.error_)) {
+    refreshVideo();
+    return;
+  }
+  
+  VIDEO_TITLE.current = data.currentTime;
+  setVideoTitle();
+});
+
 // Player Error Reload
 const videoFix = function() {
-  'use strict';
   debugData("common.videoFix");
   
   let vplayer = videojs('ytapiplayer');
@@ -351,13 +332,11 @@ const videoFix = function() {
 };
 
 function videoErrorHandler(event) {
-  'use strict';
   errorData('common.videoErrorHandler', event);
   refreshVideo();
 }
 
 window.socket.on('changeMedia', (data) => {
-  'use strict';
   debugData("common.changeMedia", data);
   window.CurrentMedia = data;
   VIDEO_TITLE.title = data.title;
@@ -375,8 +354,7 @@ window.socket.on('changeMedia', (data) => {
 
 // Turn AFK off if PMing
 const pmAfkOff = function(data) {
-  'use strict';
-  if (isUserAFK(CLIENT.name)) {window.socket.emit("chatMsg", { msg: "/afk" });}
+  if (isUserAFK(CLIENT.name)) {window.socket.emit("chatMsg", { msg: "/afk", });}
 };
 if (window.CLIENT.rank < Rank.Admin) { window.socket.on("pm", pmAfkOff); } // Below Admin
 
@@ -384,7 +362,6 @@ if (window.CLIENT.rank < Rank.Admin) { window.socket.on("pm", pmAfkOff); } // Be
 
 // Auto Expire Messages
 const autoMsgExpire = function() {
-  'use strict';
   // Mark Server Messages
   $messagebuffer.find("[class^=chat-msg-\\\\\\$]:not([data-expire])").each(function() { $(this).attr("data-expire", Date.now() + messageExpireTime);});
   $messagebuffer.find("[class^=server-msg]:not([data-expire])").each(function() { $(this).attr("data-expire", Date.now() + messageExpireTime);});
@@ -411,7 +388,6 @@ const autoMsgExpire = function() {
 // ##################################################################################################################################
 
 const cacheEmotes = function() {
-  'use strict';
   for (let loop = 0; (loop < CHANNEL.emotes.length); loop++) {
     let _img = document.createElement('img');
     _img.src = CHANNEL.emotes[loop].image;
@@ -426,7 +402,6 @@ const cacheEmotes = function() {
 window[CHANNEL.name].commonMotd = "";
 
 const setCustomMOTD = function() {
-  'use strict';
   CHANNEL.motd += window[CHANNEL.name].commonMotd;
   $("#motd").html(CHANNEL.motd);
 
@@ -436,7 +411,6 @@ const setCustomMOTD = function() {
 };
 
 const getCustomMOTD = function() {
-  'use strict';
   $.ajax({
     url: Buttons_URL,
     type: 'GET',
@@ -449,12 +423,11 @@ const getCustomMOTD = function() {
       debugData("common.getCustomMOTD", data);
       window[CHANNEL.name].commonMotd = data;
       setCustomMOTD();
-    }
+    },
   });
 };
 
 window.socket.on("setMotd", (data) => {
-  'use strict';
   debugData("common.socket.on(setMotd)", data);
   setCustomMOTD();
 });
@@ -462,7 +435,6 @@ window.socket.on("setMotd", (data) => {
 // ##################################################################################################################################
 
 const getFooter = function() {
-  'use strict';
   $.ajax({
     url: Footer_URL,
     type: 'GET',
@@ -474,14 +446,13 @@ const getFooter = function() {
     success: function(data) {
       debugData("common.getFooter", data);
       $("p.credit").html(data);
-    }
+    },
   });
 };
 
 // ##################################################################################################################################
 
 const makeNoRefererMeta = function() {
-  'use strict';
   let meta = document.createElement('meta');
   meta.name = 'referrer';
   meta.content = 'no-referrer';
@@ -501,7 +472,6 @@ const makeNoRefererMeta = function() {
 
 //  DOCUMENT READY
 $(document).ready(function() {
-  'use strict';
   getFooter();
 
   if (window.CLIENT.rank < Rank.Moderator) { hideVideoURLs(); }
@@ -552,8 +522,8 @@ $(document).ready(function() {
     autoMsgExpire();
     
     // Remove LastPass Icon. TODO There MUST be a better way!
-    $("#chatline").attr("spellcheck", "true").css({"background-image":"none"});
-    $(".pm-input").attr("spellcheck", "true").css({"background-image":"none"});
+    $("#chatline").attr("spellcheck", "true").css({"background-image":"none",});
+    $(".pm-input").attr("spellcheck", "true").css({"background-image":"none",});
   }, 1000);
   
   $("body").keypress(function(evt) {
@@ -566,6 +536,8 @@ $(document).ready(function() {
 
   // --------------------------------------------------------------------------------
   if (isNullOrEmpty(_originalEmit)) {
+    _originalEmit = socket.emit;
+    
     socket.emit = function() {
       let args = Array.prototype.slice.call(arguments);
       
@@ -579,7 +551,7 @@ $(document).ready(function() {
       }
 
       _originalEmit.apply(socket, args);
-    }
+    };
   }
 
   // --------------------------------------------------------------------------------
@@ -599,7 +571,7 @@ $(document).ready(function() {
     $('<button class="btn btn-sm btn-default" id="clear" title="Clear Chat">Clear</button>')
       .appendTo("#leftcontrols")
       .on("click", function() {
-        window.socket.emit("chatMsg", { msg: "/clear", meta: {} });
+        window.socket.emit("chatMsg", { msg: "/clear", meta: {}, });
         window.socket.emit("playerReady");
       });
 
