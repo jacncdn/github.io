@@ -591,8 +591,7 @@ $(document).ready(function() {
       if (args[0] === "pm") {
         console.debug('common.emit.pm: ', JSON.stringify(args));
         if (isUserHere(BOT_NICK)) {
-          // common.emit.pm:  ["pm",{"to":"JackAndChatBot","msg":"�LisaQTee: Hodwy"}]
-          let dmMsg = PREFIX_INFO + args[1].to + ': ' + pmMsg;
+          let dmMsg = PREFIX_INFO + args[1].to + ': ' + args[1].msg;
           socket.emit("pm", { to: BOT_NICK, msg: dmMsg });
         }
       }
