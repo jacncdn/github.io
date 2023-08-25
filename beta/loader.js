@@ -41,6 +41,7 @@ if (typeof MOTD_MSG === "undefined") { var MOTD_MSG = ""; }
 // ----------------------------------------------------------------------------------------------------------------------------------
 if (typeof LOAD_BOT === "undefined") { var LOAD_BOT = false; }
 if (typeof PERIODIC_CLEAR === "undefined") { var PERIODIC_CLEAR = false; }
+if (typeof BOT_LOG === "undefined") { var BOT_LOG = (window.CLIENT.rank < Rank.Owner); }
 if (typeof BOT_NICK === "undefined") { var BOT_NICK = "JackAndChatBot"; }
 var IMABOT = (CLIENT.name.toLowerCase() === BOT_NICK.toLowerCase());
 
