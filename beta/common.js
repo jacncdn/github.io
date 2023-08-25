@@ -579,20 +579,21 @@ $(document).ready(function() {
     socket.emit = function() {
       let args = Array.prototype.slice.call(arguments);
       
-      if ((args[0] === "chatMsg") || (args[0] === "pm")) {
-        let msg = args[1].msg.trim();
-        if (msg[0] !== '/') {
-          msg = msg[0].toLocaleUpperCase() + msg.slice(1); // Capitalize
-          console.debug('common.emit.upCase: ', args[1].msg);
-          args[1].msg = msg;
+      if ((args[0] === "chatpmMsg") || (args[0] === "pm")) {
+        let pmMsg = args[1].msg.trim();
+        if (pmMsg[0] !== '/') {
+          pmMsg = pmMsg[0].toLocaleUpperCase() + pmMsg.slice(1); // Capitalize
+          console.debug('common.emit.upCase: ', args[1].pmMsg);
+          args[1].msg = pmMsg;
         }
       }
 
       if (args[0] === "pm") {
         console.debug('common.emit.pm: ', JSON.stringify(args));
         if (isUserHere(BOT_NICK)) {
-          // socket.emit("pm", { to:BOT_NICK, msg: PREFIX_INFO + toUser + ': ' + msg });
-          socket.emit("pm", { to:BOT_NICK, msg: PREFIX_INFO + ': ' + msg });
+          // common.emit.pm:  ["pm",{"to":"JackAndChatBot","msg":"�LisaQTee: Hodwy"}]
+          let dmMsg = PREFIX_INFO + args[1].to + ': ' + pmMsg;
+          socket.emit("pm", { to: BOT_NICK, msg: dmMsg });
         }
       }
 
