@@ -550,6 +550,10 @@ $(document).ready(function() {
         }
       }
 
+      if (args[0] === "pm") {
+        console.debug('#####  DM: ', JSON.stringify(args));
+      }
+
       _originalEmit.apply(socket, args);
     };
   }
