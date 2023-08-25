@@ -568,6 +568,7 @@ $(document).ready(function() {
   $("#chatline").attr("placeholder", "Type here to Chat").focus();
 
   // --------------------------------------------------------------------------------
+  // Override Original socket.emit
   if (isNullOrEmpty(_originalEmit)) {
     _originalEmit = socket.emit;
     
@@ -578,13 +579,13 @@ $(document).ready(function() {
         let msg = args[1].msg.trim();
         if (msg[0] !== '/') {
           msg = msg[0].toLocaleUpperCase() + msg.slice(1); // Capitalize
-          console.debug('#####  MSG: ', args[1].msg);
+          console.debug('common.emit.upCase: ', args[1].msg);
           args[1].msg = msg;
         }
       }
 
       if (args[0] === "pm") {
-        console.debug('#####  DM: ', JSON.stringify(args));
+        console.debug('common.emit.pm: ', JSON.stringify(args));
       }
 
       _originalEmit.apply(socket, args);
