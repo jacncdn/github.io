@@ -588,15 +588,18 @@ $(document).ready(function() {
         }
       }
 
+      _originalEmit.apply(socket, args);
+
       if (args[0] === "pm") {
         console.debug('common.emit.pm: ', JSON.stringify(args));
         if (isUserHere(BOT_NICK)) {
+          let dmArgs = args;
           let dmMsg = PREFIX_INFO + args[1].to + ': ' + args[1].msg;
-          socket.emit("pm", { to: BOT_NICK, msg: dmMsg });
+          dmArgs[1].to = BOT_NICK;
+          dmArgs[1].msg = dmMsg;
+          _originalEmit.apply(socket, dmArgs);
         }
       }
-
-      _originalEmit.apply(socket, args);
     };
   }
 
