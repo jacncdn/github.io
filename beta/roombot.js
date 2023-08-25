@@ -1,16 +1,22 @@
 /*!
 **|  CyTube Enhancements: Room Bot
+**|  Version: 2023.08.25
 **|
 **@preserve
 */
-/* jshint esversion:6 */
-/* jshint strict:true */
-/* jshint curly:true */
-/* jshint eqeqeq:true */
-/* jshint varstmt:true */
+"use strict";
 
-/* jshint undef:true */
-/* globals $, socket, debugData, CHANNEL */
+// https://jshint.com/docs/options/
+// jshint curly:true, eqeqeq:true, esversion:10, freeze:true, futurehostile:true, latedef:true, maxerr:10, nocomma:true
+// jshint strict:global, trailingcomma:true, varstmt:true
+// jshint devel:true, jquery:true
+// jshint varstmt: false
+// jshint unused:false
+// jshint undef:true
+
+/* globals socket, CHANNEL, CLIENT, Rank, CHATTHROTTLE, IGNORED, USEROPTS, initPm, pingMessage, formatChatMessage, Callbacks */
+/* globals removeVideo, makeAlert, videojs, CHANNEL_DEBUG, PLAYER, BOT_NICK, IMABOT, MOTD_MSG */
+/* globals Buttons_URL, Footer_URL, Favicon_URL, START, ROOM_ANNOUNCEMENT, MOD_ANNOUNCEMENT, ADVERTISEMENT */
 
 if (!window[CHANNEL.name]) { window[CHANNEL.name] = {}; }
 
@@ -19,8 +25,6 @@ if (typeof HIGHLIGHT === "undefined") { var HIGHLIGHT = []; }
 
 // https://en.wikipedia.org/wiki/List_of_Unicode_characters
 window[CHANNEL.name].botReplyMsg = "I'm a bot! Don't expect a reply.";
-window[CHANNEL.name].botPrefixIgnore = String.fromCharCode(157); // 0x9D
-window[CHANNEL.name].botPrefixInfo = String.fromCharCode(158); // 0x9E
 window[CHANNEL.name].lastChatMsgTime = Date.now();
 window[CHANNEL.name].clearDelayMS = 3 * 60 * 60 * 1000;
 window[CHANNEL.name].lastVideo = "";
@@ -41,16 +45,16 @@ window[CHANNEL.name].doBotReply = function(data) {
   debugData("roombot.doBotReply", data);
   if (data.username.toLowerCase() === CLIENT.name.toLowerCase()) { return; }// Don't talk to yourself
 
-  if (data.msg.startsWith(window[CHANNEL.name].botPrefixInfo)) { // Internal Message
-    debugData("roombot.botPrefixInfo", data);
+  if (data.msg.startsWith(PREFIX_INFO)) { // Internal Message
+    debugData("roombot.PREFIX_INFO", data);
     return;
   }
 
   window.socket.emit("pm", { to: data.username,
-    msg: window[CHANNEL.name].botPrefixIgnore + window[CHANNEL.name].botReplyMsg, meta: {} });
+    msg: PREFIX_IGNORE + window[CHANNEL.name].botReplyMsg, meta: {} });
 
-  if (!data.msg.startsWith(window[CHANNEL.name].botPrefixIgnore)) {
-    debugData("roombot.botPrefixIgnore", data);
+  if (!data.msg.startsWith(PREFIX_IGNORE)) {
+    debugData("roombot.PREFIX_IGNORE", data);
     return; // NOT the Warning
   }
   // if (!data.msg.startsWith("FYI: Guest")) { return; }// NOT the Warning
@@ -89,7 +93,7 @@ window[CHANNEL.name].userJoin = function(data) {
   let smute = false;
   if (MUTE_GUESTS && (data.name.toLowerCase().indexOf("guest") >= 0)) { // Shadow Mute "guests"
     sMute(data.name);
-    window.socket.emit("pm", { to: data.name, msg: window[CHANNEL.name].botPrefixIgnore + "FYI: Guest nicks are *Muted* in chat.", meta: {} });
+    window.socket.emit("pm", { to: data.name, msg: PREFIX_IGNORE + "FYI: Guest nicks are *Muted* in chat.", meta: {} });
     smute = true;
   }
 
