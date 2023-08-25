@@ -30,6 +30,7 @@ var $ytapiplayer = $("#ytapiplayer");
 var _vPlayer = videojs("ytapiplayer");
 var messageExpireTime = 1000 * 60 * 2;
 var chatExpireTime = 1000 * 60 * 60 * 2;
+var _originalCallbacks = {};
 var _originalEmit = null;
 
 // ##################################################################################################################################
@@ -217,24 +218,6 @@ async function notifyMe(chan, title, msg) {
   notifyPing();
 }
 
-socket.on("pm", function(data) {
-  if (data.username.toLowerCase() === window.CLIENT.name.toLowerCase()) { return; } // Don't talk to yourself
-  notifyMe(window.CHANNELNAME, data.username, data.msg);
-});
-
-socket.on("chatMsg", function(data) { 
-  if (data.username.toLowerCase() === window.CLIENT.name.toLowerCase()) { return; } // Don't talk to yourself
-  msgPing();
-});
-
-// ##################################################################################################################################
-
-// Remove Video on KICK
-window.socket.on("disconnect", function(msg) {
-  if (!window.KICKED) { return; }
-  removeVideo(event);  
-});
-
 // ##################################################################################################################################
 
 //  Room Announcements
@@ -306,18 +289,6 @@ const refreshVideo = function() {
   window.socket.emit('playerReady');
 };
 
-window.socket.on("mediaUpdate", (data) => {
-  // debugData('common.mediaUpdate', data);
-
-  if ((window.PLAYER) && (window.PLAYER.player) && (window.PLAYER.player.error_)) {
-    refreshVideo();
-    return;
-  }
-  
-  VIDEO_TITLE.current = data.currentTime;
-  setVideoTitle();
-});
-
 // Player Error Reload
 const videoFix = function() {
   debugData("common.videoFix");
@@ -336,25 +307,11 @@ function videoErrorHandler(event) {
   refreshVideo();
 }
 
-window.socket.on('changeMedia', (data) => {
-  debugData("common.changeMedia", data);
-  window.CurrentMedia = data;
-  VIDEO_TITLE.title = data.title;
-  VIDEO_TITLE.current = data.currentTime;
-  VIDEO_TITLE.duration = data.seconds;
-  setVideoTitle();
-
-  waitForElement('#ytapiplayer', () => {
-    let newVideo = document.getElementById('ytapiplayer');
-    if (newVideo) { newVideo.addEventListener('error', videoErrorHandler, true); }
-  }, 100, 10000);
-});
-
 // ##################################################################################################################################
 
 // Turn AFK off if PMing
 const pmAfkOff = function(data) {
-  if (isUserAFK(CLIENT.name)) {window.socket.emit("chatMsg", { msg: "/afk", });}
+  if (isUserAFK(CLIENT.name)) { window.socket.emit("chatMsg", { msg: "/afk", }); }
 };
 if (window.CLIENT.rank < Rank.Admin) { window.socket.on("pm", pmAfkOff); } // Below Admin
 
@@ -427,11 +384,6 @@ const getCustomMOTD = function() {
   });
 };
 
-window.socket.on("setMotd", (data) => {
-  debugData("common.socket.on(setMotd)", data);
-  setCustomMOTD();
-});
-
 // ##################################################################################################################################
 
 const getFooter = function() {
@@ -460,6 +412,86 @@ const makeNoRefererMeta = function() {
 };
 
 // ##################################################################################################################################
+
+// Intercept Original Callbacks
+const CustomCallbacks = {
+  changeMedia: function(data) {
+    debugData("CustomCallbacks.changeMedia", data);
+    _originalCallbacks.changeMedia(data);
+    
+    window.CurrentMedia = data;
+    VIDEO_TITLE.title = data.title;
+    VIDEO_TITLE.current = data.currentTime;
+    VIDEO_TITLE.duration = data.seconds;
+    setVideoTitle();
+
+    waitForElement('#ytapiplayer', () => {
+      let newVideo = document.getElementById('ytapiplayer');
+      if (newVideo) { newVideo.addEventListener('error', videoErrorHandler, true); }
+    }, 100, 10000);
+  },
+
+  chatMsg: function(data) { 
+    debugData("CustomCallbacks.chatMsg", data);
+    
+    if (data.username.toLowerCase() === window.CLIENT.name.toLowerCase()) { // Don't talk to yourself
+      msgPing();
+    }
+
+    _originalCallbacks.chatMsg(data);
+  },
+
+  disconnect: function(data) {
+    if (window.KICKED) {
+      removeVideo(event); // Remove Video on KICK
+    }
+    _originalCallbacks.disconnect(data);
+  },
+
+  mediaUpdate: function(data) {
+    debugData("CustomCallbacks.mediaUpdate", data);
+    _originalCallbacks.mediaUpdate(data);
+
+    if ((window.PLAYER) && (window.PLAYER.player) && (window.PLAYER.player.error_)) {
+      refreshVideo();
+      return;
+    }
+    
+    VIDEO_TITLE.current = data.currentTime;
+    setVideoTitle();
+  },
+
+  pm: function(data) {
+    debugData("CustomCallbacks.pm", data);
+    if (data.username === BOT_NICK) { return; }
+
+    if (data.username.toLowerCase() !== window.CLIENT.name.toLowerCase()) { // Don't talk to yourself
+      notifyMe(window.CHANNELNAME, data.username, data.msg);
+    }
+    
+    _originalCallbacks.pm(data);
+  },
+  
+  setMotd: function(data) {
+    debugData("CustomCallbacks.setMotd", data);
+    _originalCallbacks.setMotd(data);
+    setCustomMOTD();
+  },
+
+};
+
+// ----------------------------------------------------------------------------------------------------------------------------------
+const initCallbacks = function(data) {
+  for (let key in CustomCallbacks) {
+    if (CustomCallbacks.hasOwnProperty(key)) {
+      debugData("common.initCallbacks.key", key);
+      _originalCallbacks[key] = window.Callbacks[key];
+      window.Callbacks[key] = CustomCallbacks[key];
+    }
+  }
+};
+
+// ##################################################################################################################################
 /*  window.CLIENT.rank
   Rank.Guest: 0
   Rank.Member: 1
@@ -472,6 +504,7 @@ const makeNoRefererMeta = function() {
 
 //  DOCUMENT READY
 $(document).ready(function() {
+  initCallbacks();
   getFooter();
 
   if (window.CLIENT.rank < Rank.Moderator) { hideVideoURLs(); }
@@ -514,8 +547,7 @@ $(document).ready(function() {
     $("#pm-" + data.name + " .panel-heading").addClass("pm-gone"); 
   });
   
-  $(window).on("focus", () => { $("#chatline").focus();    
-  });
+  $(window).on("focus", () => { $("#chatline").focus(); });
 
   // --------------------------------------------------------------------------------
   window.setInterval(() => {  // Check every second
