@@ -566,9 +566,10 @@ $(document).ready(function() {
 
 /*
   socket.emit = function() {
-    console.log('***', 'emit', Array.prototype.slice.call(arguments));
-    oldEmit.apply(socket, arguments);
-  };
+    let args = Array.prototype.slice.call(arguments);
+    console.log('#####  emit', args);
+    oldEmit.apply(socket, args);
+  }
 */
 
   if (window.CLIENT.rank > Rank.Guest) { 
