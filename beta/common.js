@@ -564,10 +564,12 @@ $(document).ready(function() {
     .attr("autocapitalize", "sentences")
     .focus();
 
+/*
   socket.emit = function() {
     console.log('***', 'emit', Array.prototype.slice.call(arguments));
     oldEmit.apply(socket, arguments);
   };
+*/
 
   if (window.CLIENT.rank > Rank.Guest) { 
     let modflair = $("#modflair");
