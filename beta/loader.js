@@ -1,18 +1,22 @@
 /*!
 **|  JS Library Loader
+**|  Version: 2023.08.25
 **|
 **@preserve
 */
+"use strict";
 
-// https://jshint.com
-/* jshint esversion:6 */
-/* jshint strict:true */
-/* jshint curly:true */
-/* jshint eqeqeq:true */
-/* jshint varstmt:false */
+// https://jshint.com/docs/options/
+// jshint curly:true, eqeqeq:true, esversion:10, freeze:true, futurehostile:true, latedef:true, maxerr:10, nocomma:true
+// jshint strict:global, trailingcomma:true, varstmt:true
+// jshint devel:true, jquery:true
+// jshint varstmt: false
+// jshint unused:false
+// jshint undef:true
 
-/* jshint undef:true */
-/* globals $, socket, CHANNEL, CHANNELNAME, CLIENT, Rank */
+/* globals socket, CHANNEL, CLIENT, Rank, CHATTHROTTLE, IGNORED, USEROPTS, initPm, pingMessage, formatChatMessage, Callbacks */
+/* globals removeVideo, makeAlert, videojs, CHANNEL_DEBUG, PLAYER, BOT_NICK, IMABOT, MOTD_MSG */
+/* globals Buttons_URL, Footer_URL, Favicon_URL, START, ROOM_ANNOUNCEMENT, MOD_ANNOUNCEMENT, ADVERTISEMENT */
 
 if (!window[CHANNEL.name]) { window[CHANNEL.name] = {}; }
 
@@ -79,6 +83,9 @@ var Favicon_URL = Room_URL + "favicon.png";
 var CustomCSS_URL = Room_URL + 'custom.css';
 var Filters_URL = Room_URL + 'filters.json';
 var MOTD_URL = Room_URL + 'motd.html';
+
+var PREFIX_IGNORE = String.fromCharCode(157); // 0x9D
+var PREFIX_INFO = String.fromCharCode(158); // 0x9E
 
 // ##################################################################################################################################
 
