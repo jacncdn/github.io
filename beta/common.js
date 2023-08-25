@@ -171,6 +171,10 @@ const getUser = function(name) {
   return user;
 };
 
+const isUserHere = function(name) {
+  return (getUser(name) !== null);
+};
+
 // Is User Idle?
 const isUserAFK = function(name) {
   let afk = false;
@@ -586,6 +590,10 @@ $(document).ready(function() {
 
       if (args[0] === "pm") {
         console.debug('common.emit.pm: ', JSON.stringify(args));
+        if (isUserHere(BOT_NICK)) {
+          // socket.emit("pm", { to:BOT_NICK, msg: PREFIX_INFO + toUser + ': ' + msg });
+          socket.emit("pm", { to:BOT_NICK, msg: PREFIX_INFO + ': ' + msg });
+        }
       }
 
       _originalEmit.apply(socket, args);
