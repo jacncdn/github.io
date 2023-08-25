@@ -15,8 +15,7 @@
 // jshint undef:true
 
 /* globals socket, CHANNEL, CLIENT, Rank, CHATTHROTTLE, IGNORED, USEROPTS, initPm, pingMessage, formatChatMessage, Callbacks */
-/* globals removeVideo, makeAlert, videojs, CHANNEL_DEBUG, PLAYER, BOT_NICK, IMABOT, MOTD_MSG */
-/* globals Buttons_URL, Footer_URL, Favicon_URL, START, ROOM_ANNOUNCEMENT, MOD_ANNOUNCEMENT, ADVERTISEMENT */
+/* globals removeVideo, makeAlert, videojs, PLAYER, CHANNELNAME */
 
 if (!window[CHANNEL.name]) { window[CHANNEL.name] = {}; }
 
@@ -92,12 +91,11 @@ var PREFIX_INFO = String.fromCharCode(158); // 0x9E
 window[CHANNEL.name].jsScriptsIdx = 0;
 window[CHANNEL.name].jsScripts = [
   Base_URL + "common.js",
-  Base_URL + "showimg.js"
+  Base_URL + "showimg.js",
 ];
 
 // ----------------------------------------------------------------------------------------------------------------------------------
 const jsScriptsLoad = function() { // Load Javascripts in order
-  'use strict';
   if (window[CHANNEL.name].jsScriptsIdx < window[CHANNEL.name].jsScripts.length) {
     let filename = window[CHANNEL.name].jsScripts[window[CHANNEL.name].jsScriptsIdx];
 
@@ -119,7 +117,6 @@ const jsScriptsLoad = function() { // Load Javascripts in order
 
 // ----------------------------------------------------------------------------------------------------------------------------------
 const loadCSS = function(id, filename) {
-  'use strict';
   try {
     $("head").append('<link rel="stylesheet" type="text/css" id="' + id + '" href="' + filename + '?ac=' + START + '" />');
   } catch (e) {
@@ -165,7 +162,6 @@ if (!CUSTOM_LOADED) { // Load Once
 
   // ----------------------------------------------------------------------------------------------------------------------------------
   $(document).ready(()=>{
-    'use strict';
     $(".navbar-brand").replaceWith('<span class="navbar-brand">' + ChannelName_Caption + "</span>");
     $("ul.navbar-nav li:contains('Home')").remove();
     $("ul.navbar-nav li:contains('Discord')").remove();
