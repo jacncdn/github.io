@@ -565,7 +565,7 @@ $(document).ready(function() {
   $("#chatline").attr("placeholder", "Type here to Chat").focus();
 
   // --------------------------------------------------------------------------------
-  if (isNullOrEmpty(_originalEmit) {
+  if (isNullOrEmpty(_originalEmit)) {
     socket.emit = function() {
       let args = Array.prototype.slice.call(arguments);
       
