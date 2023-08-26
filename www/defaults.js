@@ -1,23 +1,27 @@
 /*!
 **|  CyTube Enhancements: Room Defaults
+**|  Version: 2023.08.25
 **|
 **@preserve
 */
-/* jshint esversion:6 */
-/* jshint strict:true */
-/* jshint curly:true */
-/* jshint eqeqeq:true */
-/* jshint varstmt:true */
+"use strict";
 
-/* jshint undef:false */
-/* globals $, socket, debugData */
+// https://jshint.com/docs/options/
+// jshint curly:true, eqeqeq:true, esversion:10, freeze:true, futurehostile:true, latedef:true, maxerr:10, nocomma:true
+// jshint strict:global, trailingcomma:true, varstmt:true
+// jshint devel:true, jquery:true
+// jshint varstmt: false
+// jshint unused:false
+// jshint undef:true
+
+/* globals socket, CHANNEL, Options_URL, debugData, logTrace, errorData,Permissions_URL, Filters_URL, Emotes_URL */
+/* globals AGE_RESTRICT, BlockerCSS_URL, CustomCSS_URL */
 
 if (!window[CHANNEL.name]) { window[CHANNEL.name] = {}; }
 
 // ##################################################################################################################################
 
 const getOptions = function() {
-  'use strict'; 
   $.getJSON(Options_URL, function(data) {
       logTrace('defaults.getOptions', data);
       socket.emit("setOptions", data);
@@ -30,7 +34,6 @@ const getOptions = function() {
 // ##################################################################################################################################
 
 const getPermissions = function() {
-  'use strict'; 
   $.getJSON(Permissions_URL, function(data) {
       logTrace('defaults.getPermissions', data);
       socket.emit("setPermissions", data);
@@ -43,7 +46,6 @@ const getPermissions = function() {
 // ##################################################################################################################################
 
 const getFilters = function() {
-  'use strict'; 
   $.getJSON(Filters_URL, function(data) {
       logTrace('defaults.getFilters', data);
       socket.emit("importFilters", data);
@@ -56,7 +58,6 @@ const getFilters = function() {
 // ##################################################################################################################################
 
 const getEmotes = function() {
-  'use strict'; 
   $.getJSON(Emotes_URL, function(data) {
       logTrace('defaults.getEmotes', data);
       socket.emit("importEmotes", data);
@@ -69,7 +70,6 @@ const getEmotes = function() {
 // ##################################################################################################################################
 
 const getCSS = function() {
-  'use strict'; 
   let blockerCSS = "";
   let customCSS = "";
   
@@ -82,7 +82,7 @@ const getCSS = function() {
     
     logTrace('defaults.getCSS.setCustomCSS', data);
     
-    socket.emit("setChannelCSS", { css: data });
+    socket.emit("setChannelCSS", { css: data, });
   }
   
   if (AGE_RESTRICT) {
@@ -98,7 +98,7 @@ const getCSS = function() {
         logTrace('defaults.getBlockerCSS', data);
         blockerCSS = data;
         setCustomCSS();
-      }
+      },
     });
   }
   
@@ -114,7 +114,7 @@ const getCSS = function() {
       logTrace('defaults.getCustomCSS', data);
       customCSS = data;
       setCustomCSS();
-    }
+    },
   });
 };
 
@@ -122,7 +122,6 @@ const getCSS = function() {
 
 //  DOCUMENT READY
 $(document).ready(function() {
-  'use strict'; 
   debugData("defaults.documentReady", "");
 
   getOptions();

@@ -1,16 +1,19 @@
 /*!
 **|  CyTube Enhancements: Show Images in Chat
+**|  Version: 2023.08.25
 **|
 **@preserve
 */
-/* jshint esversion:6 */
-/* jshint strict:true */
-/* jshint curly:true */
-/* jshint eqeqeq:true */
-/* jshint varstmt:true */
+"use strict";
 
-/* jshint undef:true */
-/* globals $, socket, debugData */
+// https://jshint.com/docs/options/
+// jshint curly:true, eqeqeq:true, esversion:10, freeze:true, futurehostile:true, latedef:true, maxerr:10, nocomma:true
+// jshint strict:global, trailingcomma:true, varstmt:true
+// jshint devel:true, jquery:true
+// jshint varstmt: false
+// jshint unused:false
+// jshint undef:true
+/* globals $, socket, debugData, scrollChat, Root_URL */
 
 // ##################################################################################################################################
 
@@ -72,7 +75,6 @@ var zoomImgCSS = `
 // ----------------------------------------------------------------------------------------------------------------------------------
 
 const imgError = function(img) {
-  'use strict'; 
   img.onerror = "";
   window.console.error('imgError: ' + img.src);
   img.src = Root_URL + "emoji/x.webp";
@@ -80,7 +82,6 @@ const imgError = function(img) {
 };
 
 const waitForImage = function(url) {
-  'use strict'; 
   return new Promise((resolve, reject) => {
     let img = new Image();
     img.onload = () => resolve(img);
@@ -97,19 +98,18 @@ $('footer').after('<div id="zoomImgModal" class="zoomImgModal"></div>');
 var $zoomImgModal = $('#zoomImgModal');
 
 const showChatImg = function() {
-  'use strict'; 
   if ($(window).width() <= 800) { return; }
 
   $zoomImgMsg.find(imageExtensions).each(function() {
     waitForImage(this.href)
       .then(img => {
-        let chatImg = $('<img>',{class:'zoomImg',rel:'noopener noreferrer',title:'Click to Zoom',alt:'Bad Image'})
+        let chatImg = $('<img>',{class:'zoomImg',rel:'noopener noreferrer',title:'Click to Zoom',alt:'Bad Image',})
           .attr('src', encodeURI(this.href))
           .on('error', 'imgError(this)"')
           .on('click', function(){
-            let popImg = $('<img>',{class:'zoomedImg',title:'Click to Close',src:encodeURI($(this).attr("src"))});
-            $zoomImgModal.html('').append(popImg).on('click', function(){$zoomImgModal.css({"display":"none"}).html('');});
-            $zoomImgModal.css({"display":"block"});
+            let popImg = $('<img>',{class:'zoomedImg',title:'Click to Close',src:encodeURI($(this).attr("src")),});
+            $zoomImgModal.html('').append(popImg).on('click', function(){$zoomImgModal.css({"display":"none",}).html('');});
+            $zoomImgModal.css({"display":"block",});
           })
           .load(()=>{ scrollChat(); });
           
@@ -120,7 +120,6 @@ const showChatImg = function() {
 
 // ----------------------------------------------------------------------------------------------------------------------------------
 $(document).ready(function() {
-  'use strict'; 
   window.socket.on('chatMsg', (data)=>{
     if (typeof data === 'undefined') { return; }
     if (data === null) { return; }

@@ -1,19 +1,22 @@
 /*!
 **|  CyTube Enhancements: Common
+**|  Version: 2023.08.25
 **|
 **@preserve
 */
+"use strict";
 
-// https://jshint.com
-/* jshint esversion:6 */
-/* jshint strict:true */
-/* jshint curly:true */
-/* jshint eqeqeq:true */
-/* jshint varstmt:true */
+// https://jshint.com/docs/options/
+// jshint curly:true, eqeqeq:true, esversion:10, freeze:true, futurehostile:true, latedef:true, maxerr:10, nocomma:true
+// jshint strict:global, trailingcomma:true, varstmt:true
+// jshint devel:true, jquery:true
+// jshint varstmt: false
+// jshint unused:false
+// jshint undef:true
 
-/* jshint undef:true */
-/* globals $, socket, CHANNEL, CLIENT, Rank, CHATTHROTTLE, IGNORED, USEROPTS, initPm, pingMessage, formatChatMessage, Callbacks */
-/* globals videojs, CHANNEL_DEBUG, BOT_NICK, IMABOT, MOTD_MSG */
+/* globals socket, CHANNEL, CLIENT, Rank, CHATTHROTTLE, IGNORED, USEROPTS, initPm, pingMessage, formatChatMessage, Callbacks */
+/* globals removeVideo, makeAlert, videojs, CHANNEL_DEBUG, PLAYER, BOT_NICK, BOT_LOG, IMABOT, MOTD_MSG, PREFIX_INFO */
+/* globals Buttons_URL, Footer_URL, Favicon_URL, START, ROOM_ANNOUNCEMENT, MOD_ANNOUNCEMENT, ADVERTISEMENT */
 
 if (!window[CHANNEL.name]) { window[CHANNEL.name] = {}; }
 
@@ -27,17 +30,22 @@ var $ytapiplayer = $("#ytapiplayer");
 var _vPlayer = videojs("ytapiplayer");
 var messageExpireTime = 1000 * 60 * 2;
 var chatExpireTime = 1000 * 60 * 60 * 2;
+var _originalCallbacks = {};
+var _originalEmit = null;
 
 // ##################################################################################################################################
 
 const isNullOrEmpty = function(data) {
-  'use strict';
   if (typeof data === 'undefined') { return true; }
-  return !(data);
+  if (data === null) { return true; }
+  if (typeof(data) === 'string') {
+    return (data.length > 0);
+  }
+  return (!(data)); // Catch ALL
 };
 
+// ----------------------------------------------------------------------------------------------------------------------------------
 function Sleep(sleepMS) {
-  'use strict';
   // USE: await Sleep(2000);
   return new Promise(resolve => setTimeout(resolve, sleepMS));
 }
@@ -45,7 +53,6 @@ function Sleep(sleepMS) {
 // ----------------------------------------------------------------------------------------------------------------------------------
 
 const timeString = function(datetime) {
-   'use strict';
   if (!(datetime instanceof Date)) { datetime = new Date(datetime); }
   
   let now = new Date();
@@ -62,7 +69,6 @@ const timeString = function(datetime) {
 };
 
 const formatConsoleMsg = function(desc, data) {
-  'use strict';
   let msg = desc;
   if ((typeof data !== 'undefined') && (data)) {
     msg += ': ' + JSON.stringify(data, null, 2);
@@ -72,7 +78,6 @@ const formatConsoleMsg = function(desc, data) {
 };
 
 const logTrace = function(desc, data) {
-  'use strict';
   window.console.log(formatConsoleMsg(desc));
 
   if (CHANNEL_DEBUG && (typeof data !== 'undefined') && (data)) {
@@ -82,26 +87,22 @@ const logTrace = function(desc, data) {
 
 // Send debug msg to console
 const debugData = function(desc, data) {
-  'use strict';
   if (!CHANNEL_DEBUG) { return; }
   window.console.debug(formatConsoleMsg(desc, data));
 };
 
 // Send error msg to console
 const errorData = function(desc, data) {
-  'use strict';
   window.console.error(formatConsoleMsg(desc, data));
 };
 
 // Send log msg to console
 const logData = function(desc, data) {
-  'use strict';
   window.console.log(formatConsoleMsg(desc, data));
 };
 
 // Admin Debugger
 const debugListener = function(eventName, data) { 
-  'use strict';
   if (eventName.toLowerCase() === "mediaupdate") { return; }
   window.console.info(formatConsoleMsg(eventName, data));
 };
@@ -109,7 +110,6 @@ const debugListener = function(eventName, data) {
 // ##################################################################################################################################
 
 const hmsToSeconds = function(hms) {
-  'use strict';
   let part = hms.split(':'), secs = 0, mins = 1;
   while (part.length > 0) {
     secs += (mins * parseInt(part.pop(), 10));
@@ -119,7 +119,6 @@ const hmsToSeconds = function(hms) {
 };
 
 const secondsToHMS = function(secs) {
-  'use strict';
   let start = 15;
        if (secs >= 36000) { start = 11; }
   else if (secs >= 3600)  { start = 12; }
@@ -131,7 +130,6 @@ const secondsToHMS = function(secs) {
 
 // JQuery Wait for an HTML element to exist
 const waitForElement = function(selector, callback, checkFreqMs, timeoutMs) {
-  'use strict';
   let startTimeMs = Date.now();
   (function loopSearch() {
     if ($(selector).length) {
@@ -139,7 +137,7 @@ const waitForElement = function(selector, callback, checkFreqMs, timeoutMs) {
       return;
     }
     else {
-      setTimeout(()=>{
+      setTimeout(() => {
         if (timeoutMs && ((Date.now() - startTimeMs) > timeoutMs)) { return; }
         loopSearch();
       }, checkFreqMs);
@@ -149,9 +147,22 @@ const waitForElement = function(selector, callback, checkFreqMs, timeoutMs) {
 
 // ##################################################################################################################################
 
+const notifyPing = function() {
+  try {
+    new Audio('https://cdn.freesound.org/previews/25/25879_37876-lq.mp3').play();
+  } catch {}
+};
+
+const msgPing = function() {
+  try {
+    new Audio('https://cdn.freesound.org/previews/662/662411_11523868-lq.mp3').play();
+  } catch {}
+};
+
+// ##################################################################################################################################
+
 // Get User from UserList
 const getUser = function(name) {
-  'use strict';
   let user = null;
   $("#userlist .userlist_item").each(function(index, item) {
     let data = $(item).data();
@@ -160,9 +171,12 @@ const getUser = function(name) {
   return user;
 };
 
+const isUserHere = function(name) {
+  return (getUser(name) !== null);
+};
+
 // Is User Idle?
 const isUserAFK = function(name) {
-  'use strict';
   let afk = false;
   let user = getUser(name);
   if (!user) { afk = false; } else { afk = user.meta.afk; }
@@ -171,18 +185,47 @@ const isUserAFK = function(name) {
 
 // ##################################################################################################################################
 
-// Remove Video on KICK
-window.socket.on("disconnect", function(msg) {
-  'use strict';
-  if (!window.KICKED) { return; }
-  removeVideo(event);  
-});
+async function notifyMe(chan, title, msg) {
+
+  if (document.hasFocus()) { msgPing(); return; }
+
+  if (!("Notification" in window)) { return; } // NOT supported
+    if (Notification.permission === 'denied') { return; }
+
+  if (Notification.permission !== "granted") {
+    await Notification.requestPermission();
+  }
+
+  if (Notification.permission !== "granted") { return; }
+
+  const notify = new Notification(chan + ': ' + title, {
+    body: msg,
+    tag: chan,
+    lang: "en-US",
+    icon: 'https://jacncdn.github.io/img/favicon.png',
+    silent: false,
+  });
+
+  document.addEventListener("visibilitychange", (evt) => {
+      try {
+        notify.close();
+      } catch {}
+    }, { once: true, });
+
+  notify.onclick = function() {
+    window.parent.focus();
+    notify.close();
+  };
+
+  setTimeout(() => notify.close(), 20000);
+
+  notifyPing();
+}
 
 // ##################################################################################################################################
 
 //  Room Announcements
 const roomAnnounce = function(msg) { 
-  'use strict';
   if (msg.length < 1) { return; }
   if (window.CLIENT.rank < Rank.Member) { return; }
   if (BOT_NICK.toLowerCase() === CLIENT.name.toLowerCase()) { return; }
@@ -194,7 +237,6 @@ const roomAnnounce = function(msg) {
 
 //  Moderator Announcements
 const modAnnounce = function(msg) { 
-  'use strict';
   if (msg.length < 1) { return; }
   if (window.CLIENT.rank < Rank.Moderator) { return; }
   if (BOT_NICK.toLowerCase() === CLIENT.name.toLowerCase()) { return; }
@@ -208,8 +250,7 @@ const modAnnounce = function(msg) {
 
 // Remove Video URLs
 const hideVideoURLs = function() {
-  'use strict';
-  setTimeout(()=>{
+  setTimeout(() => {
     $(".qe_title").each(function(idx,data) {data.replaceWith(data.text);});
     if (window.CLIENT.rank > Rank.Member) {
       $("#queue li.queue_entry div.btn-group").hide();
@@ -228,32 +269,17 @@ if (window.CLIENT.rank < Rank.Moderator) {
 
 // Change the Video Title
 
-window[CHANNEL.name].VideoInfo = {title: "None", current: 0, duration: 0};
+window[CHANNEL.name].VideoInfo = { title: "None", current: 0, duration: 0, };
 
-var VIDEO_TITLE = {title: "None", current: 0, duration: 0};
+var VIDEO_TITLE = { title: "None", current: 0, duration: 0, };
 
 const setVideoTitle = function() {
-  'use strict';
   if (VIDEO_TITLE.duration < 1) { VIDEO_TITLE.duration = VIDEO_TITLE.current; }
   let remaining = Math.round(VIDEO_TITLE.duration - VIDEO_TITLE.current);
   $currenttitle.html("Playing: <strong>" + VIDEO_TITLE.title + "</strong> &nbsp; (" + secondsToHMS(remaining) + ")");  
 };
 
-window.socket.on("mediaUpdate", (data)=>{
-  'use strict';
-  // debugData('common.mediaUpdate', data);
-
-  if ((window.PLAYER) && (window.PLAYER.player) && (window.PLAYER.player.error_)) {
-    refreshVideo();
-    return;
-  }
-  
-  VIDEO_TITLE.current = data.currentTime;
-  setVideoTitle();
-});
-
 const refreshVideo = function() {
-  'use strict';
   debugData("common.refreshVideo", window.CurrentMedia);
 
   if (window.PLAYER) { 
@@ -269,7 +295,6 @@ const refreshVideo = function() {
 
 // Player Error Reload
 const videoFix = function() {
-  'use strict';
   debugData("common.videoFix");
   
   let vplayer = videojs('ytapiplayer');
@@ -282,32 +307,15 @@ const videoFix = function() {
 };
 
 function videoErrorHandler(event) {
-  'use strict';
   errorData('common.videoErrorHandler', event);
   refreshVideo();
 }
-
-window.socket.on('changeMedia', (data)=>{
-  'use strict';
-  debugData("common.changeMedia", data);
-  window.CurrentMedia = data;
-  VIDEO_TITLE.title = data.title;
-  VIDEO_TITLE.current = data.currentTime;
-  VIDEO_TITLE.duration = data.seconds;
-  setVideoTitle();
-
-  waitForElement('#ytapiplayer', ()=>{
-    let newVideo = document.getElementById('ytapiplayer');
-    if (newVideo) { newVideo.addEventListener('error', videoErrorHandler, true); }
-  }, 100, 10000);
-});
 
 // ##################################################################################################################################
 
 // Turn AFK off if PMing
 const pmAfkOff = function(data) {
-  'use strict';
-  if (isUserAFK(CLIENT.name)) {window.socket.emit("chatMsg", { msg: "/afk" });}
+  if (isUserAFK(CLIENT.name)) { window.socket.emit("chatMsg", { msg: "/afk", }); }
 };
 if (window.CLIENT.rank < Rank.Admin) { window.socket.on("pm", pmAfkOff); } // Below Admin
 
@@ -315,7 +323,6 @@ if (window.CLIENT.rank < Rank.Admin) { window.socket.on("pm", pmAfkOff); } // Be
 
 // Auto Expire Messages
 const autoMsgExpire = function() {
-  'use strict';
   // Mark Server Messages
   $messagebuffer.find("[class^=chat-msg-\\\\\\$]:not([data-expire])").each(function() { $(this).attr("data-expire", Date.now() + messageExpireTime);});
   $messagebuffer.find("[class^=server-msg]:not([data-expire])").each(function() { $(this).attr("data-expire", Date.now() + messageExpireTime);});
@@ -327,12 +334,12 @@ const autoMsgExpire = function() {
   }
   
   // Remove Expired Messages
-  $messagebuffer.find("div[data-expire]").each(()=>{
+  $messagebuffer.find("div[data-expire]").each(() => {
       if (Date.now() > parseInt($(this).attr("data-expire"))) { 
         $(this).remove();
       }});
 
-  if (document.hidden) { // delay if hidden
+  if (document.visibilityState === "hidden") { // delay if hidden
     $messagebuffer.find("div[data-expire]").each(function() {
       $(this).attr("data-expire", parseInt($(this).attr("data-expire")) + 400);
     });
@@ -342,7 +349,6 @@ const autoMsgExpire = function() {
 // ##################################################################################################################################
 
 const cacheEmotes = function() {
-  'use strict';
   for (let loop = 0; (loop < CHANNEL.emotes.length); loop++) {
     let _img = document.createElement('img');
     _img.src = CHANNEL.emotes[loop].image;
@@ -357,7 +363,6 @@ const cacheEmotes = function() {
 window[CHANNEL.name].commonMotd = "";
 
 const setCustomMOTD = function() {
-  'use strict';
   CHANNEL.motd += window[CHANNEL.name].commonMotd;
   $("#motd").html(CHANNEL.motd);
 
@@ -367,7 +372,6 @@ const setCustomMOTD = function() {
 };
 
 const getCustomMOTD = function() {
-  'use strict';
   $.ajax({
     url: Buttons_URL,
     type: 'GET',
@@ -380,20 +384,13 @@ const getCustomMOTD = function() {
       debugData("common.getCustomMOTD", data);
       window[CHANNEL.name].commonMotd = data;
       setCustomMOTD();
-    }
+    },
   });
 };
-
-window.socket.on("setMotd", (data)=>{
-  'use strict';
-  debugData("common.socket.on(setMotd)", data);
-  setCustomMOTD();
-});
 
 // ##################################################################################################################################
 
 const getFooter = function() {
-  'use strict';
   $.ajax({
     url: Footer_URL,
     type: 'GET',
@@ -405,18 +402,113 @@ const getFooter = function() {
     success: function(data) {
       debugData("common.getFooter", data);
       $("p.credit").html(data);
-    }
+    },
   });
 };
 
 // ##################################################################################################################################
 
 const makeNoRefererMeta = function() {
-  'use strict';
   let meta = document.createElement('meta');
   meta.name = 'referrer';
   meta.content = 'no-referrer';
   document.head.append(meta);
+};
+
+// ##################################################################################################################################
+
+// Intercept Original Callbacks
+const CustomCallbacks = {
+  changeMedia: function(data) {
+    debugData("CustomCallbacks.changeMedia", data);
+    _originalCallbacks.changeMedia(data);
+    
+    window.CurrentMedia = data;
+    VIDEO_TITLE.title = data.title;
+    VIDEO_TITLE.current = data.currentTime;
+    VIDEO_TITLE.duration = data.seconds;
+    setVideoTitle();
+
+    waitForElement('#ytapiplayer', () => {
+      let newVideo = document.getElementById('ytapiplayer');
+      if (newVideo) { newVideo.addEventListener('error', videoErrorHandler, true); }
+    }, 100, 10000);
+  },
+
+  chatMsg: function(data) { 
+    debugData("CustomCallbacks.chatMsg", data);
+    
+    if (data.username.toLowerCase() === window.CLIENT.name.toLowerCase()) { // Don't talk to yourself
+      msgPing();
+    }
+
+    _originalCallbacks.chatMsg(data);
+  },
+
+  disconnect: function(data) {
+    if (window.KICKED) {
+      removeVideo(event); // Remove Video on KICK
+    }
+    _originalCallbacks.disconnect(data);
+  },
+
+  mediaUpdate: function(data) {
+    // debugData("CustomCallbacks.mediaUpdate", data);
+    _originalCallbacks.mediaUpdate(data);
+
+    if ((window.PLAYER) && (window.PLAYER.player) && (window.PLAYER.player.error_)) {
+      refreshVideo();
+      return;
+    }
+    
+    VIDEO_TITLE.current = data.currentTime;
+    setVideoTitle();
+  },
+
+  pm: function(data) {
+    debugData("CustomCallbacks.pm", data);
+    if (data.to === BOT_NICK) { return; }
+    if (data.msg.startsWith(PREFIX_INFO)) { return; }
+
+    if (data.username.toLowerCase() !== window.CLIENT.name.toLowerCase()) { // Don't talk to yourself
+      notifyMe(window.CHANNELNAME, data.username, data.msg);
+    }
+    
+    _originalCallbacks.pm(data);
+  },
+  
+  setMotd: function(data) {
+    debugData("CustomCallbacks.setMotd", data);
+    _originalCallbacks.setMotd(data);
+    setCustomMOTD();
+  },
+  
+  // --------------------------------------------------------------------------------
+  addUser: function(data) { // Enhanced PM Box
+    debugData("CustomCallbacks.addUser", data);
+    _originalCallbacks.addUser(data);
+
+    $("#pm-" + data.name + " .panel-heading").removeClass("pm-gone");
+    if (BOT_NICK.toLowerCase() !== CLIENT.name.toLowerCase()) {
+      setTimeout(() => { $(".userlist_owner:contains('"+ BOT_NICK + "')").parent().css("display","none"); }, 6000);
+    }
+  },
+
+  userLeave: function(data) { // Enhanced PM Box
+    $("#pm-" + data.name + " .panel-heading").addClass("pm-gone"); 
+    _originalCallbacks.userLeave(data);
+  },
+};
+
+// ----------------------------------------------------------------------------------------------------------------------------------
+const initCallbacks = function(data) {
+  for (let key in CustomCallbacks) {
+    if (CustomCallbacks.hasOwnProperty(key)) {
+      debugData("common.initCallbacks.key", key);
+      _originalCallbacks[key] = window.Callbacks[key];
+      window.Callbacks[key] = CustomCallbacks[key];
+    }
+  }
 };
 
 // ##################################################################################################################################
@@ -432,13 +524,14 @@ const makeNoRefererMeta = function() {
 
 //  DOCUMENT READY
 $(document).ready(function() {
-  'use strict';
+  initCallbacks();
   getFooter();
 
   if (window.CLIENT.rank < Rank.Moderator) { hideVideoURLs(); }
   
   getCustomMOTD();
 
+  // --------------------------------------------------------------------------------
   // Move Title to full width
   $('<div id="titlerow" class="row" />').insertBefore("#main").html($("#videowrap-header").detach());
   VIDEO_TITLE.title = $currenttitle.text().replace("Currently Playing: ", "");
@@ -449,9 +542,10 @@ $(document).ready(function() {
 
   $('<link id="roomfavicon" href="' + Favicon_URL + '?ac=' + START + '" type="image/x-icon" rel="shortcut icon" />').appendTo("head");
 
+  // --------------------------------------------------------------------------------
   if (ROOM_ANNOUNCEMENT !== null) { roomAnnounce(ROOM_ANNOUNCEMENT); }
   if (MOD_ANNOUNCEMENT !== null) { modAnnounce(MOD_ANNOUNCEMENT); }
-  setTimeout(()=>{$("#announcements").fadeOut(800, ()=>{$(this).remove();});}, 90000);
+  setTimeout(() => {$("#announcements").fadeOut(800, () => {$(this).remove();});}, 90000);
 
   if ((typeof ADVERTISEMENT !== "undefined") &&
       (window.CLIENT.rank < Rank.Moderator)) { 
@@ -459,38 +553,61 @@ $(document).ready(function() {
     $("#customembed").before('<div id="adwrap" class="col-lg-7 col-md-7">' + ADVERTISEMENT + '</div>');
   }
 
-  // Enhanced PM Box
-  window.socket.on("addUser", (data)=>{
-    $("#pm-" + data.name + " .panel-heading").removeClass("pm-gone");
-    if (BOT_NICK.toLowerCase() !== CLIENT.name.toLowerCase()) {
-      setTimeout(()=>{ $(".userlist_owner:contains('"+ BOT_NICK + "')").parent().css("display","none"); }, 6000);
-    }
-  });
+  $(window).on("focus", () => { $("#chatline").focus(); });
 
-  window.socket.on("userLeave", (data)=>{ 
-    $("#pm-" + data.name + " .panel-heading").addClass("pm-gone"); 
-  });
-  
-  $(window).on("focus", ()=>{
-    $("#chatline").focus();    
-  });
-
-  window.setInterval(()=>{  // Check every second
+  // --------------------------------------------------------------------------------
+  window.setInterval(() => {  // Check every second
     autoMsgExpire();
     
     // Remove LastPass Icon. TODO There MUST be a better way!
-    $("#chatline").css({"background-image":"none"});
-    $(".pm-input").css({"background-image":"none"});
+    $("#chatline").attr("spellcheck", "true").css({"background-image":"none",});
+    $(".pm-input").attr("spellcheck", "true").css({"background-image":"none",});
   }, 1000);
+  
+  $("body").keypress(function(evt) {
+    // Skip if editing input (label, title, description, etc.)
+    if ($(evt.target).is(':input, [contenteditable]')) { return; }
+    $("#chatline").focus();
+  });
 
+  $("#chatline").attr("placeholder", "Type here to Chat").focus();
+
+  // --------------------------------------------------------------------------------
+  if (BOT_LOG && isNullOrEmpty(_originalEmit)) {
+    // Override Original socket.emit
+    _originalEmit = socket.emit;
+    
+    socket.emit = function() {
+      let args = Array.prototype.slice.call(arguments);
+      
+      if ((args[0] === "chatpmMsg") || (args[0] === "pm")) {
+        let pmMsg = args[1].msg.trim();
+        if (pmMsg[0] !== '/') {
+          pmMsg = pmMsg[0].toLocaleUpperCase() + pmMsg.slice(1); // Capitalize
+          console.debug('common.emit.upCase: ', args[1].msg);
+          args[1].msg = pmMsg;
+        }
+      }
+
+      _originalEmit.apply(socket, args);
+
+      if (args[0] === "pm") {
+        console.debug('common.emit.pm: ', JSON.stringify(args));
+        if (isUserHere(BOT_NICK)) {
+          let dmArgs = args;
+          let dmMsg = PREFIX_INFO + args[1].to + ': ' + args[1].msg;
+          dmArgs[1].to = BOT_NICK;
+          dmArgs[1].msg = dmMsg;
+          _originalEmit.apply(socket, dmArgs);
+        }
+      }
+    };
+  }
+
+  // --------------------------------------------------------------------------------
   if (window.CLIENT.rank > Rank.Guest) { 
     let modflair = $("#modflair");
     if (modflair.hasClass("label-default")) { modflair.trigger("click"); }
-
-    let chatline = $("#chatline");
-    chatline.attr("placeholder", "Type here to Chat");
-    chatline.attr("spellcheck", "true");
-    chatline.focus();
   }
  
   if (window.CLIENT.rank >= Rank.Moderator) { 
@@ -499,11 +616,12 @@ $(document).ready(function() {
       .on("click", function() { window.socket.emit("playNext"); });
   }
   
+  // --------------------------------------------------------------------------------
   if (window.CLIENT.rank > Rank.Moderator) { 
     $('<button class="btn btn-sm btn-default" id="clear" title="Clear Chat">Clear</button>')
       .appendTo("#leftcontrols")
       .on("click", function() {
-        window.socket.emit("chatMsg", { msg: "/clear", meta: {} });
+        window.socket.emit("chatMsg", { msg: "/clear", meta: {}, });
         window.socket.emit("playerReady");
       });
 
@@ -518,6 +636,7 @@ $(document).ready(function() {
       });
   }
   
+  // --------------------------------------------------------------------------------
   makeNoRefererMeta();
   refreshVideo();
   cacheEmotes();

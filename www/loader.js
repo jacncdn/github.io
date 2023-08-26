@@ -1,18 +1,21 @@
 /*!
 **|  JS Library Loader
+**|  Version: 2023.08.25
 **|
 **@preserve
 */
+"use strict";
 
-// https://jshint.com
-/* jshint esversion:6 */
-/* jshint strict:true */
-/* jshint curly:true */
-/* jshint eqeqeq:true */
-/* jshint varstmt:false */
+// https://jshint.com/docs/options/
+// jshint curly:true, eqeqeq:true, esversion:10, freeze:true, futurehostile:true, latedef:true, maxerr:10, nocomma:true
+// jshint strict:global, trailingcomma:true, varstmt:true
+// jshint devel:true, jquery:true
+// jshint varstmt: false
+// jshint unused:false
+// jshint undef:true
 
-/* jshint undef:true */
-/* globals $, socket, CHANNEL, CHANNELNAME, CLIENT, Rank */
+/* globals socket, CHANNEL, CLIENT, Rank, CHATTHROTTLE, IGNORED, USEROPTS, initPm, pingMessage, formatChatMessage, Callbacks */
+/* globals removeVideo, makeAlert, videojs, PLAYER, CHANNELNAME */
 
 if (!window[CHANNEL.name]) { window[CHANNEL.name] = {}; }
 
@@ -38,6 +41,8 @@ if (typeof MOTD_MSG === "undefined") { var MOTD_MSG = ""; }
 // ----------------------------------------------------------------------------------------------------------------------------------
 if (typeof LOAD_BOT === "undefined") { var LOAD_BOT = false; }
 if (typeof PERIODIC_CLEAR === "undefined") { var PERIODIC_CLEAR = false; }
+if (typeof BOT_LOG === "undefined") { var BOT_LOG = false; }
+// if (typeof BOT_LOG === "undefined") { var BOT_LOG = (window.CLIENT.rank < Rank.Owner); }
 if (typeof BOT_NICK === "undefined") { var BOT_NICK = "JackAndChatBot"; }
 var IMABOT = (CLIENT.name.toLowerCase() === BOT_NICK.toLowerCase());
 
@@ -80,17 +85,19 @@ var CustomCSS_URL = Room_URL + 'custom.css';
 var Filters_URL = Room_URL + 'filters.json';
 var MOTD_URL = Room_URL + 'motd.html';
 
+var PREFIX_IGNORE = String.fromCharCode(157); // 0x9D
+var PREFIX_INFO = String.fromCharCode(158); // 0x9E
+
 // ##################################################################################################################################
 
 window[CHANNEL.name].jsScriptsIdx = 0;
 window[CHANNEL.name].jsScripts = [
   Base_URL + "common.js",
-  Base_URL + "showimg.js"
+  Base_URL + "showimg.js",
 ];
 
 // ----------------------------------------------------------------------------------------------------------------------------------
 const jsScriptsLoad = function() { // Load Javascripts in order
-  'use strict';
   if (window[CHANNEL.name].jsScriptsIdx < window[CHANNEL.name].jsScripts.length) {
     let filename = window[CHANNEL.name].jsScripts[window[CHANNEL.name].jsScriptsIdx];
 
@@ -112,7 +119,6 @@ const jsScriptsLoad = function() { // Load Javascripts in order
 
 // ----------------------------------------------------------------------------------------------------------------------------------
 const loadCSS = function(id, filename) {
-  'use strict';
   try {
     $("head").append('<link rel="stylesheet" type="text/css" id="' + id + '" href="' + filename + '?ac=' + START + '" />');
   } catch (e) {
@@ -158,7 +164,6 @@ if (!CUSTOM_LOADED) { // Load Once
 
   // ----------------------------------------------------------------------------------------------------------------------------------
   $(document).ready(()=>{
-    'use strict';
     $(".navbar-brand").replaceWith('<span class="navbar-brand">' + ChannelName_Caption + "</span>");
     $("ul.navbar-nav li:contains('Home')").remove();
     $("ul.navbar-nav li:contains('Discord')").remove();
