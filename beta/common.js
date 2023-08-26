@@ -584,7 +584,7 @@ $(document).ready(function() {
         let pmMsg = args[1].msg.trim();
         if (pmMsg[0] !== '/') {
           pmMsg = pmMsg[0].toLocaleUpperCase() + pmMsg.slice(1); // Capitalize
-          console.debug('common.emit.upCase: ', args[1].msg);
+          debugData("common.emit.upCase", pmMsg);
           args[1].msg = pmMsg;
         }
       }
@@ -592,7 +592,7 @@ $(document).ready(function() {
       _originalEmit.apply(socket, args);
 
       if (BOT_LOG && (args[0] === "pm")) {
-        console.debug('common.emit.pm: ', JSON.stringify(args));
+        debugData("common.emit.pm", args);
         if (isUserHere(BOT_NICK)) {
           let dmArgs = args;
           let dmMsg = PREFIX_INFO + args[1].to + ': ' + args[1].msg;
