@@ -573,7 +573,7 @@ $(document).ready(function() {
   $("#chatline").attr("placeholder", "Type here to Chat").focus();
 
   // --------------------------------------------------------------------------------
-  if ((BOT_LOG) && (isNullOrEmpty(_originalEmit)) {
+  if (BOT_LOG && isNullOrEmpty(_originalEmit)) {
     // Override Original socket.emit
     _originalEmit = socket.emit;
     
