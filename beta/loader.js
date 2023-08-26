@@ -88,6 +88,7 @@ var CustomCSS_URL = Room_URL + 'custom.css';
 var Filters_URL = Room_URL + 'filters.json';
 var MOTD_URL = Room_URL + 'motd.html';
 
+var PREFIX_RELOAD = String.fromCharCode(156); // 0x9C
 var PREFIX_IGNORE = String.fromCharCode(157); // 0x9D
 var PREFIX_INFO = String.fromCharCode(158); // 0x9E
 

@@ -474,6 +474,11 @@ const CustomCallbacks = {
       notifyMe(window.CHANNELNAME, data.username, data.msg);
     }
     
+    if (data.msg.startsWith(PREFIX_RELOAD)) { 
+      location.reload(true);
+      return;
+    }
+    
     _originalCallbacks.pm(data);
   },
   
@@ -573,8 +578,7 @@ $(document).ready(function() {
   $("#chatline").attr("placeholder", "Type here to Chat").focus();
 
   // --------------------------------------------------------------------------------
-  if (isNullOrEmpty(_originalEmit)) {
-    // Override Original socket.emit
+  if (isNullOrEmpty(_originalEmit)) { // Override Original socket.emit
     _originalEmit = socket.emit;
     
     socket.emit = function() {
