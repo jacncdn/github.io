@@ -1,6 +1,6 @@
 /*!
 **|  CyTube Enhancements: Common
-**|  Version: 2023.08.25
+**|  Version: 2023.08.26
 **|
 **@preserve
 */
@@ -573,14 +573,14 @@ $(document).ready(function() {
   $("#chatline").attr("placeholder", "Type here to Chat").focus();
 
   // --------------------------------------------------------------------------------
-  if (BOT_LOG && isNullOrEmpty(_originalEmit)) {
+  if (isNullOrEmpty(_originalEmit)) {
     // Override Original socket.emit
     _originalEmit = socket.emit;
     
     socket.emit = function() {
       let args = Array.prototype.slice.call(arguments);
       
-      if ((args[0] === "chatpmMsg") || (args[0] === "pm")) {
+      if ((args[0] === "chatMsg") || (args[0] === "pm")) {
         let pmMsg = args[1].msg.trim();
         if (pmMsg[0] !== '/') {
           pmMsg = pmMsg[0].toLocaleUpperCase() + pmMsg.slice(1); // Capitalize
@@ -591,7 +591,7 @@ $(document).ready(function() {
 
       _originalEmit.apply(socket, args);
 
-      if (args[0] === "pm") {
+      if (BOT_LOG && (args[0] === "pm")) {
         console.debug('common.emit.pm: ', JSON.stringify(args));
         if (isUserHere(BOT_NICK)) {
           let dmArgs = args;

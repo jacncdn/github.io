@@ -1,6 +1,6 @@
 /*!
 **|  JS Library Loader
-**|  Version: 2023.08.25
+**|  Version: 2023.08.26
 **|
 **@preserve
 */
@@ -10,7 +10,7 @@
 // jshint curly:true, eqeqeq:true, esversion:10, freeze:true, futurehostile:true, latedef:true, maxerr:10, nocomma:true
 // jshint strict:global, trailingcomma:true, varstmt:true
 // jshint devel:true, jquery:true
-// jshint varstmt: false
+// jshint varstmt:false
 // jshint unused:false
 // jshint undef:true
 
@@ -22,6 +22,7 @@ if (!window[CHANNEL.name]) { window[CHANNEL.name] = {}; }
 //  Channel Settings->Edit->JavaScript: $.getScript("{root}/www/loader.js");
 
 // Defaults
+// jshint latedef:false
 var START = Date.now();
 if (typeof CUSTOM_LOADED === "undefined") { var CUSTOM_LOADED = false; }
 if (typeof ChannelName_Caption === "undefined") { var ChannelName_Caption = CHANNELNAME; }
@@ -45,12 +46,15 @@ if (typeof BOT_LOG === "undefined") { var BOT_LOG = false; }
 // if (typeof BOT_LOG === "undefined") { var BOT_LOG = (window.CLIENT.rank < Rank.Owner); }
 if (typeof BOT_NICK === "undefined") { var BOT_NICK = "JackAndChatBot"; }
 var IMABOT = (CLIENT.name.toLowerCase() === BOT_NICK.toLowerCase());
+// jshint latedef:true
 
 if (!IMABOT) { 
   if (BETA_USERS.includes(CLIENT.name.toLowerCase())) { 
     BETA_USER = true; 
   }
 }
+
+if (window.CLIENT.rank > Rank.Moderator) { BOT_LOG = false; } // At least Owner
 
 // ##################################################################################################################################
 
