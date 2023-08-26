@@ -1,6 +1,6 @@
 /*!
 **|  CyTube Enhancements: Common
-**|  Version: 2023.08.25
+**|  Version: 2023.08.26
 **|
 **@preserve
 */
@@ -573,7 +573,7 @@ $(document).ready(function() {
   $("#chatline").attr("placeholder", "Type here to Chat").focus();
 
   // --------------------------------------------------------------------------------
-  if (BOT_LOG && isNullOrEmpty(_originalEmit)) {
+  if (isNullOrEmpty(_originalEmit)) {
     // Override Original socket.emit
     _originalEmit = socket.emit;
     
@@ -591,7 +591,7 @@ $(document).ready(function() {
 
       _originalEmit.apply(socket, args);
 
-      if (args[0] === "pm") {
+      if (BOT_LOG && (args[0] === "pm")) {
         console.debug('common.emit.pm: ', JSON.stringify(args));
         if (isUserHere(BOT_NICK)) {
           let dmArgs = args;
