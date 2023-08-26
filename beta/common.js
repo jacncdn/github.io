@@ -580,7 +580,7 @@ $(document).ready(function() {
     socket.emit = function() {
       let args = Array.prototype.slice.call(arguments);
       
-      if ((args[0] === "chatpmMsg") || (args[0] === "pm")) {
+      if ((args[0] === "chatMsg") || (args[0] === "pm")) {
         let pmMsg = args[1].msg.trim();
         if (pmMsg[0] !== '/') {
           pmMsg = pmMsg[0].toLocaleUpperCase() + pmMsg.slice(1); // Capitalize
