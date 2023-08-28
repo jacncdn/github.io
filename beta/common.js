@@ -530,17 +530,13 @@ const initCallbacks = function(data) {
 };
 
 // ##################################################################################################################################
+
 const overrideEmit = function() {
-  errorData("common.docReady BEFORE EMIT", _originalEmit);
-  
   if (isNullOrEmpty(_originalEmit) && (!(isNullOrEmpty(window.socket.emit)))) { // Override Original socket.emit
-    logData("common.docReady BEFORE EMIT", window.socket.emit);
     _originalEmit = window.socket.emit;
-    logData("common.docReady AFTER EMIT", _originalEmit);
-    logData("common.docReady AFTER EMIT", window.socket.emit);
     
     window.socket.emit = function() {
-      logData("common.emit", arguments);
+      debugData("common.emit", arguments);
       let args = Array.prototype.slice.call(arguments);
       
       if ((args[0] === "chatMsg") || (args[0] === "pm")) {
@@ -665,13 +661,7 @@ $(document).ready(function() {
   makeNoRefererMeta();
   refreshVideo();
   cacheEmotes();
-
-  // --------------------------------------------------------------------------------
   overrideEmit();
-
-  setTimeout(() => { // Fire Later
-    // overrideEmit();
-  }, 10000);
 });
 
 /********************  END OF SCRIPT  ********************/
