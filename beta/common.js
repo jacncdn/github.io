@@ -70,8 +70,13 @@ const timeString = function(datetime) {
 
 const formatConsoleMsg = function(desc, data) {
   let msg = desc;
+  
   if ((typeof data !== 'undefined') && (data)) {
-    msg += ': ' + JSON.stringify(data, null, 2);
+    if (typeof data === 'function') {
+      msg += ': ' + data.toString();
+     } else {
+      msg += ': ' + JSON.stringify(data, null, 2);
+    }
   }
 
   return "[" + new Date().toTimeString().split(" ")[0] + "] " + msg;
@@ -527,6 +532,7 @@ const initCallbacks = function(data) {
 // ##################################################################################################################################
 const overrideEmit = function() {
   logData("common.docReady BEFORE EMIT", _originalEmit);
+  
   if ((_originalEmit === null) && (window.socket.emit !== null)) { // Override Original socket.emit
     logData("common.docReady BEFORE EMIT", window.socket.emit);
     _originalEmit = window.socket.emit;
@@ -560,7 +566,7 @@ const overrideEmit = function() {
       }
     };
   }
-}
+};
 
 // ##################################################################################################################################
 /*  window.CLIENT.rank
