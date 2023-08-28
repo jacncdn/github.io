@@ -21,6 +21,9 @@
 if (!window[CHANNEL.name]) { window[CHANNEL.name] = {}; }
 
 // Global Variables
+var messageExpireTime = 1000 * 60 * 2;
+var chatExpireTime = 1000 * 60 * 60 * 2;
+
 var $chatline = $("#chatline");
 var $currenttitle = $("#currenttitle");
 var $messagebuffer = $("#messagebuffer");
@@ -28,10 +31,11 @@ var $userlist = $("#userlist");
 var $voteskip = $("#voteskip");
 var $ytapiplayer = $("#ytapiplayer");
 var _vPlayer = videojs("ytapiplayer");
-var messageExpireTime = 1000 * 60 * 2;
-var chatExpireTime = 1000 * 60 * 60 * 2;
+
 var _originalCallbacks = {};
 var _originalEmit = null;
+var _notifyPing = null;
+var _msgPing = null;
 
 // ##################################################################################################################################
 
@@ -154,13 +158,13 @@ const waitForElement = function(selector, callback, checkFreqMs, timeoutMs) {
 
 const notifyPing = function() {
   try {
-    new Audio('https://cdn.freesound.org/previews/25/25879_37876-lq.mp3').play();
+    if (!(isNullOrEmpty)) { _notifyPing.play(); }
   } catch {}
 };
 
 const msgPing = function() {
   try {
-    new Audio('https://cdn.freesound.org/previews/662/662411_11523868-lq.mp3').play();
+    if (!(isNullOrEmpty(msgPing))) { _msgPing.play(); }
   } catch {}
 };
 
@@ -371,6 +375,11 @@ const cacheEmotes = function() {
       window.console.error("Error loading '" + this.src + "'");
     };
   }
+  
+  try {
+    _notifyPing = new Audio('https://cdn.freesound.org/previews/25/25879_37876-lq.mp3');
+    _msgPing = new Audio('https://cdn.freesound.org/previews/662/662411_11523868-lq.mp3');
+  } catch {}
 };
 
 // ##################################################################################################################################
