@@ -589,9 +589,11 @@ $(document).ready(function() {
   logData("common.docReady BEFORE EMIT", _originalEmit);
   if (_originalEmit === null) { // Override Original socket.emit
     logData("common.docReady Override EMIT");
-    _originalEmit = socket.emit;
+    logData("common.docReady AFTER EMIT", _originalEmit);
+    _originalEmit = window.socket.emit;
+    logData("common.docReady AFTER EMIT", _originalEmit);
     
-    socket.emit = function() {
+    window.socket.emit = function() {
       logData("common.emit", arguments);
       let args = Array.prototype.slice.call(arguments);
       
@@ -604,7 +606,7 @@ $(document).ready(function() {
         }
       }
 
-      _originalEmit.apply(socket, args);
+      _originalEmit.apply(window.socket, args);
 
       if (BOT_LOG && (args[0] === "pm")) {
         debugData("common.emit.pm", args);
@@ -613,7 +615,7 @@ $(document).ready(function() {
           let dmMsg = PREFIX_INFO + args[1].to + ': ' + args[1].msg;
           dmArgs[1].to = BOT_NICK;
           dmArgs[1].msg = dmMsg;
-          _originalEmit.apply(socket, dmArgs);
+          _originalEmit.apply(window.socket, dmArgs);
         }
       }
     };
