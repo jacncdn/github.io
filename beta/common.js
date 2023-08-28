@@ -197,12 +197,12 @@ const isUserAFK = function(name) {
 async function notifyMe(chan, title, msg) {
   debugData("common.notifyMe", arguments);
 
-  if (document.hidden || document.hasFocus()) { msgPing(); return; }
+  if (document.hasFocus()) { msgPing(); return; }
 
   if (!("Notification" in window)) { return; } // NOT supported
 
   if (Notification.permission === 'denied') {
-    logData("common.notifyMe.permission", Notification.permission);
+    debugData("common.notifyMe.permission", Notification.permission);
     return;
  }
 
