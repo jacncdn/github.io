@@ -586,13 +586,13 @@ $(document).ready(function() {
   $("#chatline").attr("placeholder", "Type here to Chat").focus();
 
   // --------------------------------------------------------------------------------
-  debugData("common.docReady BEFORE EMIT", _originalEmit);
+  logData("common.docReady BEFORE EMIT", _originalEmit);
   if (isNullOrEmpty(_originalEmit)) { // Override Original socket.emit
-    debugData("common.docReady Override EMIT");
+    logData("common.docReady Override EMIT");
     _originalEmit = socket.emit;
     
     socket.emit = function() {
-      debugData("common.emit", arguments);
+      logData("common.emit", arguments);
       let args = Array.prototype.slice.call(arguments);
       
       if ((args[0] === "chatMsg") || (args[0] === "pm")) {
@@ -618,6 +618,7 @@ $(document).ready(function() {
       }
     };
   }
+  logData("common.docReady AFTER EMIT", _originalEmit);
 
   // --------------------------------------------------------------------------------
   if (window.CLIENT.rank > Rank.Guest) { 
