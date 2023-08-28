@@ -158,7 +158,7 @@ const waitForElement = function(selector, callback, checkFreqMs, timeoutMs) {
 
 const notifyPing = function() {
   try {
-    if (!(isNullOrEmpty)) { _notifyPing.play(); }
+    if (!(isNullOrEmpty(_notifyPing))) { _notifyPing.play(); }
   } catch {}
 };
 
