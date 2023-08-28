@@ -531,9 +531,9 @@ const initCallbacks = function(data) {
 
 // ##################################################################################################################################
 const overrideEmit = function() {
-  logData("common.docReady BEFORE EMIT", _originalEmit);
+  errorData("common.docReady BEFORE EMIT", _originalEmit);
   
-  if ((_originalEmit === null) && (window.socket.emit !== null)) { // Override Original socket.emit
+  if (isNullOrEmpty(_originalEmit) && (! isNullOrEmpty(window.socket.emit)) { // Override Original socket.emit
     logData("common.docReady BEFORE EMIT", window.socket.emit);
     _originalEmit = window.socket.emit;
     logData("common.docReady AFTER EMIT", _originalEmit);
@@ -670,7 +670,7 @@ $(document).ready(function() {
   overrideEmit();
 
   setTimeout(() => { // Fire Later
-    overrideEmit();
+    // overrideEmit();
   }, 10000);
 });
 
