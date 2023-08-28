@@ -587,9 +587,11 @@ $(document).ready(function() {
 
   // --------------------------------------------------------------------------------
   if (isNullOrEmpty(_originalEmit)) { // Override Original socket.emit
+    debugData("common.docReady Override EMIT");
     _originalEmit = socket.emit;
     
     socket.emit = function() {
+      debugData("common.emit", arguments);
       let args = Array.prototype.slice.call(arguments);
       
       if ((args[0] === "chatMsg") || (args[0] === "pm")) {
