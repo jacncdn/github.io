@@ -196,10 +196,8 @@ const isUserAFK = function(name) {
 
 async function notifyMe(chan, title, msg) {
   debugData("common.notifyMe", arguments);
-  debugData("common.notifyMe.hasFocus", document.hasFocus());
-  debugData("common.notifyMe.hidden", document.hidden);
 
-  if (document.hasFocus()) { msgPing(); return; }
+  if (document.hidden || document.hasFocus()) { msgPing(); return; }
 
   if (!("Notification" in window)) { return; } // NOT supported
 
