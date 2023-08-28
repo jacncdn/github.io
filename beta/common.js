@@ -587,7 +587,7 @@ $(document).ready(function() {
 
   // --------------------------------------------------------------------------------
   logData("common.docReady BEFORE EMIT", _originalEmit);
-  if (isNullOrEmpty(_originalEmit)) { // Override Original socket.emit
+  if (_originalEmit === null) { // Override Original socket.emit
     logData("common.docReady Override EMIT");
     _originalEmit = socket.emit;
     
