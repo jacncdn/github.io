@@ -164,7 +164,7 @@ const notifyPing = function() {
 
 const msgPing = function() {
   try {
-    if (!(isNullOrEmpty(msgPing))) { _msgPing.play(); }
+    if (!(isNullOrEmpty(_msgPing))) { _msgPing.play(); }
   } catch {}
 };
 
