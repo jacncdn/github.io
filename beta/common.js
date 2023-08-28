@@ -588,10 +588,10 @@ $(document).ready(function() {
   // --------------------------------------------------------------------------------
   logData("common.docReady BEFORE EMIT", _originalEmit);
   if (_originalEmit === null) { // Override Original socket.emit
-    logData("common.docReady Override EMIT");
     logData("common.docReady AFTER EMIT", _originalEmit);
     _originalEmit = window.socket.emit;
     logData("common.docReady AFTER EMIT", _originalEmit);
+    logData("common.docReady AFTER EMIT", window.socket.emit);
     
     window.socket.emit = function() {
       logData("common.emit", arguments);
