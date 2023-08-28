@@ -533,7 +533,7 @@ const initCallbacks = function(data) {
 const overrideEmit = function() {
   errorData("common.docReady BEFORE EMIT", _originalEmit);
   
-  if (isNullOrEmpty(_originalEmit) && (! isNullOrEmpty(window.socket.emit)) { // Override Original socket.emit
+  if (isNullOrEmpty(_originalEmit) && (!(isNullOrEmpty(window.socket.emit)))) { // Override Original socket.emit
     logData("common.docReady BEFORE EMIT", window.socket.emit);
     _originalEmit = window.socket.emit;
     logData("common.docReady AFTER EMIT", _originalEmit);
