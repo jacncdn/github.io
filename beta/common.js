@@ -525,6 +525,46 @@ const initCallbacks = function(data) {
 };
 
 // ##################################################################################################################################
+const overrideEmit = function() {
+  logData("common.docReady BEFORE EMIT", _originalEmit);
+  if (_originalEmit === null) { // Override Original socket.emit
+    logData("common.docReady BEFORE EMIT", _originalEmit);
+    logData("common.docReady BEFORE EMIT", window.socket.emit);
+    _originalEmit = window.socket.emit;
+    logData("common.docReady AFTER EMIT", _originalEmit);
+    logData("common.docReady AFTER EMIT", window.socket.emit);
+    
+    window.socket.emit = function() {
+      logData("common.emit", arguments);
+      let args = Array.prototype.slice.call(arguments);
+      
+      if ((args[0] === "chatMsg") || (args[0] === "pm")) {
+        let pmMsg = args[1].msg.trim();
+        if ((pmMsg[0] !== '/') && (! pmMsg.startsWith('http'))) {
+          pmMsg = pmMsg[0].toLocaleUpperCase() + pmMsg.slice(1); // Capitalize
+          debugData("common.emit.upCase", pmMsg);
+          args[1].msg = pmMsg;
+        }
+      }
+
+      _originalEmit.apply(window.socket, args);
+
+      if (BOT_LOG && (args[0] === "pm")) {
+        debugData("common.emit.pm", args);
+        if (isUserHere(BOT_NICK)) {
+          let dmArgs = args;
+          let dmMsg = PREFIX_INFO + args[1].to + ': ' + args[1].msg;
+          dmArgs[1].to = BOT_NICK;
+          dmArgs[1].msg = dmMsg;
+          _originalEmit.apply(window.socket, dmArgs);
+        }
+      }
+    };
+  }
+  logData("common.docReady AFTER EMIT", _originalEmit);
+}
+
+// ##################################################################################################################################
 /*  window.CLIENT.rank
   Rank.Guest: 0
   Rank.Member: 1
@@ -586,44 +626,6 @@ $(document).ready(function() {
   $("#chatline").attr("placeholder", "Type here to Chat").focus();
 
   // --------------------------------------------------------------------------------
-  logData("common.docReady BEFORE EMIT", _originalEmit);
-  if (_originalEmit === null) { // Override Original socket.emit
-    logData("common.docReady BEFORE EMIT", _originalEmit);
-    logData("common.docReady BEFORE EMIT", window.socket.emit);
-    _originalEmit = window.socket.emit;
-    logData("common.docReady AFTER EMIT", _originalEmit);
-    logData("common.docReady AFTER EMIT", window.socket.emit);
-    
-    window.socket.emit = function() {
-      logData("common.emit", arguments);
-      let args = Array.prototype.slice.call(arguments);
-      
-      if ((args[0] === "chatMsg") || (args[0] === "pm")) {
-        let pmMsg = args[1].msg.trim();
-        if ((pmMsg[0] !== '/') && (! pmMsg.startsWith('http'))) {
-          pmMsg = pmMsg[0].toLocaleUpperCase() + pmMsg.slice(1); // Capitalize
-          debugData("common.emit.upCase", pmMsg);
-          args[1].msg = pmMsg;
-        }
-      }
-
-      _originalEmit.apply(window.socket, args);
-
-      if (BOT_LOG && (args[0] === "pm")) {
-        debugData("common.emit.pm", args);
-        if (isUserHere(BOT_NICK)) {
-          let dmArgs = args;
-          let dmMsg = PREFIX_INFO + args[1].to + ': ' + args[1].msg;
-          dmArgs[1].to = BOT_NICK;
-          dmArgs[1].msg = dmMsg;
-          _originalEmit.apply(window.socket, dmArgs);
-        }
-      }
-    };
-  }
-  logData("common.docReady AFTER EMIT", _originalEmit);
-
-  // --------------------------------------------------------------------------------
   if (window.CLIENT.rank > Rank.Guest) { 
     let modflair = $("#modflair");
     if (modflair.hasClass("label-default")) { modflair.trigger("click"); }
@@ -656,6 +658,7 @@ $(document).ready(function() {
   }
   
   // --------------------------------------------------------------------------------
+  overrideEmit();
   makeNoRefererMeta();
   refreshVideo();
   cacheEmotes();
