@@ -528,7 +528,6 @@ const initCallbacks = function(data) {
 const overrideEmit = function() {
   logData("common.docReady BEFORE EMIT", _originalEmit);
   if (_originalEmit === null) { // Override Original socket.emit
-    logData("common.docReady BEFORE EMIT", _originalEmit);
     logData("common.docReady BEFORE EMIT", window.socket.emit);
     _originalEmit = window.socket.emit;
     logData("common.docReady AFTER EMIT", _originalEmit);
@@ -561,7 +560,6 @@ const overrideEmit = function() {
       }
     };
   }
-  logData("common.docReady AFTER EMIT", _originalEmit);
 }
 
 // ##################################################################################################################################
@@ -658,10 +656,16 @@ $(document).ready(function() {
   }
   
   // --------------------------------------------------------------------------------
-  overrideEmit();
   makeNoRefererMeta();
   refreshVideo();
   cacheEmotes();
+
+  // --------------------------------------------------------------------------------
+  overrideEmit();
+
+  setTimeout(() => { // Fire Later
+    overrideEmit();
+  }, 10000);
 });
 
 /********************  END OF SCRIPT  ********************/
