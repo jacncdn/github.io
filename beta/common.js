@@ -186,14 +186,14 @@ const isUserAFK = function(name) {
 // ##################################################################################################################################
 
 async function notifyMe(chan, title, msg) {
-  debugData("common.notifyMe", arguments);
+  logData("common.notifyMe", arguments);
 
   if (document.hasFocus()) { msgPing(); return; }
 
   if (!("Notification" in window)) { return; } // NOT supported
 
   if (Notification.permission === 'denied') {
-    debugData("common.notifyMe.permission", Notification.permission);
+    logData("common.notifyMe.permission", Notification.permission);
     return;
  }
 
@@ -201,7 +201,7 @@ async function notifyMe(chan, title, msg) {
     await Notification.requestPermission();
   }
 
-  debugData("common.notifyMe.permission", Notification.permission);
+  logData("common.notifyMe.permission", Notification.permission);
   if (Notification.permission !== "granted") { return; }
 
   notifyPing();
@@ -216,13 +216,13 @@ async function notifyMe(chan, title, msg) {
 
   document.addEventListener("visibilitychange", (evt) => {
       try {
-        debugData("common.notifyMe.visibilitychange", evt);
+        logData("common.notifyMe.visibilitychange", evt);
         notify.close();
       } catch {}
     }, { once: true, });
 
   notify.onclick = function() {
-    debugData("common.notifyMe.onclick");
+    logData("common.notifyMe.onclick");
     window.parent.focus();
     notify.close();
   };
