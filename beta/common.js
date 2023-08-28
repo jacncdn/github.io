@@ -1,6 +1,6 @@
 /*!
 **|  CyTube Enhancements: Common
-**|  Version: 2023.08.26
+**|  Version: 2023.08.28
 **|
 **@preserve
 */
@@ -15,7 +15,7 @@
 // jshint undef:true
 
 /* globals socket, CHANNEL, CLIENT, Rank, CHATTHROTTLE, IGNORED, USEROPTS, initPm, pingMessage, formatChatMessage, Callbacks */
-/* globals removeVideo, makeAlert, videojs, CHANNEL_DEBUG, PLAYER, BOT_NICK, BOT_LOG, IMABOT, MOTD_MSG, PREFIX_INFO */
+/* globals removeVideo, makeAlert, videojs, CHANNEL_DEBUG, PLAYER, BOT_NICK, BOT_LOG, IMABOT, MOTD_MSG, PREFIX_INFO, PREFIX_RELOAD */
 /* globals Buttons_URL, Footer_URL, Favicon_URL, START, ROOM_ANNOUNCEMENT, MOD_ANNOUNCEMENT, ADVERTISEMENT */
 
 if (!window[CHANNEL.name]) { window[CHANNEL.name] = {}; }
@@ -594,7 +594,7 @@ $(document).ready(function() {
       
       if ((args[0] === "chatMsg") || (args[0] === "pm")) {
         let pmMsg = args[1].msg.trim();
-        if (pmMsg[0] !== '/') {
+        if ((pmMsg[0] !== '/') && (! pmMsg.startsWith('http'))) {
           pmMsg = pmMsg[0].toLocaleUpperCase() + pmMsg.slice(1); // Capitalize
           debugData("common.emit.upCase", pmMsg);
           args[1].msg = pmMsg;
