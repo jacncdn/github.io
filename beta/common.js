@@ -586,6 +586,7 @@ $(document).ready(function() {
   $("#chatline").attr("placeholder", "Type here to Chat").focus();
 
   // --------------------------------------------------------------------------------
+  debugData("common.docReady BEFORE EMIT", _originalEmit);
   if (isNullOrEmpty(_originalEmit)) { // Override Original socket.emit
     debugData("common.docReady Override EMIT");
     _originalEmit = socket.emit;
