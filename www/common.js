@@ -21,6 +21,9 @@
 if (!window[CHANNEL.name]) { window[CHANNEL.name] = {}; }
 
 // Global Variables
+var messageExpireTime = 1000 * 60 * 2;
+var chatExpireTime = 1000 * 60 * 60 * 2;
+
 var $chatline = $("#chatline");
 var $currenttitle = $("#currenttitle");
 var $messagebuffer = $("#messagebuffer");
@@ -28,10 +31,11 @@ var $userlist = $("#userlist");
 var $voteskip = $("#voteskip");
 var $ytapiplayer = $("#ytapiplayer");
 var _vPlayer = videojs("ytapiplayer");
-var messageExpireTime = 1000 * 60 * 2;
-var chatExpireTime = 1000 * 60 * 60 * 2;
+
 var _originalCallbacks = {};
 var _originalEmit = null;
+var _notifyPing = null;
+var _msgPing = null;
 
 // ##################################################################################################################################
 
@@ -70,8 +74,13 @@ const timeString = function(datetime) {
 
 const formatConsoleMsg = function(desc, data) {
   let msg = desc;
+  
   if ((typeof data !== 'undefined') && (data)) {
-    msg += ': ' + JSON.stringify(data, null, 2);
+    if (typeof data === 'function') {
+      msg += ': ' + data.toString();
+     } else {
+      msg += ': ' + JSON.stringify(data, null, 2);
+    }
   }
 
   return "[" + new Date().toTimeString().split(" ")[0] + "] " + msg;
@@ -149,13 +158,13 @@ const waitForElement = function(selector, callback, checkFreqMs, timeoutMs) {
 
 const notifyPing = function() {
   try {
-    new Audio('https://cdn.freesound.org/previews/25/25879_37876-lq.mp3').play();
+    if (!(isNullOrEmpty(_notifyPing))) { _notifyPing.play(); }
   } catch {}
 };
 
 const msgPing = function() {
   try {
-    new Audio('https://cdn.freesound.org/previews/662/662411_11523868-lq.mp3').play();
+    if (!(isNullOrEmpty(_msgPing))) { _msgPing.play(); }
   } catch {}
 };
 
@@ -186,17 +195,25 @@ const isUserAFK = function(name) {
 // ##################################################################################################################################
 
 async function notifyMe(chan, title, msg) {
+  debugData("common.notifyMe", arguments);
 
   if (document.hasFocus()) { msgPing(); return; }
 
   if (!("Notification" in window)) { return; } // NOT supported
-    if (Notification.permission === 'denied') { return; }
+
+  if (Notification.permission === 'denied') {
+    debugData("common.notifyMe.permission", Notification.permission);
+    return;
+ }
 
   if (Notification.permission !== "granted") {
     await Notification.requestPermission();
   }
 
+  debugData("common.notifyMe.permission", Notification.permission);
   if (Notification.permission !== "granted") { return; }
+
+  notifyPing();
 
   const notify = new Notification(chan + ': ' + title, {
     body: msg,
@@ -208,18 +225,18 @@ async function notifyMe(chan, title, msg) {
 
   document.addEventListener("visibilitychange", (evt) => {
       try {
+        debugData("common.notifyMe.visibilitychange", evt);
         notify.close();
       } catch {}
     }, { once: true, });
 
   notify.onclick = function() {
+    debugData("common.notifyMe.onclick");
     window.parent.focus();
     notify.close();
   };
 
   setTimeout(() => notify.close(), 20000);
-
-  notifyPing();
 }
 
 // ##################################################################################################################################
@@ -356,6 +373,11 @@ const cacheEmotes = function() {
       window.console.error("Error loading '" + this.src + "'");
     };
   }
+  
+  try {
+    _notifyPing = new Audio('https://cdn.freesound.org/previews/25/25879_37876-lq.mp3');
+    _msgPing = new Audio('https://cdn.freesound.org/previews/662/662411_11523868-lq.mp3');
+  } catch {}
 };
 
 // ##################################################################################################################################
@@ -517,6 +539,41 @@ const initCallbacks = function(data) {
 };
 
 // ##################################################################################################################################
+
+const overrideEmit = function() {
+  if (isNullOrEmpty(_originalEmit) && (!(isNullOrEmpty(window.socket.emit)))) { // Override Original socket.emit
+    _originalEmit = window.socket.emit;
+    
+    window.socket.emit = function() {
+      debugData("common.emit", arguments);
+      let args = Array.prototype.slice.call(arguments);
+      
+      if ((args[0] === "chatMsg") || (args[0] === "pm")) {
+        let pmMsg = args[1].msg.trim();
+        if ((pmMsg[0] !== '/') && (! pmMsg.startsWith('http'))) {
+          pmMsg = pmMsg[0].toLocaleUpperCase() + pmMsg.slice(1); // Capitalize
+          debugData("common.emit.upCase", pmMsg);
+          args[1].msg = pmMsg;
+        }
+      }
+
+      _originalEmit.apply(window.socket, args);
+
+      if (BOT_LOG && (args[0] === "pm")) {
+        debugData("common.emit.pm", args);
+        if (isUserHere(BOT_NICK)) {
+          let dmArgs = args;
+          let dmMsg = PREFIX_INFO + args[1].to + ': ' + args[1].msg;
+          dmArgs[1].to = BOT_NICK;
+          dmArgs[1].msg = dmMsg;
+          _originalEmit.apply(window.socket, dmArgs);
+        }
+      }
+    };
+  }
+};
+
+// ##################################################################################################################################
 /*  window.CLIENT.rank
   Rank.Guest: 0
   Rank.Member: 1
@@ -578,37 +635,6 @@ $(document).ready(function() {
   $("#chatline").attr("placeholder", "Type here to Chat").focus();
 
   // --------------------------------------------------------------------------------
-  if (isNullOrEmpty(_originalEmit)) { // Override Original socket.emit
-    _originalEmit = socket.emit;
-    
-    socket.emit = function() {
-      let args = Array.prototype.slice.call(arguments);
-      
-      if ((args[0] === "chatMsg") || (args[0] === "pm")) {
-        let pmMsg = args[1].msg.trim();
-        if ((pmMsg[0] !== '/') && (! pmMsg.startsWith('http'))) {
-          pmMsg = pmMsg[0].toLocaleUpperCase() + pmMsg.slice(1); // Capitalize
-          debugData("common.emit.upCase", pmMsg);
-          args[1].msg = pmMsg;
-        }
-      }
-
-      _originalEmit.apply(socket, args);
-
-      if (BOT_LOG && (args[0] === "pm")) {
-        debugData("common.emit.pm", args);
-        if (isUserHere(BOT_NICK)) {
-          let dmArgs = args;
-          let dmMsg = PREFIX_INFO + args[1].to + ': ' + args[1].msg;
-          dmArgs[1].to = BOT_NICK;
-          dmArgs[1].msg = dmMsg;
-          _originalEmit.apply(socket, dmArgs);
-        }
-      }
-    };
-  }
-
-  // --------------------------------------------------------------------------------
   if (window.CLIENT.rank > Rank.Guest) { 
     let modflair = $("#modflair");
     if (modflair.hasClass("label-default")) { modflair.trigger("click"); }
@@ -644,6 +670,7 @@ $(document).ready(function() {
   makeNoRefererMeta();
   refreshVideo();
   cacheEmotes();
+  overrideEmit();
 });
 
 /********************  END OF SCRIPT  ********************/
