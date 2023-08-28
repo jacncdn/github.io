@@ -186,17 +186,25 @@ const isUserAFK = function(name) {
 // ##################################################################################################################################
 
 async function notifyMe(chan, title, msg) {
+  debugData("common.notifyMe", arguments);
 
   if (document.hasFocus()) { msgPing(); return; }
 
   if (!("Notification" in window)) { return; } // NOT supported
-    if (Notification.permission === 'denied') { return; }
+
+  if (Notification.permission === 'denied') {
+    debugData("common.notifyMe.permission", Notification.permission);
+    return;
+ }
 
   if (Notification.permission !== "granted") {
     await Notification.requestPermission();
   }
 
+  debugData("common.notifyMe.permission", Notification.permission);
   if (Notification.permission !== "granted") { return; }
+
+  notifyPing();
 
   const notify = new Notification(chan + ': ' + title, {
     body: msg,
@@ -208,18 +216,18 @@ async function notifyMe(chan, title, msg) {
 
   document.addEventListener("visibilitychange", (evt) => {
       try {
+        debugData("common.notifyMe.visibilitychange", evt);
         notify.close();
       } catch {}
     }, { once: true, });
 
   notify.onclick = function() {
+    debugData("common.notifyMe.onclick");
     window.parent.focus();
     notify.close();
   };
 
   setTimeout(() => notify.close(), 20000);
-
-  notifyPing();
 }
 
 // ##################################################################################################################################
@@ -438,7 +446,7 @@ const CustomCallbacks = {
   chatMsg: function(data) { 
     debugData("CustomCallbacks.chatMsg", data);
     
-    if (data.username.toLowerCase() === window.CLIENT.name.toLowerCase()) { // Don't talk to yourself
+    if (data.username.toLowerCase() !== window.CLIENT.name.toLowerCase()) { // Don't talk to yourself
       msgPing();
     }
 
