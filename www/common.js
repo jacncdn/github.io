@@ -1,6 +1,6 @@
 /*!
 **|  CyTube Enhancements: Common
-**|  Version: 2023.08.28
+**|  Version: 2023.08.29
 **|
 **@preserve
 */
@@ -43,9 +43,13 @@ const isNullOrEmpty = function(data) {
   if (typeof data === 'undefined') { return true; }
   if (data === null) { return true; }
   if (typeof(data) === 'string') {
-    return (data.length > 0);
+    return (data.length < 1);
   }
   return (!(data)); // Catch ALL
+};
+
+const notNullOrEmpty = function(data) {
+  return (!(isNullOrEmpty(data)));
 };
 
 // ----------------------------------------------------------------------------------------------------------------------------------
@@ -158,13 +162,13 @@ const waitForElement = function(selector, callback, checkFreqMs, timeoutMs) {
 
 const notifyPing = function() {
   try {
-    if (!(isNullOrEmpty(_notifyPing))) { _notifyPing.play(); }
+    if (notNullOrEmpty(_notifyPing)) { _notifyPing.play(); }
   } catch {}
 };
 
 const msgPing = function() {
   try {
-    if (!(isNullOrEmpty(_msgPing))) { _msgPing.play(); }
+    if (notNullOrEmpty(_msgPing)) { _msgPing.play(); }
   } catch {}
 };
 
@@ -302,7 +306,7 @@ const refreshVideo = function() {
   if (window.PLAYER) { 
     PLAYER.mediaType = "";
     PLAYER.mediaId = "";
-  } else if (typeof window.CurrentMedia !== 'undefined') {
+  } else if (notNullOrEmpty(window.CurrentMedia)) {
     window.loadMediaPlayer(window.CurrentMedia);
   }
   
@@ -460,7 +464,8 @@ const CustomCallbacks = {
   chatMsg: function(data) { 
     debugData("CustomCallbacks.chatMsg", data);
     
-    if (data.username.toLowerCase() !== window.CLIENT.name.toLowerCase()) { // Don't talk to yourself
+    if ((data.username !== '[server]') &&  // Ignore Server
+        (data.username !== window.CLIENT.name)) { // Don't talk to yourself
       msgPing();
     }
 
@@ -541,7 +546,7 @@ const initCallbacks = function(data) {
 // ##################################################################################################################################
 
 const overrideEmit = function() {
-  if (isNullOrEmpty(_originalEmit) && (!(isNullOrEmpty(window.socket.emit)))) { // Override Original socket.emit
+  if (isNullOrEmpty(_originalEmit) && notNullOrEmpty(window.socket.emit)) { // Override Original socket.emit
     _originalEmit = window.socket.emit;
     
     window.socket.emit = function() {
@@ -609,10 +614,10 @@ $(document).ready(function() {
   if (MOD_ANNOUNCEMENT !== null) { modAnnounce(MOD_ANNOUNCEMENT); }
   setTimeout(() => {$("#announcements").fadeOut(800, () => {$(this).remove();});}, 90000);
 
-  if ((typeof ADVERTISEMENT !== "undefined") &&
+  if (notNullOrEmpty(ADVERTISEMENT) &&
       (window.CLIENT.rank < Rank.Moderator)) { 
-    // $("#pollwrap").after('<div id="adwrap" class="col-lg-12 col-md-12">' + ADVERTISEMENT + '</div>');
-    $("#customembed").before('<div id="adwrap" class="col-lg-7 col-md-7">' + ADVERTISEMENT + '</div>');
+    $("#pollwrap").after('<div id="adwrap" class="col-lg-12 col-md-12">' + ADVERTISEMENT + '</div>');
+    // $("#customembed").before('<div id="adwrap" class="col-lg-7 col-md-7">' + ADVERTISEMENT + '</div>');
   }
 
   $(window).on("focus", () => { $("#chatline").focus(); });
