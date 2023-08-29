@@ -8,10 +8,13 @@ var ChannelName_Caption = 'Jack & Chat';
 var Room_ID = 'jac';
 
 var ALLOW_GUESTS = true;
+
 var LOAD_BOT = true;
+var BOT_LOG = true;
+var BOT_NICK = "JackAndChatBot";
 
 var CHANNEL_DEBUG = true;
-var AGE_RESTRICT = true;
+var AGE_RESTRICT = false;
 
 // var BETA_USERS = ['jackandchatbot','lisaqtee'];
 
@@ -45,4 +48,3 @@ var ROOM_ANNOUNCEMENT = `<br /><span style="color:blue;font-weight:bold;">Welcom
 if (!window[CHANNEL.name]) { window[CHANNEL.name] = {}; }
 
 $.getScript("https://jacncdn.github.io/beta/loader.js");
-
