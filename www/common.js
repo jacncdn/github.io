@@ -461,10 +461,12 @@ const CustomCallbacks = {
     }, 100, 10000);
   },
 
-  chatMsg: function(data) { 
+  chatMsg: function(data) {
+    // {"username":"[voteskip]","msg":"Voteskip","meta":{"addClass":"server-whisper","addClassToNameAndTimestamp":true},"time":1693344721364}
+
     debugData("CustomCallbacks.chatMsg", data);
     
-    if ((data.username !== '[server]') &&  // Ignore Server
+    if ((data.username[0] !== '[') &&  // Ignore Server
         (data.username !== window.CLIENT.name)) { // Don't talk to yourself
       msgPing();
     }
@@ -494,7 +496,7 @@ const CustomCallbacks = {
 
   pm: function(data) {
     debugData("CustomCallbacks.pm", data);
-    if (data.to === BOT_NICK) { return; }
+    if (data.to.toLowerCase() === BOT_NICK.toLowerCase()) { return; }
     if (data.msg.startsWith(PREFIX_INFO)) { return; }
 
     if (data.username.toLowerCase() !== window.CLIENT.name.toLowerCase()) { // Don't talk to yourself
