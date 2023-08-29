@@ -1,6 +1,6 @@
 /*!
 **|  CyTube Enhancements: Common
-**|  Version: 2023.08.28
+**|  Version: 2023.08.29
 **|
 **@preserve
 */
@@ -460,7 +460,8 @@ const CustomCallbacks = {
   chatMsg: function(data) { 
     debugData("CustomCallbacks.chatMsg", data);
     
-    if (data.username.toLowerCase() !== window.CLIENT.name.toLowerCase()) { // Don't talk to yourself
+    if ((data.username !== '[server]') &&  // Ignore Server
+        (data.username !== window.CLIENT.name)) { // Don't talk to yourself
       msgPing();
     }
 
