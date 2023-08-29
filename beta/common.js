@@ -466,7 +466,7 @@ const CustomCallbacks = {
 
     debugData("CustomCallbacks.chatMsg", data);
     
-    if ((data.username !== '[server]') &&  // Ignore Server
+    if ((data.username[0] !== '[') &&  // Ignore Server
         (data.username !== window.CLIENT.name)) { // Don't talk to yourself
       msgPing();
     }
