@@ -612,8 +612,8 @@ $(document).ready(function() {
 
   if ((typeof ADVERTISEMENT !== "undefined") &&
       (window.CLIENT.rank < Rank.Moderator)) { 
-    // $("#pollwrap").after('<div id="adwrap" class="col-lg-12 col-md-12">' + ADVERTISEMENT + '</div>');
-    $("#customembed").before('<div id="adwrap" class="col-lg-7 col-md-7">' + ADVERTISEMENT + '</div>');
+    $("#pollwrap").after('<div id="adwrap" class="col-lg-12 col-md-12">' + ADVERTISEMENT + '</div>');
+    // $("#customembed").before('<div id="adwrap" class="col-lg-7 col-md-7">' + ADVERTISEMENT + '</div>');
   }
 
   $(window).on("focus", () => { $("#chatline").focus(); });
