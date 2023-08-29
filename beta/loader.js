@@ -1,6 +1,6 @@
 /*!
 **|  JS Library Loader
-**|  Version: 2023.08.26
+**|  Version: 2023.08.29
 **|
 **@preserve
 */
@@ -36,6 +36,7 @@ if (typeof BETA_USERS === "undefined") { var BETA_USERS = []; }
 
 if (typeof ROOM_ANNOUNCEMENT === "undefined") { var ROOM_ANNOUNCEMENT = ""; }
 if (typeof MOD_ANNOUNCEMENT === "undefined") { var MOD_ANNOUNCEMENT = ""; }
+if (typeof ADVERTISEMENT === "undefined") { var ADVERTISEMENT = ""; }
 if (typeof CLEAR_MSG === "undefined") { var CLEAR_MSG = ""; }
 if (typeof MOTD_MSG === "undefined") { var MOTD_MSG = ""; }
 
