@@ -49,11 +49,6 @@ for (let key of Object.keys(localStorage)) {
 
   if (!window[CHANNEL.name]) { window[CHANNEL.name] = {}; }
 
-  // Remove OLD BetterPM data TODO
-  for (let key of Object.keys(localStorage)) {
-    if (key.toLowerCase().includes("_betterpm_")) { localStorage.removeItem(key); }
-  }
-
   // ----------------------------------------------------------------------------------------------------------------------------------
   class BetterPrivateMessages {
     static get maxPMs() { return 50; }
@@ -321,7 +316,7 @@ for (let key of Object.keys(localStorage)) {
     // Add timestamps (unless disabled)
     if (USEROPTS.show_timestamps) {
       let time = $("<span/>").addClass("timestamp").appendTo(div);
-      time.text("[" + timeString(data.time) + "] ");
+      time.text(timeString(data.time));
       if (data.meta.addClass && data.meta.addClassToNameAndTimestamp) {
         time.addClass(data.meta.addClass);
       }
