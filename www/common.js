@@ -1,6 +1,6 @@
 /*!
 **|  CyTube Enhancements: Common
-**|  Version: 2023.08.29
+**|  Version: 2023.08.31
 **|
 **@preserve
 */
@@ -24,6 +24,7 @@ if (!window[CHANNEL.name]) { window[CHANNEL.name] = {}; }
 var messageExpireTime = 1000 * 60 * 2;
 var chatExpireTime = 1000 * 60 * 60 * 2;
 
+var $MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
 var $chatline = $("#chatline");
 var $currenttitle = $("#currenttitle");
 var $messagebuffer = $("#messagebuffer");
@@ -522,6 +523,7 @@ const CustomCallbacks = {
     debugData("CustomCallbacks.addUser", data);
     _originalCallbacks.addUser(data);
 
+    $("#pm-" + data.name).attr("id", "#pm-" + data.name); // Make it easier to find
     $("#pm-" + data.name + " .panel-heading").removeClass("pm-gone");
     if (BOT_NICK.toLowerCase() !== CLIENT.name.toLowerCase()) {
       setTimeout(() => { $(".userlist_owner:contains('"+ BOT_NICK + "')").parent().css("display","none"); }, 6000);
