@@ -527,6 +527,19 @@ const CustomCallbacks = {
       setTimeout(() => { $(".userlist_owner:contains('"+ BOT_NICK + "')").parent().css("display","none"); }, 6000);
     }
   },
+  
+/*
+<div class="panel pm-panel panel-default" id="pm-tester333" style="position: absolute; bottom: 0px; left: 0px;">
+  <div class="panel-heading">tester333<button class="close pull-right">×</button></div>
+  <div class="panel-body" style="display: block;">
+    <div class="pm-buffer linewrap">
+      <div><span class="timestamp">[18:35:44]</span><span><strong class="username">tester333: </strong></span><span>Hello</span></div>
+    </div>
+    <hr>
+    <input class="form-control pm-input" type="text" maxlength="240" spellcheck="true" style="background-image: none;">
+  </div>
+</div>
+*/
 
   userLeave: function(data) { // Enhanced PM Box
     $("#pm-" + data.name + " .panel-heading").addClass("pm-gone"); 
@@ -647,12 +660,6 @@ $(document).ready(function() {
     if (modflair.hasClass("label-default")) { modflair.trigger("click"); }
   }
  
-  if (window.CLIENT.rank >= Rank.Moderator) { 
-    $('<button class="btn btn-sm btn-default" id="nextvid" title="Force Skip">Skip</button>')
-      .appendTo("#leftcontrols")
-      .on("click", function() { window.socket.emit("playNext"); });
-  }
-  
   // --------------------------------------------------------------------------------
   if (window.CLIENT.rank > Rank.Moderator) { 
     $('<button class="btn btn-sm btn-default" id="clear" title="Clear Chat">Clear</button>')
@@ -661,7 +668,9 @@ $(document).ready(function() {
         window.socket.emit("chatMsg", { msg: "/clear", meta: {}, });
         window.socket.emit("playerReady");
       });
-
+  }
+  
+  if (window.CLIENT.rank >= Rank.Moderator) { 
     $('<button class="btn btn-sm btn-default" id="clean" title="Clean Server Messages">Clean</button>')
       .appendTo("#leftcontrols")
       .on("click", function() {
@@ -671,6 +680,10 @@ $(document).ready(function() {
         $(".chat-msg-Video:not(:last)").each(function() { $(this).remove(); });
         $(".chat-msg-" + BOT_NICK).each(function() { $(this).remove(); });
       });
+
+    $('<button class="btn btn-sm btn-default" id="nextvid" title="Force Skip">Skip</button>')
+      .appendTo("#leftcontrols")
+      .on("click", function() { window.socket.emit("playNext"); });
   }
   
   // --------------------------------------------------------------------------------
