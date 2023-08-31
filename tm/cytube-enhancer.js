@@ -2,10 +2,11 @@
 // @name         CyTube Enhancer
 // @author       Buster Garvin
 // @description  Make changes to CyTube for better experience. Tested in chrome.
-// @version      0.7.060
+// @version      0.7.061
 // @updateURL    https://jacncdn.github.io/tm/cytube-enhancer.js
 // @downloadURL  https://jacncdn.github.io/tm/cytube-enhancer.js
 // @namespace    https://jacncdn.github.io
+// @iconURL      https://jacncdn.github.io/img/favicon.png
 // @match        https://cytu.be/r/*
 // @match        https://baked.live/tv/*
 // @sandbox      raw
