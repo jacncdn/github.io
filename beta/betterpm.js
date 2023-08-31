@@ -52,7 +52,7 @@ for (let key of Object.keys(localStorage)) {
   // ----------------------------------------------------------------------------------------------------------------------------------
   class BetterPrivateMessages {
     static get maxPMs() { return 50; }
-    static get maxMS() { return 2592000000; } // 1 month
+    static get maxMS() { return 604800000; } // 1 week
 
     get historyID() { return `PM_History_${CHANNEL.name.toLowerCase()}_${CLIENT.name.toLowerCase()}_`; }
 
