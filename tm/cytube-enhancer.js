@@ -1,9 +1,11 @@
 // ==UserScript==
 // @name         CyTube Enhancer
-// @namespace    https://tampermonkey.net/
-// @version      0.7.059
-// @description  Make changes to CyTube for better experience. Tested in chrome.
 // @author       Buster Garvin
+// @description  Make changes to CyTube for better experience. Tested in chrome.
+// @version      0.7.060
+// @updateURL    https://jacncdn.github.io/tm/cytube-enhancer.js
+// @downloadURL  https://jacncdn.github.io/tm/cytube-enhancer.js
+// @namespace    https://jacncdn.github.io
 // @match        https://cytu.be/r/*
 // @match        https://baked.live/tv/*
 // @sandbox      raw
