@@ -1,6 +1,6 @@
 /*!
 **|  JS Library Loader
-**|  Version: 2023.08.29
+**|  Version: 2023.09.01
 **|
 **@preserve
 */
@@ -27,34 +27,22 @@ var START = Date.now();
 if (typeof CUSTOM_LOADED === "undefined") { var CUSTOM_LOADED = false; }
 if (typeof ChannelName_Caption === "undefined") { var ChannelName_Caption = CHANNELNAME; }
 if (typeof Room_ID === "undefined") { var Room_ID = "jac"; }
-if (typeof ALLOW_GUESTS === "undefined") { var ALLOW_GUESTS = true; }
-if (typeof MUTE_GUESTS === "undefined") { var MUTE_GUESTS = false; }
 if (typeof AGE_RESTRICT === "undefined") { var AGE_RESTRICT = true; }
+
 if (typeof CHANNEL_DEBUG === "undefined") { var CHANNEL_DEBUG = false; }
 if (typeof BETA_USER === "undefined") { var BETA_USER = false; }
 if (typeof BETA_USERS === "undefined") { var BETA_USERS = []; }
 
+if (typeof BOT_NICK === "undefined") { var BOT_NICK = "JackAndChatBot"; }
 if (typeof ROOM_ANNOUNCEMENT === "undefined") { var ROOM_ANNOUNCEMENT = ""; }
 if (typeof MOD_ANNOUNCEMENT === "undefined") { var MOD_ANNOUNCEMENT = ""; }
 if (typeof ADVERTISEMENT === "undefined") { var ADVERTISEMENT = ""; }
-if (typeof CLEAR_MSG === "undefined") { var CLEAR_MSG = ""; }
 if (typeof MOTD_MSG === "undefined") { var MOTD_MSG = ""; }
 
-// ----------------------------------------------------------------------------------------------------------------------------------
-if (typeof LOAD_BOT === "undefined") { var LOAD_BOT = false; }
-if (typeof PERIODIC_CLEAR === "undefined") { var PERIODIC_CLEAR = false; }
-if (typeof BOT_LOG === "undefined") { var BOT_LOG = (window.CLIENT.rank < Rank.Owner); }
-if (typeof BOT_NICK === "undefined") { var BOT_NICK = "JackAndChatBot"; }
-var IMABOT = (CLIENT.name.toLowerCase() === BOT_NICK.toLowerCase());
+if (typeof LOG_MSG === "undefined") { var LOG_MSG = (window.CLIENT.rank < Rank.Owner); }
+if (window.CLIENT.rank > Rank.Moderator) { LOG_MSG = false; } // NOT Owner+
+
 // jshint latedef:true
-
-if (!IMABOT) { 
-  if (BETA_USERS.includes(CLIENT.name.toLowerCase())) { 
-    BETA_USER = true; 
-  }
-}
-
-if (window.CLIENT.rank > Rank.Moderator) { BOT_LOG = false; } // NOT Owner+
 
 // ##################################################################################################################################
 
@@ -64,17 +52,11 @@ var Room_URL = Base_URL + Room_ID + "/";
 
 if ((BETA_USER) || (Room_ID.toLowerCase() === 'jac')) {
   CHANNEL_DEBUG = true;
-
   Room_URL = Base_URL + Room_ID + "/"; // Before change
   Base_URL = Base_URL.replace("/www/", "/beta/");
-  
-  if (IMABOT) {
-    window.localStorage.clear();
-  }
 }
 
 // ----------------------------------------------------------------------------------------------------------------------------------
-
 var Emotes_URL = Root_URL + 'emoji/emoji.json';
 
 var Options_URL = Base_URL + 'options.json';
@@ -133,7 +115,8 @@ const loadCSS = function(id, filename) {
 
 // ##################################################################################################################################
 
-/*  window.CLIENT.rank
+/*
+  window.CLIENT.rank
   Rank.Guest: 0
   Rank.Member: 1
   Rank.Leader: 1.5
@@ -149,20 +132,6 @@ if (!CUSTOM_LOADED) { // Load Once
   if (window.CLIENT.rank > Rank.Moderator) { // At least Owner
     window[CHANNEL.name].jsScripts.push(Base_URL + "defaults.js");
     window[CHANNEL.name].jsScripts.push(Base_URL + "betterpm.js");
-  }
-
-  if (!ALLOW_GUESTS && (window.CLIENT.rank > Rank.Guest)) {
-    window[CHANNEL.name].jsScripts.push(Base_URL + "noguests.js");
-  }
-
-  if (IMABOT) {
-    if (CHANNEL_DEBUG) {
-      // window[CHANNEL.name].jsScripts.push(Base_URL + "dbLocal.js");
-    }
-    window[CHANNEL.name].jsScripts.push(Base_URL + "roombot.js");
-  }
-
-  if (BETA_USER) { 
   }
 
   jsScriptsLoad();

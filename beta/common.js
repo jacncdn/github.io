@@ -1,6 +1,6 @@
 /*!
 **|  CyTube Enhancements: Common
-**|  Version: 2023.08.29
+**|  Version: 2023.09.01
 **|
 **@preserve
 */
@@ -15,7 +15,7 @@
 // jshint undef:true
 
 /* globals socket, CHANNEL, CLIENT, Rank, CHATTHROTTLE, IGNORED, USEROPTS, initPm, pingMessage, formatChatMessage, Callbacks */
-/* globals removeVideo, makeAlert, videojs, CHANNEL_DEBUG, PLAYER, BOT_NICK, BOT_LOG, IMABOT, MOTD_MSG, PREFIX_INFO, PREFIX_RELOAD */
+/* globals removeVideo, makeAlert, videojs, CHANNEL_DEBUG, PLAYER, BOT_NICK, LOG_MSG, MOTD_MSG, PREFIX_INFO, PREFIX_RELOAD */
 /* globals Buttons_URL, Footer_URL, Favicon_URL, START, ROOM_ANNOUNCEMENT, MOD_ANNOUNCEMENT, ADVERTISEMENT */
 
 if (!window[CHANNEL.name]) { window[CHANNEL.name] = {}; }
@@ -24,6 +24,7 @@ if (!window[CHANNEL.name]) { window[CHANNEL.name] = {}; }
 var messageExpireTime = 1000 * 60 * 2;
 var chatExpireTime = 1000 * 60 * 60 * 2;
 
+var $MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
 var $chatline = $("#chatline");
 var $currenttitle = $("#currenttitle");
 var $messagebuffer = $("#messagebuffer");
@@ -522,25 +523,13 @@ const CustomCallbacks = {
     debugData("CustomCallbacks.addUser", data);
     _originalCallbacks.addUser(data);
 
+    $("#pm-" + data.name).attr("id", "#pm-" + data.name); // Make it easier to find
     $("#pm-" + data.name + " .panel-heading").removeClass("pm-gone");
     if (BOT_NICK.toLowerCase() !== CLIENT.name.toLowerCase()) {
       setTimeout(() => { $(".userlist_owner:contains('"+ BOT_NICK + "')").parent().css("display","none"); }, 6000);
     }
   },
   
-/*
-<div class="panel pm-panel panel-default" id="pm-tester333" style="position: absolute; bottom: 0px; left: 0px;">
-  <div class="panel-heading">tester333<button class="close pull-right">×</button></div>
-  <div class="panel-body" style="display: block;">
-    <div class="pm-buffer linewrap">
-      <div><span class="timestamp">[18:35:44]</span><span><strong class="username">tester333: </strong></span><span>Hello</span></div>
-    </div>
-    <hr>
-    <input class="form-control pm-input" type="text" maxlength="240" spellcheck="true" style="background-image: none;">
-  </div>
-</div>
-*/
-
   userLeave: function(data) { // Enhanced PM Box
     $("#pm-" + data.name + " .panel-heading").addClass("pm-gone"); 
     _originalCallbacks.userLeave(data);
@@ -579,7 +568,7 @@ const overrideEmit = function() {
 
       _originalEmit.apply(window.socket, args);
 
-      if (BOT_LOG && (args[0] === "pm")) {
+      if (LOG_MSG && (args[0] === "pm")) {
         debugData("common.emit.pm", args);
         if (isUserHere(BOT_NICK)) {
           let dmArgs = args;
@@ -645,7 +634,7 @@ $(document).ready(function() {
     $("#chatline").attr("spellcheck", "true").css({"background-image":"none",});
     $(".pm-input").attr("spellcheck", "true").css({"background-image":"none",});
   }, 1000);
-  
+
   $("body").keypress(function(evt) {
     // Skip if editing input (label, title, description, etc.)
     if ($(evt.target).is(':input, [contenteditable]')) { return; }
