@@ -1,6 +1,6 @@
 /*!
 **|  CyTube Enhancements: Common
-**|  Version: 2023.08.31
+**|  Version: 2023.09.01
 **|
 **@preserve
 */
@@ -15,7 +15,7 @@
 // jshint undef:true
 
 /* globals socket, CHANNEL, CLIENT, Rank, CHATTHROTTLE, IGNORED, USEROPTS, initPm, pingMessage, formatChatMessage, Callbacks */
-/* globals removeVideo, makeAlert, videojs, CHANNEL_DEBUG, PLAYER, BOT_NICK, BOT_LOG, IMABOT, MOTD_MSG, PREFIX_INFO, PREFIX_RELOAD */
+/* globals removeVideo, makeAlert, videojs, CHANNEL_DEBUG, PLAYER, BOT_NICK, LOG_MSG, MOTD_MSG, PREFIX_INFO, PREFIX_RELOAD */
 /* globals Buttons_URL, Footer_URL, Favicon_URL, START, ROOM_ANNOUNCEMENT, MOD_ANNOUNCEMENT, ADVERTISEMENT */
 
 if (!window[CHANNEL.name]) { window[CHANNEL.name] = {}; }
@@ -529,7 +529,7 @@ const CustomCallbacks = {
       setTimeout(() => { $(".userlist_owner:contains('"+ BOT_NICK + "')").parent().css("display","none"); }, 6000);
     }
   },
-
+  
   userLeave: function(data) { // Enhanced PM Box
     $("#pm-" + data.name + " .panel-heading").addClass("pm-gone"); 
     _originalCallbacks.userLeave(data);
@@ -568,7 +568,7 @@ const overrideEmit = function() {
 
       _originalEmit.apply(window.socket, args);
 
-      if (BOT_LOG && (args[0] === "pm")) {
+      if (LOG_MSG && (args[0] === "pm")) {
         debugData("common.emit.pm", args);
         if (isUserHere(BOT_NICK)) {
           let dmArgs = args;
@@ -634,7 +634,7 @@ $(document).ready(function() {
     $("#chatline").attr("spellcheck", "true").css({"background-image":"none",});
     $(".pm-input").attr("spellcheck", "true").css({"background-image":"none",});
   }, 1000);
-  
+
   $("body").keypress(function(evt) {
     // Skip if editing input (label, title, description, etc.)
     if ($(evt.target).is(':input, [contenteditable]')) { return; }
@@ -649,12 +649,6 @@ $(document).ready(function() {
     if (modflair.hasClass("label-default")) { modflair.trigger("click"); }
   }
  
-  if (window.CLIENT.rank >= Rank.Moderator) { 
-    $('<button class="btn btn-sm btn-default" id="nextvid" title="Force Skip">Skip</button>')
-      .appendTo("#leftcontrols")
-      .on("click", function() { window.socket.emit("playNext"); });
-  }
-  
   // --------------------------------------------------------------------------------
   if (window.CLIENT.rank > Rank.Moderator) { 
     $('<button class="btn btn-sm btn-default" id="clear" title="Clear Chat">Clear</button>')
@@ -663,7 +657,9 @@ $(document).ready(function() {
         window.socket.emit("chatMsg", { msg: "/clear", meta: {}, });
         window.socket.emit("playerReady");
       });
-
+  }
+  
+  if (window.CLIENT.rank >= Rank.Moderator) { 
     $('<button class="btn btn-sm btn-default" id="clean" title="Clean Server Messages">Clean</button>')
       .appendTo("#leftcontrols")
       .on("click", function() {
@@ -673,6 +669,10 @@ $(document).ready(function() {
         $(".chat-msg-Video:not(:last)").each(function() { $(this).remove(); });
         $(".chat-msg-" + BOT_NICK).each(function() { $(this).remove(); });
       });
+
+    $('<button class="btn btn-sm btn-default" id="nextvid" title="Force Skip">Skip</button>')
+      .appendTo("#leftcontrols")
+      .on("click", function() { window.socket.emit("playNext"); });
   }
   
   // --------------------------------------------------------------------------------
