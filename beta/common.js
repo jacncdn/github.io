@@ -1,6 +1,6 @@
 /*!
 **|  CyTube Enhancements: Common
-**|  Version: 2023.09.01
+**|  Version: 2023.09.02
 **|
 **@preserve
 */
@@ -443,7 +443,22 @@ const makeNoRefererMeta = function() {
 };
 
 // ##################################################################################################################################
+// Focus on PM
 
+const pm_observe = new $MutationObserver((mutations) => {
+  mutations.forEach((mutation) => {
+      mutation.addedNodes.forEach((node) => {
+        debugData('common.pm_observe.Added node', node);
+      });
+      
+      mutation.removedNodes.forEach((node) => {
+        debugData('common.pm_observe.Removed node', node);
+      });
+    }
+  );
+});
+
+// ##################################################################################################################################
 // Intercept Original Callbacks
 const CustomCallbacks = {
   changeMedia: function(data) {
@@ -642,6 +657,8 @@ $(document).ready(function() {
   });
 
   $("#chatline").attr("placeholder", "Type here to Chat").focus();
+
+  pm_observe.observe(($("#pmbar").get(0)), { childList: true, }); // PM Focus
 
   // --------------------------------------------------------------------------------
   if (window.CLIENT.rank > Rank.Guest) { 
