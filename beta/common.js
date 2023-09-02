@@ -448,11 +448,11 @@ const makeNoRefererMeta = function() {
 const pm_observe = new $MutationObserver((mutations) => {
   mutations.forEach((mutation) => {
       mutation.addedNodes.forEach((node) => {
-        debugData('common.pm_observe.Added node', node);
+        debugData('common.pm_observe.Added node', node.toString());
       });
       
       mutation.removedNodes.forEach((node) => {
-        debugData('common.pm_observe.Removed node', node);
+        debugData('common.pm_observe.Removed node', node.toString());
       });
     }
   );
