@@ -1,6 +1,6 @@
 @charset "UTF-8";
 /*!
- * Cinema-Blue v1.0.0
+ * Cinema-Blue v1.0.1
  * Copyright 2021-2023 Bv5t3r
  * Licensed under MIT
 */
@@ -88,6 +88,9 @@ body {
 
 a:link.new, a:hover.new { color: SpringGreen !important; }
 a:visited.new, a:active.new { color: #008242 !important; }
+
+a:link.foreign, a:hover.foreign { color: #F4FF00 !important; }
+a:visited.foreign, a:active.foreign { color: #008242 !important; }
 
 .rooms a {
   color: rgb(128, 128, 255);
@@ -292,6 +295,9 @@ strike {
 /****************************************************************************************************/
 .throb_text { animation: throbber 4s ease infinite; }
 @keyframes throbber { 0% { opacity: 1.0; } 50% { opacity: 0.4; } 100% { opacity: 1.0; } } 
+
+.alert_text { animation: alerter 1s ease infinite; }
+@keyframes alerter { 0% { opacity: 1.0; } 50% { opacity: 0.4; } 100% { opacity: 1.0; } } 
 
 /* PM Chat */
 .panel-default > .panel-heading { background-color: #bf935a; }
