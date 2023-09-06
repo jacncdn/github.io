@@ -9,8 +9,7 @@ var Room_ID = 'jac';
 
 var ALLOW_GUESTS = true;
 
-var LOAD_BOT = true;
-var BOT_LOG = true;
+var LOG_MSG = true;
 var BOT_NICK = "JackAndChatBot";
 
 var CHANNEL_DEBUG = true;

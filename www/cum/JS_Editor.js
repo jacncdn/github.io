@@ -10,7 +10,7 @@ var Room_ID = 'cum';
 var ALLOW_GUESTS = true;
 var AGE_RESTRICT = true;
 
-var LOAD_BOT = true;
+
 
 var MOTD_MSG = `<br /><span style="color:orange">This is a temporary room until CyTube XYZ comes back up.</span>`;
 

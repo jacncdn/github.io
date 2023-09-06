@@ -9,7 +9,7 @@ var Room_ID = 'gb';
 
 var AGE_RESTRICT = true;
 var ALLOW_GUESTS = true;
-var LOAD_BOT = true;
+
 var BOT_NICK = "LarryFlynt"; 
 
 // ##################################################################################################################################

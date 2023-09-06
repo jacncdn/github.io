@@ -7,7 +7,7 @@
 var ChannelName_Caption = 'Playboy Party';
 var Room_ID = 'pb';
 
-var LOAD_BOT = true;
+
 
 // ##################################################################################################################################
 if (!window[CHANNEL.name]) { window[CHANNEL.name] = {}; }

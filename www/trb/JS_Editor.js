@@ -9,7 +9,7 @@ var Room_ID = 'trb';
 
 var ALLOW_GUESTS = true;
 var AGE_RESTRICT = true;
-var LOAD_BOT = true;
+
 
 // ##################################################################################################################################
 if (!window[CHANNEL.name]) { window[CHANNEL.name] = {}; }

@@ -8,7 +8,6 @@ var ChannelName_Caption = 'BLACKED';
 var Room_ID = 'blk';
 
 var ALLOW_GUESTS = true;
-var LOAD_BOT = true;
 
 var MOTD_MSG = ``;
 

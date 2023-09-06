@@ -9,7 +9,7 @@ var Room_ID = 'hwm';
 
 var ALLOW_GUESTS = true;
 var AGE_RESTRICT = true;
-var LOAD_BOT = true;
+
 var BETA_USERS = ['lisaqtee'];
 
 var TRIVIA = false;

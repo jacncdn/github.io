@@ -9,7 +9,7 @@ var Room_ID = 'gf';
 
 var ALLOW_GUESTS = true;
 
-var LOAD_BOT = false;
+
 var BOT_NICK = "LarryFlynt"; 
 
 var MOTD_MSG = `<br /><span style="color:orange">This is a temporary room until CyTube XYZ comes back up.</span>`;
