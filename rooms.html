@@ -67,6 +67,12 @@
     }
     .small { font-size: 50%; }
     .strong { font-weight: 900; }
+    
+    a:link.foreign, a:hover.foreign { color: #F4FF00 !important; }
+    a:visited.foreign, a:active.foreign { color: #008242 !important; }
+    
+    .alert_text { animation: alerter 1s ease infinite; }
+    @keyframes alerter { 0% { opacity: 1.0; } 50% { opacity: 0.4; } 100% { opacity: 1.0; } } 
   </style>
 </head>
 <body>
@@ -129,7 +135,8 @@
           let urlParams = new URLSearchParams(window.location.search);
           let room = urlParams.get('room').toLowerCase();
           if (room !== null) {
-            $('a[href$=' + room + ']:first').removeClass('new').addClass('highlight throb_text');
+            $('a').removeClass('new').removeClass('foreign')
+            $('a[href$=' + room + ']:first').addClass('highlight alert_text');
           }
         }
       });
@@ -137,3 +144,4 @@
   </script>
 </body>
 </html>
+
