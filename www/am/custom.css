@@ -28,6 +28,16 @@ body {
   background-position-x: right;
 }
 
+@media only screen and (min-width: 800px) {
+  #motdwrap {
+    font-size: 14px;
+    background-image: url(https://jacncdn.github.io/www/am/logo.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position-x: right;
+  }
+}
+
 .adminnick, .userlist_owner, .userlist_owner > .username { color: DeepPink !important; }
 .userlist_op, .userlist_op > .username { color: DeepSkyBlue !important; }
 
