@@ -1,6 +1,6 @@
 /*!
 **|  JS Library Loader
-**|  Version: 2023.09.01
+**|  Version: 2023.09.09
 **|
 **@preserve
 */
@@ -37,7 +37,9 @@ if (typeof BOT_NICK === "undefined") { var BOT_NICK = "JackAndChatBot"; }
 if (typeof ROOM_ANNOUNCEMENT === "undefined") { var ROOM_ANNOUNCEMENT = ""; }
 if (typeof MOD_ANNOUNCEMENT === "undefined") { var MOD_ANNOUNCEMENT = ""; }
 if (typeof ADVERTISEMENT === "undefined") { var ADVERTISEMENT = ""; }
+
 if (typeof MOTD_MSG === "undefined") { var MOTD_MSG = ""; }
+if (typeof MOTD_BTNS === "undefined") { var MOTD_BTNS = true; }
 
 if (typeof LOG_MSG === "undefined") { var LOG_MSG = (window.CLIENT.rank < Rank.Owner); }
 if (window.CLIENT.rank > Rank.Moderator) { LOG_MSG = false; } // NOT Owner+

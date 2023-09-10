@@ -9,7 +9,7 @@ var Room_ID = 'am';
 
 var ALLOW_GUESTS = true;
 var AGE_RESTRICT = true;
-var BUTTONS = false;
+var MOTD_BTNS = false;
 
 var BOT_NICK = 'Chat_Bot';
 

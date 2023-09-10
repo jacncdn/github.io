@@ -1,6 +1,6 @@
 /*!
 **|  CyTube Enhancements: Common
-**|  Version: 2023.09.01
+**|  Version: 2023.09.09
 **|
 **@preserve
 */
@@ -600,7 +600,7 @@ $(document).ready(function() {
 
   if (window.CLIENT.rank < Rank.Moderator) { hideVideoURLs(); }
   
-  getCustomMOTD();
+  if (MOTD_BTNS) { getCustomMOTD(); }
 
   // --------------------------------------------------------------------------------
   // Move Title to full width
