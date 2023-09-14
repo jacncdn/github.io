@@ -14,7 +14,7 @@ var MOTD_MSG = ``;
 var ROOM_ANNOUNCEMENT = ``;
 
 var ADVERTISEMENT = `<a href="https://join.blacked.com" target="_blank" rel="nofollow noopener">` + 
-  `<img src="https://jacncdn.github.io/ads/blacked01.webp" alt="BLACKED" border="0"></a>` +
+  `<img src="https://jacncdn.github.io/ads/blacked01.webp" title="BLACKED Jazlyn Ray" border="0"></a>` +
   `<br />Advertisement</a>`;
 
 // ##################################################################################################################################
