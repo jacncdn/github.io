@@ -40,7 +40,8 @@ body {
     background-image: url(https://jacncdn.github.io/www/hwm/background.png);
     background-size: contain;
     background-repeat: no-repeat;
-    background-position-x: center;
+    background-position-x: right;
+    background-color: #000000;
   }
 }
 

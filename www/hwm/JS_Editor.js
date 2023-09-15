@@ -10,13 +10,9 @@ var Room_ID = 'hwm';
 var ALLOW_GUESTS = true;
 var AGE_RESTRICT = true;
 
-var BETA_USERS = ['lisaqtee'];
-
-var TRIVIA = false;
-
-// var HIGHLIGHT = [''];
-
-// var ADVERTISEMENT = ``;
+var ADVERTISEMENT = `<a href="http://www.swinglifestyle.com/?signup=FunWorksCouple" target="_blank">` + 
+  `<img src="https://jacncdn.github.io/ads/sls04.gif" alt="SwingLifeStyle" border="0"></a>` +
+  `<br /><a href="http://www.swinglifestyle.com/?signup=FunWorksCouple" target="_blank">Sponsor</a>`;
 
 // var ROOM_ANNOUNCEMENT = ``;
 
