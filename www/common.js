@@ -162,12 +162,14 @@ const waitForElement = function(selector, callback, checkFreqMs, timeoutMs) {
 // ##################################################################################################################################
 
 const notifyPing = function() {
+  if (Notification.permission !== "granted") { return; }
   try {
     if (notNullOrEmpty(_notifyPing)) { _notifyPing.play(); }
   } catch {}
 };
 
 const msgPing = function() {
+  if (Notification.permission !== "granted") { return; }
   try {
     if (notNullOrEmpty(_msgPing)) { _msgPing.play(); }
   } catch {}
