@@ -3,3 +3,7 @@ timezone            : America/Chicago
 source              : .
 safe                : false
 encoding            : "utf-8"
+
+title               : JackAndChat
+author              : Bv5t3r
+markdown            : kramdown
