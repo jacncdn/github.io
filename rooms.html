@@ -60,20 +60,24 @@
       color: Red !important;
       font-size: 120%;
     }
-    .highlight {
+    .linked {
       color: Yellow !important;
       font-size: 110%;
       font-weight: 900;
     }
     .small { font-size: 50%; }
     .strong { font-weight: 900; }
+
+a:link.popular, a:hover.popular { font-style: italic; font-weight: bold !important; }
+a:visited.popular, a:active.popular { font-style: normal; font-weight: normal !important; }
+
   </style>
 </head>
 <body>
   <div id="main">
     <h1>CyTube Adult 18+
       <div class="small">
-        &nbsp;Rooms&nbsp;working&nbsp;as-of&nbsp;September&nbsp;7&nbsp;2023
+        &nbsp;Rooms&nbsp;working&nbsp;as-of&nbsp;October&nbsp;26&nbsp;2023
       </div>
     </h1>
     <span class="alert throb_text">Absolutely <span class="strong">NO</span> underage (18+) or illegal content!</span>
@@ -134,7 +138,7 @@
           let room = urlParams.get('room').toLowerCase();
           if (room !== null) {
             $('a').removeClass('new').removeClass('foreign')
-            $('a[href$=' + room + ']:first').addClass('highlight alert_text');
+            $('a[href$=' + room + ']:first').addClass('linked alert_text');
           }
         }
       });
