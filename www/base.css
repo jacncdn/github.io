@@ -1,6 +1,6 @@
 @charset "UTF-8";
 /*!
- * Cinema-Blue v1.0.1
+ * Cinema-Blue v1.1.0
  * Copyright 2021-2023 Bv5t3r
  * Licensed under MIT
 */
@@ -89,19 +89,22 @@ body {
 a:link.new, a:hover.new { color: SpringGreen !important; }
 a:visited.new, a:active.new { color: #008242 !important; }
 
-a:link.foreign, a:hover.foreign { color: #F4FF00 !important; }
-a:visited.foreign, a:active.foreign { color: #008242 !important; }
+a:link.popular, a:hover.popular { font-style: italic; font-weight: bold !important; }
+a:visited.popular, a:active.popular { font-style: normal; font-weight: normal !important; }
+
+a:link.foreign, a:hover.foreign { color: #FFEA00 !important; }
+a:visited.foreign, a:active.foreign { color: ##FFEE58 !important; }
 
 .rooms a {
-  color: rgb(128, 128, 255);
+  color: #8080FF;
   background-color: transparent;
   text-decoration: none;
 }
 .rooms a:visited {
-  color: rgb(192, 64, 192);
+  color: #C040C0;
 }
 .rooms a:hover, .rooms a:active {
-  color: rgb(255, 64, 64);
+  color: #FF4040;
   text-decoration: underline;
 }
 .rooms ul {
@@ -117,7 +120,7 @@ a:visited.foreign, a:active.foreign { color: #008242 !important; }
   padding: 0.2em;
 }
 strike {
-  color: rgb(128, 128, 255);
+  color: #8080FF;
 }
 
 #currenttitle {
@@ -172,7 +175,7 @@ strike {
 }
 #chatwrap em, .pm-buffer em {
   color: White;
-  font-weight: 400;
+  font-weight: bold;
   font-style: normal;
 }
 .pm-gone {
