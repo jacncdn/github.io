@@ -226,10 +226,8 @@ strike {
   font-stretch: ultra-condensed;
 }
 
-/*
-.adminnick, .userlist_owner, .userlist_owner > .username { color: Green !important; }
+.adminnick, .userlist_owner, .userlist_owner > .username { color: Orange !important; }
 .userlist_op, .userlist_op > .username { color: DeepSkyBlue !important; }
-*/
 
 .well {
   padding: 12px;

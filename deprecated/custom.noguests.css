@@ -22,9 +22,6 @@
   max-height: 480px;
 }
 
-.adminnick, .userlist_owner, .userlist_owner > .username { color: DeepPink !important; }
-.userlist_op, .userlist_op > .username { color: DeepSkyBlue !important; }
-
 .profile-box{background-color:#bf935a;color:white}
 #chanjs-allow-prompt > a, #chanjs-allow-prompt > button, #chanjs-deny{display:none}
 #chanjs-allow-prompt > span, #chanjs-allow-prompt > div.checkbox > label{font-size:14px}

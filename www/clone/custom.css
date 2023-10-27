@@ -28,9 +28,6 @@ body {
   background-position-x: right;
 }
 
-.adminnick, .userlist_owner, .userlist_owner > .username { color: DeepPink !important; }
-.userlist_op, .userlist_op > .username { color: DeepSkyBlue !important; }
-
 #currenttitle {
   color: Gold;
   padding-left: 8px;
