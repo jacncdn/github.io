@@ -50,8 +50,17 @@ body {
   max-height: 480px;
 }
 
-.adminnick, .userlist_owner, .userlist_owner > .username { color: DeepPink !important; }
+.adminnick, .userlist_owner, .userlist_owner > .username { color: LawnGreen !important; }
 .userlist_op, .userlist_op > .username { color: DeepSkyBlue !important; }
+
+.chat-msg-LisaQTee .username {
+  color: DeepPink !important;
+  font-weight: bold !important;
+  font-size: 105% !important;
+}
+.chat-msg-LisaQTee .username:before {
+  content: "❤ ";
+}
 
 #currenttitle {
   color: Gold;
