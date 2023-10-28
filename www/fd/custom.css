@@ -43,6 +43,13 @@ body {
   max-height: 720px;
 }
 
+.chat-msg-LisaQTee .username {
+  color: DeepPink !important;
+}
+.chat-msg-LisaQTee .username:before {
+  content: "? ";
+}
+
 #currenttitle {
   color: Gold;
   padding-left: 8px;
