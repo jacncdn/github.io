@@ -54,7 +54,7 @@ body {
   color: DeepPink !important;
 }
 .chat-msg-LisaQTee .username:before {
-  content: "❤ ";
+  content: "\1F49B  ";
 }
 
 #currenttitle {
