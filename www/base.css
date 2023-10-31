@@ -86,14 +86,17 @@ body {
 .rooms-child:first-child {
 } 
 
+a:link, a:hover { color: SpringGreen !important; }
+a:visited, a:active { color: #008242 !important; }
+
 a:link.new, a:hover.new { color: SpringGreen !important; }
 a:visited.new, a:active.new { color: #008242 !important; }
 
 a:link.popular, a:hover.popular { font-style: italic; font-weight: bold !important; }
-a:visited.popular, a:active.popular { font-style: normal; font-weight: normal !important; }
+a:visited.popular, a:active.popular { font-style: italic; font-weight: normal !important; }
 
 a:link.foreign, a:hover.foreign { color: #FFEA00 !important; }
-a:visited.foreign, a:active.foreign { color: ##FFEE58 !important; }
+a:visited.foreign, a:active.foreign { color: #008242 !important; }
 
 .rooms a {
   color: #8080FF;
