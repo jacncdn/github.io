@@ -128,13 +128,15 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
   <script>
     $(document).ready(()=>{
-      $('#cytube_x').load('/inc/cytube_x.html');
-      $('#cytube_k').load('/inc/cytube_k.html');
-      $('#cytube_pg').load('/inc/cytube_pg.html');
-      $('#cytube_nn').load('/inc/cytube_nn.html');
-      $('#cytube_to').load('/inc/cytube_to.html');
+      let ts = '{ ts: ' + Date.now() + '}';
 
-      $('#otherlists').load('/inc/otherlists.html', ()=>{
+      $('#cytube_x').load('/inc/cytube_x.html', ts);
+      $('#cytube_k').load('/inc/cytube_k.html', ts);
+      $('#cytube_pg').load('/inc/cytube_pg.html', ts);
+      $('#cytube_nn').load('/inc/cytube_nn.html', ts);
+      $('#cytube_to').load('/inc/cytube_to.html', ts);
+
+      $('#otherlists').load('/inc/otherlists.html', ts, function() {
         if (window.location.href.indexOf('?') > 0) {
           let urlParams = new URLSearchParams(window.location.search);
           let room = urlParams.get('room').toLowerCase();
