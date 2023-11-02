@@ -86,27 +86,17 @@ body {
 .rooms-child:first-child {
 } 
 
-a:link.new, a:hover.new { color: SpringGreen !important; }
-a:visited.new, a:active.new { color: #008242 !important; }
-
-a:link.popular, a:hover.popular { font-style: italic; font-weight: bold !important; }
-a:visited.popular, a:active.popular { font-style: normal; font-weight: normal !important; }
-
-a:link.foreign, a:hover.foreign { color: #FFEA00 !important; }
-a:visited.foreign, a:active.foreign { color: ##FFEE58 !important; }
-
-.rooms a {
-  color: #8080FF;
-  background-color: transparent;
+a {
+  color: #CCCCCC;
   text-decoration: none;
+  background-color: transparent;
 }
-.rooms a:visited {
-  color: #C040C0;
-}
+.rooms a { color: #8080FF; }
 .rooms a:hover, .rooms a:active {
   color: #FF4040;
   text-decoration: underline;
 }
+.rooms a:visited { color: #C040C0; }
 .rooms ul {
   line-height: 1.4;
   display: flex;
@@ -119,6 +109,11 @@ a:visited.foreign, a:active.foreign { color: ##FFEE58 !important; }
   width: 25%;
   padding: 0.2em;
 }
+
+a.popular { font-style: italic; font-weight: bold !important; }
+a:link.new, a:hover.new, a:active.new { color: SpringGreen !important; }
+a:link.foreign, a:hover.foreign, a:active.foreign { color: #FFEA00 !important; }
+
 strike {
   color: #8080FF;
 }
