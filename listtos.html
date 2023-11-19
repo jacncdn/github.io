@@ -28,54 +28,60 @@
   <meta name="keywords" content="porn, masturbation, jack off, jerking, wank, JO, Big Tits, MILF, Hot Wife, HotWife, creampie">
 
   <style>
-  #main {
-    margin: auto;
-    width: 50%;
-    padding: 2em;
-  }
+    #main {
+      margin: auto;
+      width: 80%;
+      padding: 2em;
+      line-height: 1.6;
+    }
+
+    pre {
+      background: #f4f4f4;
+      border: 2px solid #eee;
+      border-left: 3px solid #f36d33;
+      color: Black;
+      page-break-inside: avoid;
+      font-family: monospace;
+      font-size: 16px;
+      line-height: 1.6;
+      max-width: 100%;
+      overflow: auto;
+      padding-top: 1em;
+      display: block;
+      word-wrap: break-word;
+    }
   </style>
 </head>
 <body>
 <div id="main">
   <h1>Add or Remove Links</h1>
-  <p>
+  <p class="rooms">
     To Add or Remove links email <a href="mailto:admin@jackandchat.net">admin@jackandchat.net</a>
   </p>
 
-<!--
-  <h1>Add to List</h1>
-  <p>Here are the requirements and instructions to add your Cytube room to the Adult list.</p>
-  
-  <h3>Requirements:</h3>
-  <ul>
-    <li>Add MOTD to room</li>
-    <li>18+</li>
-  </ul>
-
-  <h4>MOTD:</h4>
+  <h3>Requirements</h3>
   <p>
-  <ul>
-    <li></li>
-    Add the following to "Channel Settings->Edit->MOTD".
-    Then click "Save MOTD" to comply with CyTu.be "Terms of Use".
-    Replacing {ROOM-NAME} with whatever you want to call the room but include "18+".
-    A list of colors can be found here: https://htmlcolorcodes.com/color-names
-  </ul>
-
+    At the very least, add the following to the MOTD:
+    <ul>
+      <li>On the top banner, click "Channel Settings->Edit->MOTD"</li>
+      <li>Put the name of the room followed by 18+</li>
+      <li>Click "Save MOTD" to comply with CyTu.be "Terms of Use"</li>
+      <li>Under "Channel Settings->Admin Settings"</li>
+      <li>Add the Room Name to "Page title" followed by 18+</li>
+    </ul>
   <p/>
-  
-  <p>
-  <div style="float:left">
-    <span style="color: DeepSkyBlue; font-size: 175%; font-weight: 500">{ROOM-NAME} 18+</span><br />
-    <span style="color: Yellow">ALL open chat and links must be legal (18+) or you will be <strong>BANNED!</strong></span><br />
-    <br />
-  </div>
-</p>
 
-<p>
-<a target="_blank" href="https://htmlcolorcodes.com/color-names/">Color Names</a>
-</p>
--->
+  <h3>Make it Pretty</h3>
+  <p class="rooms">
+    Copy and Paste the template below to make the MOTD room header pretty.<br />
+    Replace {ROOM-NAME} with whatever you want to call the room but include "18+".<br />
+    A list of colors can be found here: <a class="rooms" target="_blank" href="https://htmlcolorcodes.com/color-names">CSS Color Names</a><br />
+  </p>
+  
+  <pre>
+    &lt;span style="color: DeepSkyBlue; font-size: 175%; font-weight: 500"&gt;{ROOM-NAME} 18+&lt;/span&gt;&lt;br /&gt;
+    &lt;span style="color: Yellow"&gt;ALL open chat and links must be legal (18+) or you will be &lt;strong&gt;BANNED!&lt;/strong&gt;&lt;/span&gt;&lt;br /&gt;
+  </pre>
 
 </div>
 </body>
