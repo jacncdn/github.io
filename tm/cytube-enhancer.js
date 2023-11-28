@@ -2,7 +2,7 @@
 // @name         CyTube Enhancer
 // @author       Buster Garvin
 // @description  Make changes to CyTube for better experience. Tested in chrome.
-// @version      0.7.061
+// @version      0.8.001
 // @updateURL    https://jacncdn.github.io/tm/cytube-enhancer.js
 // @downloadURL  https://jacncdn.github.io/tm/cytube-enhancer.js
 // @namespace    https://jacncdn.github.io
@@ -15,9 +15,7 @@
 // @grant        GM.xmlHttpRequest
 // @run-at       document-end
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js
-// @require      https://ajax.googleapis.com/ajax/libs/jqueryui/1.13.0/jquery-ui.min.js
 // @require      https://cdn.socket.io/4.5.4/socket.io.min.js
-// @require      http://cdn.embed.ly/player-0.0.12.min.js
 // ==/UserScript==
 'use strict';
 /* globals $ */
@@ -311,6 +309,7 @@ const delayChanges = function() {
       $messagebuffer.find("[class^=chat-msg-\\\\\\$server]").each(function() { $(this).remove(); });
       $messagebuffer.find("[class^=chat-msg-\\\\\\$voteskip]").each(function() { $(this).remove(); });
       $messagebuffer.find("[class^=server-msg]").each(function() { $(this).remove(); });
+      $messagebuffer.find("[class^=poll-notify]").each(function() { $(this).remove(); });
       $(".chat-msg-Video:not(:last)").each(function() { $(this).remove(); });
     });
 
