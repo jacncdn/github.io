@@ -140,9 +140,12 @@
           let urlParams = new URLSearchParams(window.location.search);
           let room = urlParams.get('room').toLowerCase();
           if (room !== null) {
-            $('a').removeClass('new').removeClass('foreign')
-            $('a[href*="' + room + '" i]').addClass('linked alert_text');
-            // setTimeout(function() { window.location = room; }, 8000);
+            $('a').removeClass('new').removeClass('foreign');
+            
+            let link = $('a[href*="' + room + '" i]');
+            console.debug(link[0].href);
+            link.addClass('linked alert_text');
+            setTimeout(function() { window.location = link[0].href; }, 2000);
           }
         }
       });
