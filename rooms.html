@@ -140,8 +140,8 @@
           let urlParams = new URLSearchParams(window.location.search);
           let room = urlParams.get('room').toLowerCase();
           if (room !== null) {
-            $('a').removeClass('new').removeClass('foreign');
-            
+            $('a').removeClass('new').removeClass('foreign').removeAttr('target');
+
             let link = $('a[href*="' + room + '" i]');
             console.debug(link[0].href);
             link.addClass('linked alert_text');
