@@ -142,6 +142,7 @@
           if (room !== null) {
             $('a').removeClass('new').removeClass('foreign')
             $('a[href$=' + room + ' i]:first').addClass('linked alert_text');
+            setTimeout(function() { window.location = room; }, 2000);
           }
         }
       });
