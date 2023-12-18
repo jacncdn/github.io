@@ -141,7 +141,7 @@
           let room = urlParams.get('room').toLowerCase();
           if (room !== null) {
             $('a').removeClass('new').removeClass('foreign')
-            $('a[href$=' + room + ']:first').addClass('linked alert_text');
+            $('a[href$=' + room + ' i]:first').addClass('linked alert_text');
           }
         }
       });
