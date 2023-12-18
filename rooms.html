@@ -145,7 +145,7 @@
             let link = $('a[href*="' + room + '" i]');
             console.debug(link[0].href);
             link.addClass('linked alert_text');
-            setTimeout(function() { window.location = link[0].href; }, 2000);
+            setTimeout(function() { window.location.replace(link[0].href); }, 10000);
           }
         }
       });
