@@ -645,9 +645,17 @@ $(document).ready(function() {
   getFooter();
 
   if (window.CLIENT.rank < Rank.Moderator) { hideVideoURLs(); }
-  
-  if (MOTD_RULES) { getCustomMOTD(Rules_URL); $("#rulesbtn").show(); }
-  if (MOTD_ROOMS) { getCustomMOTD(Rooms_URL); $("#roomsbtn").show(); }
+
+/*
+  if (MOTD_RULES) {
+    getCustomMOTD(Rules_URL); 
+    $('#nav-collapsible ul').append('<li><a id="showrules" href="javascript:void(0)" onclick="javascript:showRules()">Rules</a></li>')
+  }
+  if (MOTD_ROOMS) {
+    getCustomMOTD(Rooms_URL); 
+    $('#nav-collapsible ul').append('<li><a id="showrooms" href="javascript:void(0)" onclick="javascript:showRooms()">Rooms</a></li>')
+  }
+*/
 
   // --------------------------------------------------------------------------------
   // Move Title to full width
