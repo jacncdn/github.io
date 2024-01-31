@@ -1,6 +1,6 @@
 /*!
 **|  CyTube Enhancements: Common
-**|  Version: 2023.09.02
+**|  Version: 2023.09.09
 **|
 **@preserve
 */
@@ -142,6 +142,35 @@ const secondsToHMS = function(secs) {
 
 // ##################################################################################################################################
 
+function waitForElm(selector) {  // TODO UNTESTED
+  return new Promise(resolve => {
+    if (document.querySelector(selector)) {
+      return resolve(document.querySelector(selector));
+    }
+
+    const observer = new MutationObserver(mutations => {
+      if (document.querySelector(selector)) {
+        observer.disconnect();
+        resolve(document.querySelector(selector));
+      }
+    });
+
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+    });
+  });
+}
+
+/* Usage:
+waitForElm('.some-class').then((elm) => {
+  console.log('Element is ready');
+  console.log(elm.textContent);
+});
+*/
+
+// ##################################################################################################################################
+
 // JQuery Wait for an HTML element to exist
 const waitForElement = function(selector, callback, checkFreqMs, timeoutMs) {
   let startTimeMs = Date.now();
@@ -162,12 +191,14 @@ const waitForElement = function(selector, callback, checkFreqMs, timeoutMs) {
 // ##################################################################################################################################
 
 const notifyPing = function() {
+  if (Notification.permission !== "granted") { return; }
   try {
     if (notNullOrEmpty(_notifyPing)) { _notifyPing.play(); }
   } catch {}
 };
 
 const msgPing = function() {
+  if (Notification.permission !== "granted") { return; }
   try {
     if (notNullOrEmpty(_msgPing)) { _msgPing.play(); }
   } catch {}
@@ -398,9 +429,9 @@ const setCustomMOTD = function() {
   $("#motd div:first").append(MOTD_MSG);
 };
 
-const getCustomMOTD = function() {
+const getCustomMOTD = function(MOTD_URL) {
   $.ajax({
-    url: Buttons_URL,
+    url: MOTD_URL,
     type: 'GET',
     datatype: 'text',
     cache: false,
@@ -615,7 +646,8 @@ $(document).ready(function() {
 
   if (window.CLIENT.rank < Rank.Moderator) { hideVideoURLs(); }
   
-  getCustomMOTD();
+  if (MOTD_RULES) { getCustomMOTD(Rules_URL); }
+  if (MOTD_ROOMS) { getCustomMOTD(Rooms_URL); }
 
   // --------------------------------------------------------------------------------
   // Move Title to full width

@@ -1,6 +1,6 @@
 /*!
 **|  JS Library Loader
-**|  Version: 2023.09.02
+**|  Version: 2023.09.09
 **|
 **@preserve
 */
@@ -37,7 +37,16 @@ if (typeof BOT_NICK === "undefined") { var BOT_NICK = "JackAndChatBot"; }
 if (typeof ROOM_ANNOUNCEMENT === "undefined") { var ROOM_ANNOUNCEMENT = ""; }
 if (typeof MOD_ANNOUNCEMENT === "undefined") { var MOD_ANNOUNCEMENT = ""; }
 if (typeof ADVERTISEMENT === "undefined") { var ADVERTISEMENT = ""; }
+
 if (typeof MOTD_MSG === "undefined") { var MOTD_MSG = ""; }
+
+if (typeof MOTD_BTNS === "undefined") { var MOTD_BTNS = true; }
+if (MOTD_BTNS) {
+  var MOTD_RULES = true;
+  var MOTD_ROOMS = true;
+}
+if (typeof MOTD_RULES === "undefined") { var MOTD_RULES = true; }
+if (typeof MOTD_ROOMS === "undefined") { var MOTD_ROOMS = true; }
 
 if (typeof LOG_MSG === "undefined") { var LOG_MSG = (window.CLIENT.rank < Rank.Owner); }
 if (window.CLIENT.rank > Rank.Moderator) { LOG_MSG = false; } // NOT Owner+
@@ -61,7 +70,8 @@ var Emotes_URL = Root_URL + 'emoji/emoji.json';
 
 var Options_URL = Base_URL + 'options.json';
 var Permissions_URL = Base_URL + 'permissions.json';
-var Buttons_URL = Base_URL + 'motd-btns.html';
+var Rules_URL = Base_URL + 'motd-rules.html';
+var Rooms_URL = Base_URL + 'motd-rooms.html';
 var Footer_URL = Base_URL + 'footer.html';
 var BlockerCSS_URL = Base_URL + 'blocker.css';
 
