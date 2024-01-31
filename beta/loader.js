@@ -64,8 +64,8 @@ var Emotes_URL = Root_URL + 'emoji/emoji.json';
 
 var Options_URL = Base_URL + 'options.json';
 var Permissions_URL = Base_URL + 'permissions.json';
-var Rules_URL = Base_URL + 'motd-rules.html';
-var Rooms_URL = Base_URL + 'motd-rooms.html';
+var Rules_URL = Base_URL + 'cytube-rules.html';
+var Rooms_URL = Base_URL + 'cytube-rooms.html';
 var Footer_URL = Base_URL + 'footer.html';
 var BlockerCSS_URL = Base_URL + 'blocker.css';
 
