@@ -597,12 +597,12 @@ const overrideEmit = function() {
 function showRules() { $("#cytube_rules").modal(); }
 
 function showRooms() {
-  $('#cytube_x').load(Root_URL + 'inc/cytube_x.html');
-  $('#cytube_k').load(Root_URL + 'inc/cytube_k.html');
-  $('#cytube_pg').load(Root_URL + 'inc/cytube_pg.html');
-  $('#cytube_nn').load(Root_URL + 'inc/cytube_nn.html');
-  $('#cytube_to').load(Root_URL + 'inc/cytube_to.html');
-  $('#otherlists').load(Root_URL + 'inc/otherlists.html');
+  $("#cytube_x").load(Root_URL + "inc/cytube_x.html");
+  $("#cytube_k").load(Root_URL + "inc/cytube_k.html");
+  $("#cytube_pg").load(Root_URL + "inc/cytube_pg.html");
+  $("#cytube_nn").load(Root_URL + "inc/cytube_nn.html");
+  $("#cytube_to").load(Root_URL + "inc/cytube_to.html");
+  $("#otherlists").load(Root_URL + "inc/otherlists.html");
   $("#cytube_rooms").modal();
 }
 
@@ -625,12 +625,12 @@ $(document).ready(function() {
   if (window.CLIENT.rank < Rank.Moderator) { hideVideoURLs(); }
 
   if (MOTD_RULES) {
-    $.get(Rules_URL, function(frag) { $('#pmbar').before(frag); });
+    $.get(Rules_URL, function(html_frag) { $('#pmbar').before(html_frag); debugData("common.ready.Rules", html_frag); });
     $('#nav-collapsible ul').append('<li><a id="showrules" href="javascript:void(0)" onclick="javascript:showRules()">Rules</a></li>')
   }
 
   if (MOTD_ROOMS) {
-    $.get(Rooms_URL, function(frag) { $('#pmbar').before(frag); });
+    $.get(Rooms_URL, function(html_frag) { $('#pmbar').before(html_frag); });
     $('#nav-collapsible ul').append('<li><a id="showrooms" href="javascript:void(0)" onclick="javascript:showRooms()">Rooms</a></li>')
   }
 
