@@ -626,12 +626,12 @@ $(document).ready(function() {
 
   if (MOTD_RULES) {
     $.get(Rules_URL, function(frag) { $('#pmbar').before(frag); });
-    $('#nav-collapsible ul').append('<li><a id="showrules" href="#" onclick="javascript:showRules()">Rules</a></li>')
+    $('#nav-collapsible ul').append('<li><a id="showrules" href="javascript:void(0)" onclick="javascript:showRules()">Rules</a></li>')
   }
 
   if (MOTD_ROOMS) {
     $.get(Rooms_URL, function(frag) { $('#pmbar').before(frag); });
-    $('#nav-collapsible ul').append('<li><a id="showrooms" href="#" onclick="javascript:showRooms()">Rooms</a></li>')
+    $('#nav-collapsible ul').append('<li><a id="showrooms" href="javascript:void(0)" onclick="javascript:showRooms()">Rooms</a></li>')
   }
 
   // --------------------------------------------------------------------------------
