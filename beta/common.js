@@ -646,8 +646,8 @@ $(document).ready(function() {
 
   if (window.CLIENT.rank < Rank.Moderator) { hideVideoURLs(); }
   
-  if (MOTD_RULES) { getCustomMOTD(Rules_URL); }
-  if (MOTD_ROOMS) { getCustomMOTD(Rooms_URL); }
+  if (MOTD_RULES) { getCustomMOTD(Rules_URL); $("#rulesbtn").show(); }
+  if (MOTD_ROOMS) { getCustomMOTD(Rooms_URL); $("#roomsbtn").show(); }
 
   // --------------------------------------------------------------------------------
   // Move Title to full width
