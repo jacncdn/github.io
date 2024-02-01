@@ -142,35 +142,6 @@ const secondsToHMS = function(secs) {
 
 // ##################################################################################################################################
 
-function waitForElm(selector) {  // TODO UNTESTED
-  return new Promise(resolve => {
-    if (document.querySelector(selector)) {
-      return resolve(document.querySelector(selector));
-    }
-
-    const observer = new MutationObserver(mutations => {
-      if (document.querySelector(selector)) {
-        observer.disconnect();
-        resolve(document.querySelector(selector));
-      }
-    });
-
-    observer.observe(document.body, {
-      childList: true,
-      subtree: true,
-    });
-  });
-}
-
-/* Usage:
-waitForElm('.some-class').then((elm) => {
-  console.log('Element is ready');
-  console.log(elm.textContent);
-});
-*/
-
-// ##################################################################################################################################
-
 // JQuery Wait for an HTML element to exist
 const waitForElement = function(selector, callback, checkFreqMs, timeoutMs) {
   let startTimeMs = Date.now();
@@ -444,6 +415,35 @@ const makeNoRefererMeta = function() {
 };
 
 // ##################################################################################################################################
+
+function waitForElm(selector) {  // TODO UNTESTED
+  return new Promise(resolve => {
+    if (document.querySelector(selector)) {
+      return resolve(document.querySelector(selector));
+    }
+
+    const observer = new MutationObserver(mutations => {
+      if (document.querySelector(selector)) {
+        observer.disconnect();
+        resolve(document.querySelector(selector));
+      }
+    });
+
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+    });
+  });
+}
+
+/* Usage:
+waitForElm('.some-class').then((elm) => {
+  console.log('Element is ready');
+  console.log(elm.textContent);
+});
+*/
+
+// ##################################################################################################################################
 // Focus on PM
 
 const pm_observe = new $MutationObserver((mutations) => {
@@ -579,7 +579,7 @@ const whisper = function(msg) {
 const overrideEmit = function() {
   if (isNullOrEmpty(_originalEmit) && notNullOrEmpty(window.socket.emit)) { // Override Original socket.emit
     _originalEmit = window.socket.emit;
-    
+
     window.socket.emit = function() {
       debugData("common.emit", arguments);
       let args = Array.prototype.slice.call(arguments);
