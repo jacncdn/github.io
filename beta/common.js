@@ -498,8 +498,8 @@ const CustomCallbacks = {
     }, 100, 10000);
     
     if (GUEST_WARN) {
-      whisper(GUEST_MSG);
       GUEST_WARN = false;
+      setTimeout(() => whisper(GUEST_MSG), 20000);
     }
   },
 
