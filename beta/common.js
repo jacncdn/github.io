@@ -585,7 +585,7 @@ const overrideEmit = function() {
       let args = Array.prototype.slice.call(arguments);
       
       if ((args[0] === "chatMsg") || (args[0] === "pm")) {
-        if ((!GUESTS_ALLOWED) && (window.CLIENT.rank < Rank.Member)) { 
+        if ((!GUESTS_CHAT) && (window.CLIENT.rank < Rank.Member)) { 
           whisper(`NOTICE: You must <a href="https://cytu.be/register">REGISTER</a> to chat in this room.`);
           return;
         }
@@ -732,7 +732,7 @@ $(document).ready(function() {
       .on("click", function() { window.socket.emit("playNext"); });
   }
   
-  if ((!GUESTS_ALLOWED) && (window.CLIENT.rank < Rank.Member)) { $("#pmbar").remove(); }
+  if ((!GUESTS_CHAT) && (window.CLIENT.rank < Rank.Member)) { $("#pmbar").remove(); }
 
   // --------------------------------------------------------------------------------
   makeNoRefererMeta();
