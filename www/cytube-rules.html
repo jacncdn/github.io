@@ -1,10 +1,4 @@
-<!-- motd-btns.html Start -->
-
-<div style="float:right;padding-right:33%">
-  <button id="rulesbtn" class="btn btn-default" data-toggle="modal" data-target="#rules">Rules</button>  
-  <button id="roombtn" class="btn btn-default" data-toggle="modal" data-target="#rooms">Rooms</button>
-</div>
-<div id="rules" class="modal fade motd-modal" role="dialog" style="display:none">
+<div id="cytube_rules" class="modal fade" role="dialog" style="display:none" tabindex="-1"  aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -42,46 +36,3 @@
     </div>
   </div>
 </div>
-<div id="rooms" class="modal fade motd-modal" role="dialog" style="display:none">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button class="close" data-dismiss="modal">X</button>
-        <h3 class="modal-title">Rooms</h3>
-      </div>
-      <div class="modal-body" style="margin: auto; width: 96%">
-      <h3>XXX</h3>
-      <div class="rooms" id="cytube_x"></div>
-      
-      <h3>Kinks - PMV, Bi, Gay, Trans</h3>
-      <div class="rooms" id="cytube_k"></div>
-
-      <h3>PG - Softcore</h3>
-      <div class="rooms" id="cytube_pg"></div>
-      
-      <h3>Non-Nudes</h3>
-      <div class="rooms" id="cytube_nn"></div>
-      
-      <h3>Try Ons</h3>
-      <div class="rooms" id="cytube_to"></div>
-      
-      <h3>Other Links</h3>
-      <div class="rooms" id="otherlists"></div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<script>
-$('#roombtn').on('click', function() {
-  debugData('motd-btns.load.rooms');
-  $('#cytube_x').load("https://jacncdn.github.io/inc/cytube_x.html");
-  $('#cytube_k').load("https://jacncdn.github.io/inc/cytube_k.html");
-  $('#cytube_pg').load("https://jacncdn.github.io/inc/cytube_pg.html");
-  $('#cytube_nn').load("https://jacncdn.github.io/inc/cytube_nn.html");
-  $('#cytube_to').load("https://jacncdn.github.io/inc/cytube_to.html");
-  $('#otherlists').load("https://jacncdn.github.io/inc/otherlists.html");
-});
-</script>
-
-<!-- motd-btns.html End -->
