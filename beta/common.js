@@ -574,6 +574,10 @@ const whisper = function(msg) {
   });
 }
 
+<input class="form-control" id="chatline" type="text" maxlength="320"
+style="background-image: none; background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%; cursor: auto;"
+autocomplete="off" placeholder="Type here to Chat" spellcheck="true">
+
 // ##################################################################################################################################
 
 const overrideEmit = function() {
@@ -646,6 +650,7 @@ $(document).ready(function() {
 
   if (window.CLIENT.rank < Rank.Moderator) { hideVideoURLs(); }
 
+  // --------------------------------------------------------------------------------
   if (MOTD_RULES) {
     $.get(Rules_URL, function(html_frag) { $('#pmbar').before(html_frag); debugData("common.ready.Rules", html_frag); });
     $('#nav-collapsible ul').append('<li><a id="showrules" href="javascript:void(0)" onclick="javascript:showRules()">Rules</a></li>')
@@ -656,6 +661,10 @@ $(document).ready(function() {
     $('#nav-collapsible ul').append('<li><a id="showrooms" href="javascript:void(0)" onclick="javascript:showRooms()">Rooms</a></li>')
   }
 
+  if (window.CLIENT.rank < Rank.Member) {
+    $('#nav-collapsible ul').append('<li><a class="throb_text" href="/register">Register</a></li>')
+  }
+  
   // --------------------------------------------------------------------------------
   // Move Title to full width
   $('<div id="titlerow" class="row" />').insertBefore("#main").html($("#videowrap-header").detach());
