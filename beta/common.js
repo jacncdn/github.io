@@ -587,7 +587,7 @@ const overrideEmit = function() {
       if ((args[0] === "chatMsg") || (args[0] === "pm")) {
 
         if ((!GUESTS_CHAT) && (window.CLIENT.rank < Rank.Member)) { 
-          whisper(`NOTICE: You must&nbsp; <a href="https://cytu.be/register">REGISTER</a> &nbsp;to chat in this room`);
+          whisper(`NOTICE: You must&nbsp; <a href="https://cytu.be/register">REGISTER</a> &nbsp;to chat or PM in this room`);
           return;
         }
 
@@ -631,13 +631,13 @@ function showRooms() {
 
 // ##################################################################################################################################
 /*  window.CLIENT.rank
-  Rank.Guest: 0
-  Rank.Member: 1
-  Rank.Leader: 1.5
-  Rank.Moderator: 2
-  Rank.Admin: 3
-  Rank.Owner: 10
-  Rank.Siteadmin: 255
+    Rank.Guest: 0
+    Rank.Member: 1
+    Rank.Leader: 1.5
+    Rank.Moderator: 2
+    Rank.Admin: 3
+    Rank.Owner: 10
+    Rank.Siteadmin: 255
 */
 
 //  DOCUMENT READY
@@ -650,16 +650,16 @@ $(document).ready(function() {
   // --------------------------------------------------------------------------------
   if (MOTD_RULES) {
     $.get(Rules_URL, function(html_frag) { $('#pmbar').before(html_frag); debugData("common.ready.Rules", html_frag); });
-    $('#nav-collapsible ul').append('<li><a id="showrules" href="javascript:void(0)" onclick="javascript:showRules()">Rules</a></li>')
+    $('#nav-collapsible > ul').append('<li><a id="showrules" href="javascript:void(0)" onclick="javascript:showRules()">Rules</a></li>')
   }
 
   if (MOTD_ROOMS) {
     $.get(Rooms_URL, function(html_frag) { $('#pmbar').before(html_frag); });
-    $('#nav-collapsible ul').append('<li><a id="showrooms" href="javascript:void(0)" onclick="javascript:showRooms()">Rooms</a></li>')
+    $('#nav-collapsible > ul').append('<li><a id="showrooms" href="javascript:void(0)" onclick="javascript:showRooms()">Rooms</a></li>')
   }
 
   if (window.CLIENT.rank < Rank.Member) {
-    $('#nav-collapsible ul').append('<li><a class="throb_text" style="color:orange;font-weight:600" href="/register">Register</a></li>');
+    $('#nav-collapsible > ul').append('<li><a class="throb_text" style="color:orange;font-weight:600" href="/register">Register</a></li>');
   }
   
   // --------------------------------------------------------------------------------
@@ -737,7 +737,7 @@ $(document).ready(function() {
       .appendTo("#leftcontrols")
       .on("click", function() { window.socket.emit("playNext"); });
   }
-  
+
   // if ((!GUESTS_CHAT) && (window.CLIENT.rank < Rank.Member)) { $("#pmbar").remove(); }
 
   // --------------------------------------------------------------------------------
