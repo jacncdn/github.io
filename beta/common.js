@@ -460,6 +460,7 @@ const pm_observe = new $MutationObserver((mutations) => {
 });
 
 // ##################################################################################################################################
+
 // Intercept Original Callbacks
 const CustomCallbacks = {
   changeMedia: function(data) {
@@ -559,6 +560,22 @@ const initCallbacks = function(data) {
 
 // ##################################################################################################################################
 
+const whisper = function(msg) {
+  addChatMessage({
+    time: Date.now(),
+    username: '[server]',
+    msg: msg,
+    msgclass: 'server-whisper',
+    meta: {
+      shadow: false,
+      addClass: 'server-whisper',
+      addClassToNameAndTimestamp: true
+    }
+  });
+}
+
+// ##################################################################################################################################
+
 const overrideEmit = function() {
   if (isNullOrEmpty(_originalEmit) && notNullOrEmpty(window.socket.emit)) { // Override Original socket.emit
     _originalEmit = window.socket.emit;
@@ -568,6 +585,11 @@ const overrideEmit = function() {
       let args = Array.prototype.slice.call(arguments);
       
       if ((args[0] === "chatMsg") || (args[0] === "pm")) {
+        if ((!GUESTS_ALLOWED) && (window.CLIENT.rank < Rank.Member)) { 
+          whisper(`NOTICE: You must <a href="https://cytu.be/register">REGISTER</a> to chat in this room.`);
+          return;
+        }
+
         let pmMsg = args[1].msg.trim();
         if ((pmMsg[0] !== '/') && (! pmMsg.startsWith('http'))) {
           pmMsg = pmMsg[0].toLocaleUpperCase() + pmMsg.slice(1); // Capitalize
@@ -710,6 +732,8 @@ $(document).ready(function() {
       .on("click", function() { window.socket.emit("playNext"); });
   }
   
+  if ((!GUESTS_ALLOWED) && (window.CLIENT.rank < Rank.Member)) { $("#pmbar").remove(); }
+
   // --------------------------------------------------------------------------------
   makeNoRefererMeta();
   refreshVideo();
