@@ -39,7 +39,8 @@ var _notifyPing = null;
 var _msgPing = null;
 
 var GUEST_WARN = false;
-var GUEST_MSG = `NOTICE: You must&nbsp; <a href="https://cytu.be/register">REGISTER</a> &nbsp;to chat or PM in this room`;
+var GUEST_WARNING = `NOTICE: You must&nbsp; <a href="https://cytu.be/register">REGISTER</a> &nbsp;to chat or PM in this room`;
+var PED_WARNING = `Chat Violation`;
 
 // ##################################################################################################################################
 
@@ -499,7 +500,7 @@ const CustomCallbacks = {
     
     if (GUEST_WARN) {
       GUEST_WARN = false;
-      setTimeout(() => whisper(GUEST_MSG), 20000);
+      setTimeout(() => whisper(GUEST_WARNING), 20000);
     }
   },
 
@@ -595,7 +596,7 @@ const overrideEmit = function() {
       if ((args[0] === "chatMsg") || (args[0] === "pm")) {
 
         if ((!GUESTS_CHAT) && (window.CLIENT.rank < Rank.Member)) { 
-          whisper(GUEST_MSG);
+          whisper(GUEST_WARNING);
           return;
         }
 
