@@ -18,7 +18,14 @@
 {"name":"tween","source":"tween","flags":"gi","replace":"teen","active":true,"filterlinks":false},
 {"name":"udder","source":"udder","flags":"gi","replace":"boob","active":true,"filterlinks":false},
 {"name":"whore","source":"(^|\\W)w\\W{0,3}h\\W{0,3}[o0]\\W{0,3}r\\W{0,3}[e3]","flags":"gi","replace":"\\1slut","active":true,"filterlinks":false},
-{"name":"young","source":"(young|yung|yng)","flags":"gi","replace":"barely-legal","active":true,"filterlinks":false},
+{"name":"young","source":"(younger|young|yung|yng)","flags":"gi","replace":"barely-legal","active":true,"filterlinks":false},
+
+{"name":"age15","source":"(^|\\W)15($|\\W)","replace":"fif.teen","flags":"gi","active":true,"filterlinks":false},
+{"name":"age14","source":"(^|\\W)14($|\\W)","replace":"four.teen","flags":"gi","active":true,"filterlinks":false},
+{"name":"age13","source":"(^|\\W)13($|\\W)","replace":"thir.teen","flags":"gi","active":true,"filterlinks":false},
+{"name":"age12","source":"(^|\\W)12($|\\W)","replace":"barely-teen","flags":"gi","active":true,"filterlinks":false},
+{"name":"age11","source":"(^|\\W)11($|\\W)","replace":"barely-teen","flags":"gi","active":true,"filterlinks":false},
+{"name":"age10","source":"(^|\\W)10($|\\W)","replace":"barely-teen","flags":"gi","active":true,"filterlinks":false},
 
 {"name":"lisa1","active":true,"filterlinks":false,"flags":"gi","source":"LisaQT","replace":"LisaQT"},
 {"name":"lisa2","active":true,"filterlinks":false,"flags":"gi",
