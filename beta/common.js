@@ -574,10 +574,6 @@ const whisper = function(msg) {
   });
 }
 
-<input class="form-control" id="chatline" type="text" maxlength="320"
-style="background-image: none; background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%; cursor: auto;"
-autocomplete="off" placeholder="Type here to Chat" spellcheck="true">
-
 // ##################################################################################################################################
 
 const overrideEmit = function() {
