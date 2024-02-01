@@ -10,7 +10,9 @@ var BOT_NICK = 'LarryFlynt';
 
 var ALLOW_GUESTS = true;
 var AGE_RESTRICT = false;
-var MOTD_BTNS = false;
+
+var MOTD_RULES = false;
+var MOTD_ROOMS = false;
 
 // ##################################################################################################################################
 if (!window[CHANNEL.name]) { window[CHANNEL.name] = {}; }

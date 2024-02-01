@@ -23,6 +23,10 @@ body {
   overflow-x: hidden;
 }
 
+#footer, div#nav-collapsible.collapse.navbar-collapse {
+  background-image: linear-gradient(to bottom, #3c3c3c, #111) !important;
+}
+
 .container { width: 100% }
 .container, .container-fluid {
   padding-left: 2px;

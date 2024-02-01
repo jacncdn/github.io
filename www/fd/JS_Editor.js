@@ -10,6 +10,9 @@ var Room_ID = 'fd';
 var ALLOW_GUESTS = true;
 var AGE_RESTRICT = true;
 
+var MOTD_RULES = true;
+var MOTD_ROOMS = false;
+
 var BOT_NICK = "LarryFlynt";
 
 // ##################################################################################################################################

@@ -389,36 +389,6 @@ const cacheEmotes = function() {
 
 // ##################################################################################################################################
 
-window[CHANNEL.name].commonMotd = "";
-
-const setCustomMOTD = function() {
-  CHANNEL.motd += window[CHANNEL.name].commonMotd;
-  $("#motd").html(CHANNEL.motd);
-
-  if (MOTD_MSG === null) { return; }
-  if (MOTD_MSG.length < 1) { return; }
-  $("#motd div:first").append(MOTD_MSG);
-};
-
-const getCustomMOTD = function() {
-  $.ajax({
-    url: Buttons_URL,
-    type: 'GET',
-    datatype: 'text',
-    cache: false,
-    error: function(data) {
-      errorData('common.getCustomMOTD Error', data.status + ": " + data.statusText);
-    },
-    success: function(data) {
-      debugData("common.getCustomMOTD", data);
-      window[CHANNEL.name].commonMotd = data;
-      setCustomMOTD();
-    },
-  });
-};
-
-// ##################################################################################################################################
-
 const getFooter = function() {
   $.ajax({
     url: Footer_URL,
@@ -514,12 +484,6 @@ const CustomCallbacks = {
     _originalCallbacks.pm(data);
   },
   
-  setMotd: function(data) {
-    debugData("CustomCallbacks.setMotd", data);
-    _originalCallbacks.setMotd(data);
-    setCustomMOTD();
-  },
-  
   // --------------------------------------------------------------------------------
   addUser: function(data) { // Enhanced PM Box
     debugData("CustomCallbacks.addUser", data);
@@ -585,6 +549,20 @@ const overrideEmit = function() {
 };
 
 // ##################################################################################################################################
+
+function showRules() { $("#cytube_rules").modal(); }
+
+function showRooms() {
+  $("#cytube_x").load(Root_URL + "inc/cytube_x.html");
+  $("#cytube_k").load(Root_URL + "inc/cytube_k.html");
+  $("#cytube_pg").load(Root_URL + "inc/cytube_pg.html");
+  $("#cytube_nn").load(Root_URL + "inc/cytube_nn.html");
+  $("#cytube_to").load(Root_URL + "inc/cytube_to.html");
+  $("#otherlists").load(Root_URL + "inc/otherlists.html");
+  $("#cytube_rooms").modal();
+}
+
+// ##################################################################################################################################
 /*  window.CLIENT.rank
   Rank.Guest: 0
   Rank.Member: 1
@@ -602,7 +580,15 @@ $(document).ready(function() {
 
   if (window.CLIENT.rank < Rank.Moderator) { hideVideoURLs(); }
   
-  if (MOTD_BTNS) { getCustomMOTD(); }
+  if (MOTD_RULES) {
+    $.get(Rules_URL, function(html_frag) { $('#pmbar').before(html_frag); debugData("common.ready.Rules", html_frag); });
+    $('#nav-collapsible ul').append('<li><a id="showrules" href="javascript:void(0)" onclick="javascript:showRules()">Rules</a></li>')
+  }
+
+  if (MOTD_ROOMS) {
+    $.get(Rooms_URL, function(html_frag) { $('#pmbar').before(html_frag); });
+    $('#nav-collapsible ul').append('<li><a id="showrooms" href="javascript:void(0)" onclick="javascript:showRooms()">Rooms</a></li>')
+  }
 
   // --------------------------------------------------------------------------------
   // Move Title to full width

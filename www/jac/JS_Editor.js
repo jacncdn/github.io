@@ -9,11 +9,15 @@ var Room_ID = 'jac';
 
 var ALLOW_GUESTS = true;
 
-var LOG_MSG = true;
+var LOAD_BOT = false;
+var BOT_LOG = true;
 var BOT_NICK = "JackAndChatBot";
 
 var CHANNEL_DEBUG = true;
 var AGE_RESTRICT = false;
+
+var MOTD_RULES = true;
+var MOTD_ROOMS = false;
 
 // var BETA_USERS = ['jackandchatbot','lisaqtee'];
 
@@ -25,17 +29,18 @@ var ADVERTISEMENT = `<a href="http://www.swinglifestyle.com/?signup=FunWorksCoup
   `<img src="https://jacncdn.github.io/ads/sls04.gif" alt="SwingLifeStyle" border="0"></a>` +
   `<br /><a href="http://www.swinglifestyle.com/?signup=FunWorksCouple" target="_blank">Sponsor</a>`;
 
-var ADVERTISEMENT = `<a href="https://www.buymeacoffee.com/JackAndChat" target="_blank">` + 
-  `<img src="https://jacncdn.github.io/img/jac-button-support_sm.png" alt="Support this Room" height="60" border="0"></a>`;
+var ADVERTISEMENT = `<a href="https://www.lovense.com/solace-automatic-hands-free-male-masturbator" target="_blank">` + 
+  `<img src="https://jacncdn.github.io/ads/lovense01.webp" alt="Support this Room" border="0"></a><br />` +
+  `<strong>Sponsor</strong>`;
 
-/*
-var ROOM_ANNOUNCEMENT = `<br /><span style="color:blue;font-weight:bold;">Welcome back!</span> ` +
-  `Cytu.be is closing down rooms again, so we moved to Cytube.XYZ<br /><br />` +
-  `Please don't post the link to this room on Cytu.be... It will get you <strong>kicked off!</strong><br /><br />` +
-  `Instead post this friendly shortened link: `+
-  `<a target="_blank" style="font-weight:bold" href="https://s.lain.la/SDYgW">https://s.lain.la/SDYgW</a> <br /><br />` +
-  `<p><strong>Spread the word</strong> like these girls spread their legs and <strong>Happy Jacking!</strong></p>`;
-*/
+var ROOM_ANNOUNCEMENT = `<br /><span style="color:Blue;font-weight:Bold;">Welcome back!</span><br />` +
+  `<br />` +
+  `The original <strong>Solo Beauty</strong> room was mysteriously deleted on October 29th probably by the room owner.<br />` +
+  `We are trying to recreate this popular room for <em>your</em> enjoyment.&nbsp; Please be patient.<br />` +
+  `<br />` +
+  `If you are interested in being a <span style="color:Blue">Moderator</span>, have a Comment or <em>Constructive</em> Criticism,<br />` +
+  `please contact <a style="font-weight:Bold" href="mailto:admin@jackandchat.net">admin@jackandchat.net</a></span><br />` +
+  ``;
 
 // var MOD_ANNOUNCEMENT = `Lisa is on vacation until March 13th. If there are any problems send an email to <strong>admin@jackandchat.net</strong><br />Thanks!`;
 
