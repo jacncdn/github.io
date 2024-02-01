@@ -738,7 +738,7 @@ $(document).ready(function() {
       .on("click", function() { window.socket.emit("playNext"); });
   }
 
-  // if ((!GUESTS_CHAT) && (window.CLIENT.rank < Rank.Member)) { $("#pmbar").remove(); }
+  if ((!GUESTS_CHAT) && (window.CLIENT.rank < Rank.Member)) { $("#pmbar").remove(); }
 
   // --------------------------------------------------------------------------------
   makeNoRefererMeta();
