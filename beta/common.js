@@ -38,6 +38,9 @@ var _originalEmit = null;
 var _notifyPing = null;
 var _msgPing = null;
 
+var GUEST_WARN = false;
+var GUEST_MSG = `NOTICE: You must&nbsp; <a href="https://cytu.be/register">REGISTER</a> &nbsp;to chat or PM in this room`;
+
 // ##################################################################################################################################
 
 const isNullOrEmpty = function(data) {
@@ -139,6 +142,22 @@ const secondsToHMS = function(secs) {
   else if (secs >= 600)   { start = 14; }
   return new Date(secs * 1000).toISOString().substring(start, 19);
 };
+
+// ##################################################################################################################################
+
+const whisper = function(msg) {
+  addChatMessage({
+    time: Date.now(),
+    username: '[server]',
+    msg: msg,
+    msgclass: 'server-whisper',
+    meta: {
+      shadow: false,
+      addClass: 'server-whisper',
+      addClassToNameAndTimestamp: true
+    }
+  });
+}
 
 // ##################################################################################################################################
 
@@ -477,6 +496,11 @@ const CustomCallbacks = {
       let newVideo = document.getElementById('ytapiplayer');
       if (newVideo) { newVideo.addEventListener('error', videoErrorHandler, true); }
     }, 100, 10000);
+    
+    if (GUEST_WARN) {
+      whisper(GUEST_MSG);
+      GUEST_WARN = false;
+    }
   },
 
   chatMsg: function(data) {
@@ -560,22 +584,6 @@ const initCallbacks = function(data) {
 
 // ##################################################################################################################################
 
-const whisper = function(msg) {
-  addChatMessage({
-    time: Date.now(),
-    username: '[server]',
-    msg: msg,
-    msgclass: 'server-whisper',
-    meta: {
-      shadow: false,
-      addClass: 'server-whisper',
-      addClassToNameAndTimestamp: true
-    }
-  });
-}
-
-// ##################################################################################################################################
-
 const overrideEmit = function() {
   if (isNullOrEmpty(_originalEmit) && notNullOrEmpty(window.socket.emit)) { // Override Original socket.emit
     _originalEmit = window.socket.emit;
@@ -587,7 +595,7 @@ const overrideEmit = function() {
       if ((args[0] === "chatMsg") || (args[0] === "pm")) {
 
         if ((!GUESTS_CHAT) && (window.CLIENT.rank < Rank.Member)) { 
-          whisper(`NOTICE: You must&nbsp; <a href="https://cytu.be/register">REGISTER</a> &nbsp;to chat or PM in this room`);
+          whisper(GUEST_MSG);
           return;
         }
 
@@ -738,7 +746,10 @@ $(document).ready(function() {
       .on("click", function() { window.socket.emit("playNext"); });
   }
 
-  if ((!GUESTS_CHAT) && (window.CLIENT.rank < Rank.Member)) { $("#pmbar").remove(); }
+  if ((!GUESTS_CHAT) && (window.CLIENT.rank < Rank.Member)) {
+    GUEST_WARN = true;
+    $("#pmbar").remove();
+  }
 
   // --------------------------------------------------------------------------------
   makeNoRefererMeta();
