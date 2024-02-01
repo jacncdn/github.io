@@ -16,16 +16,6 @@
 {"name":"udder","source":"udder","replace":"boob","flags":"gi","active":true,"filterlinks":false},
 {"name":"whore","source":"(^|\\W)w\\W{0,3}h\\W{0,3}[o0]\\W{0,3}r\\W{0,3}[e3]","replace":"\\1slut","flags":"gi","active":true,"filterlinks":false},
 
-{"name":"age10","source":"(^|\\W)10(ish)?($|\\W)","replace":"\\1barely~teen\\3","flags":"gi","active":true,"filterlinks":false},
-{"name":"age11","source":"(^|\\W)11(ish)?($|\\W)","replace":"\\1barely~teen\\3","flags":"gi","active":true,"filterlinks":false},
-{"name":"age12","source":"(^|\\W)12(ish)?($|\\W)","replace":"\\1barely~teen\\3","flags":"gi","active":true,"filterlinks":false},
-{"name":"age13","source":"(^|\\W)13(ish)?($|\\W)","replace":"\\1barely~teen\\3","flags":"gi","active":true,"filterlinks":false},
-{"name":"age14","source":"(^|\\W)14(ish)?($|\\W)","replace":"\\1four~teen\\3","flags":"gi","active":true,"filterlinks":false},
-{"name":"age15","source":"(^|\\W)15(ish)?($|\\W)","replace":"\\1fif~teen\\3","flags":"gi","active":true,"filterlinks":false},
-{"name":"cuties","source":"(^|\\W)cutie","replace":"\\1~teen","flags":"gi","active":true,"filterlinks":false},
-{"name":"tween","source":"(^|\\W)tween","replace":"\\1~teen","flags":"gi","active":true,"filterlinks":false},
-{"name":"young","source":"(^|\\W)(younger|young|yung|yng)($|\\W)","replace":"\\1barely~legal\\3","flags":"gi","active":true,"filterlinks":false},
-
 {"name":"lisa1","active":true,"filterlinks":false,"flags":"gi","source":"LisaQT","replace":"LisaQT"},
 {"name":"lisa2","active":true,"filterlinks":false,"flags":"gi",
   "source":"(^|\\W)l\\W{0,3}i\\W{0,3}s\\W{0,3}[a@](\\w{0,6})",
@@ -62,6 +52,15 @@
 {"name":"W_pead0","source":"peado","replace":"pead0","flags":"gi","active":true,"filterlinks":false},
 {"name":"W_ped0","source":"pedo","replace":"ped0","flags":"gi","active":true,"filterlinks":false},
 {"name":"X_rape","source":"(^|\\W)rape","replace":"\\1r@pe","flags":"gi","active":true,"filterlinks":false},
+
+{"name":"W_age10","source":"(^|\\W)10(ish)?($|\\W)","replace":"\\1<span style='color:red'>barely~teen</span>\\3","flags":"gi","active":true,"filterlinks":false},
+{"name":"W_age11","source":"(^|\\W)11(ish)?($|\\W)","replace":"\\1<span style='color:red'>barely~teen</span>\\3","flags":"gi","active":true,"filterlinks":false},
+{"name":"W_age12","source":"(^|\\W)12(ish)?($|\\W)","replace":"\\1<span style='color:red'>barely~teen</span>\\3","flags":"gi","active":true,"filterlinks":false},
+{"name":"W_age13","source":"(^|\\W)13(ish)?($|\\W)","replace":"\\1<span style='color:red'>barely~teen</span>\\3","flags":"gi","active":true,"filterlinks":false},
+{"name":"W_age14","source":"(^|\\W)14(ish)?($|\\W)","replace":"\\1<span style='color:red'>four~teen</span>\\3","flags":"gi","active":true,"filterlinks":false},
+{"name":"W_age15","source":"(^|\\W)15(ish)?($|\\W)","replace":"\\1<span style='color:red'>fif~teen</span>\\3","flags":"gi","active":true,"filterlinks":false},
+{"name":"W_tween","source":"(^|\\W)tween","replace":"\\1~teen","flags":"gi","active":true,"filterlinks":false},
+{"name":"W_young","source":"(^|\\W)(younger|young|yung|yng)($|\\W)","replace":"\\1<span style='color:red'>barely~legal</span>\\3","flags":"gi","active":true,"filterlinks":false},
 
 {"name":"Y_blue","source":":blue:(.*)","replace":"<span style='color:DeepSkyBlue'>\\1</span>","flags":"gi","active":true,"filterlinks":false},
 {"name":"Y_bold","source":"_(.+?)_","replace":"<strong>\\1</strong>","flags":"gi","active":true,"filterlinks":false},
