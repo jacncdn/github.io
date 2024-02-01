@@ -700,6 +700,7 @@ $(document).ready(function() {
         $messagebuffer.find("[class^=chat-msg-\\\\\\$server]").each(function() { $(this).remove(); });
         $messagebuffer.find("[class^=chat-msg-\\\\\\$voteskip]").each(function() { $(this).remove(); });
         $messagebuffer.find("[class^=server-msg]").each(function() { $(this).remove(); });
+        $messagebuffer.find("[class^=poll-notify]").each(function() { $(this).remove(); });
         $(".chat-msg-Video:not(:last)").each(function() { $(this).remove(); });
         $(".chat-msg-" + BOT_NICK).each(function() { $(this).remove(); });
       });

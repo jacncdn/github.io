@@ -39,8 +39,8 @@ if (typeof MOD_ANNOUNCEMENT === "undefined") { var MOD_ANNOUNCEMENT = ""; }
 if (typeof ADVERTISEMENT === "undefined") { var ADVERTISEMENT = ""; }
 
 if (typeof MOTD_MSG === "undefined") { var MOTD_MSG = ""; }
-if (typeof MOTD_RULES === "undefined") { var MOTD_RULES = false; }
-if (typeof MOTD_ROOMS === "undefined") { var MOTD_ROOMS = false; }
+if (typeof MOTD_RULES === "undefined") { var MOTD_RULES = true; }
+if (typeof MOTD_ROOMS === "undefined") { var MOTD_ROOMS = true; }
 
 if (typeof LOG_MSG === "undefined") { var LOG_MSG = (window.CLIENT.rank < Rank.Owner); }
 if (window.CLIENT.rank > Rank.Moderator) { LOG_MSG = false; } // NOT Owner+
