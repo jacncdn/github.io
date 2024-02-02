@@ -1,10 +1,9 @@
 /*!
 **|  CyTube Enhancements: Common
-**|  Version: 2024.02.01
+**|  Version: 2024.02.02
 **|
 **@preserve
 */
-"use strict";
 
 // https://jshint.com/docs/options/
 // jshint curly:true, eqeqeq:true, esversion:10, freeze:true, futurehostile:true, latedef:true, maxerr:10, nocomma:true
@@ -15,14 +14,18 @@
 // jshint undef:true
 
 /* globals socket, CHANNEL, CLIENT, Rank, CHATTHROTTLE, IGNORED, USEROPTS, initPm, pingMessage, formatChatMessage, Callbacks */
-/* globals removeVideo, makeAlert, videojs, CHANNEL_DEBUG, PLAYER, BOT_NICK, LOG_MSG, MOTD_MSG, PREFIX_INFO, PREFIX_RELOAD */
+/* globals addChatMessage, removeVideo, makeAlert, videojs, CHANNEL_DEBUG, PLAYER, BOT_NICK, LOG_MSG, MOTD_MSG, PREFIX_INFO, PREFIX_RELOAD */
 /* globals Buttons_URL, Footer_URL, Favicon_URL, START, ROOM_ANNOUNCEMENT, MOD_ANNOUNCEMENT, ADVERTISEMENT */
+/* globals GUESTS_CHAT, MOTD_ROOMS, MOTD_RULES, Rooms_URL, Rules_URL, Root_URL */
+
+"use strict";
 
 if (!window[CHANNEL.name]) { window[CHANNEL.name] = {}; }
 
 // Global Variables
-var messageExpireTime = 1000 * 60 * 2;
-var chatExpireTime = 1000 * 60 * 60 * 2;
+var messageExpireTime = 1000 * 60 * 2; // 2 Minutes
+var chatExpireTime = 1000 * 60 * 60 * 2; // 2 Hours
+var previewTime = 1000 * 60 * 5; // 5 Minutes
 
 var $MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
 var $chatline = $("#chatline");
@@ -39,7 +42,7 @@ var _notifyPing = null;
 var _msgPing = null;
 
 var GUEST_WARN = false;
-var GUEST_WARNING = `NOTICE: You must&nbsp; <a href="https://cytu.be/register">REGISTER</a> &nbsp;to chat or PM in this room`;
+var GUEST_WARNING = `NOTICE: You are in Preview mode. You must&nbsp; <a href="https://cytu.be/register">REGISTER</a> &nbsp;to chat or PM in this room.`;
 var PED_WARNING = `Chat Violation`;
 
 // ##################################################################################################################################
@@ -60,7 +63,7 @@ const notNullOrEmpty = function(data) {
 // ----------------------------------------------------------------------------------------------------------------------------------
 function Sleep(sleepMS) {
   // USE: await Sleep(2000);
-  return new Promise(resolve => setTimeout(resolve, sleepMS));
+  return new Promise(function(resolve) { setTimeout(resolve, sleepMS); });
 }
 
 // ----------------------------------------------------------------------------------------------------------------------------------
@@ -109,6 +112,11 @@ const debugData = function(desc, data) {
   window.console.debug(formatConsoleMsg(desc, data));
 };
 
+// Send warning msg to console
+const warnData = function(desc, data) {
+  window.console.warn(formatConsoleMsg(desc, data));
+};
+
 // Send error msg to console
 const errorData = function(desc, data) {
   window.console.error(formatConsoleMsg(desc, data));
@@ -155,10 +163,10 @@ const whisper = function(msg) {
     meta: {
       shadow: false,
       addClass: 'server-whisper',
-      addClassToNameAndTimestamp: true
-    }
+      addClassToNameAndTimestamp: true,
+    },
   });
-}
+};
 
 // ##################################################################################################################################
 
@@ -171,7 +179,7 @@ const waitForElement = function(selector, callback, checkFreqMs, timeoutMs) {
       return;
     }
     else {
-      setTimeout(() => {
+      setTimeout(function() {
         if (timeoutMs && ((Date.now() - startTimeMs) > timeoutMs)) { return; }
         loopSearch();
       }, checkFreqMs);
@@ -250,7 +258,7 @@ async function notifyMe(chan, title, msg) {
     silent: false,
   });
 
-  document.addEventListener("visibilitychange", (evt) => {
+  document.addEventListener("visibilitychange", function(evt) {
       try {
         debugData("common.notifyMe.visibilitychange", evt);
         notify.close();
@@ -263,7 +271,7 @@ async function notifyMe(chan, title, msg) {
     notify.close();
   };
 
-  setTimeout(() => notify.close(), 20000);
+  setTimeout(function() { notify.close(); }, 20000);
 }
 
 // ##################################################################################################################################
@@ -294,7 +302,7 @@ const modAnnounce = function(msg) {
 
 // Remove Video URLs
 const hideVideoURLs = function() {
-  setTimeout(() => {
+  setTimeout(function() {
     $(".qe_title").each(function(idx,data) {data.replaceWith(data.text);});
     if (window.CLIENT.rank > Rank.Member) {
       $("#queue li.queue_entry div.btn-group").hide();
@@ -378,10 +386,11 @@ const autoMsgExpire = function() {
   }
   
   // Remove Expired Messages
-  $messagebuffer.find("div[data-expire]").each(() => {
+  $messagebuffer.find("div[data-expire]").each(function() {
       if (Date.now() > parseInt($(this).attr("data-expire"))) { 
         $(this).remove();
-      }});
+    }
+  });
 
   if (document.visibilityState === "hidden") { // delay if hidden
     $messagebuffer.find("div[data-expire]").each(function() {
@@ -448,14 +457,15 @@ const CustomCallbacks = {
     VIDEO_TITLE.duration = data.seconds;
     setVideoTitle();
 
-    waitForElement('#ytapiplayer', () => {
+    waitForElement('#ytapiplayer', function() {
       let newVideo = document.getElementById('ytapiplayer');
       if (newVideo) { newVideo.addEventListener('error', videoErrorHandler, true); }
     }, 100, 10000);
     
     if (GUEST_WARN) {
       GUEST_WARN = false;
-      setTimeout(() => whisper(GUEST_WARNING), 20000);
+      setTimeout(function() { whisper(GUEST_WARNING); }, 20000);
+      setTimeout(function() { window.location.replace('/register'); }, previewTime);
     }
   },
 
@@ -517,7 +527,7 @@ const CustomCallbacks = {
     $("#pm-" + data.name).attr("id", "#pm-" + data.name); // Make it easier to find
     $("#pm-" + data.name + " .panel-heading").removeClass("pm-gone");
     if (BOT_NICK.toLowerCase() !== CLIENT.name.toLowerCase()) {
-      setTimeout(() => { $(".userlist_owner:contains('"+ BOT_NICK + "')").parent().css("display","none"); }, 6000);
+      setTimeout(function() { $(".userlist_owner:contains('"+ BOT_NICK + "')").parent().css("display","none"); }, 6000);
     }
   },
   
@@ -614,12 +624,12 @@ $(document).ready(function() {
   // --------------------------------------------------------------------------------
   if (MOTD_RULES) {
     $.get(Rules_URL, function(html_frag) { $('#pmbar').before(html_frag); debugData("common.ready.Rules", html_frag); });
-    $('#nav-collapsible > ul').append('<li><a id="showrules" href="javascript:void(0)" onclick="javascript:showRules()">Rules</a></li>')
+    $('#nav-collapsible > ul').append('<li><a id="showrules" href="javascript:void(0)" onclick="javascript:showRules()">Rules</a></li>');
   }
 
   if (MOTD_ROOMS) {
     $.get(Rooms_URL, function(html_frag) { $('#pmbar').before(html_frag); });
-    $('#nav-collapsible > ul').append('<li><a id="showrooms" href="javascript:void(0)" onclick="javascript:showRooms()">Rooms</a></li>')
+    $('#nav-collapsible > ul').append('<li><a id="showrooms" href="javascript:void(0)" onclick="javascript:showRooms()">Rooms</a></li>');
   }
 
   if (window.CLIENT.rank < Rank.Member) {
@@ -640,7 +650,7 @@ $(document).ready(function() {
   // --------------------------------------------------------------------------------
   if (ROOM_ANNOUNCEMENT !== null) { roomAnnounce(ROOM_ANNOUNCEMENT); }
   if (MOD_ANNOUNCEMENT !== null) { modAnnounce(MOD_ANNOUNCEMENT); }
-  setTimeout(() => {$("#announcements").fadeOut(800, () => {$(this).remove();});}, 90000);
+  setTimeout(function() {$("#announcements").fadeOut(800, function() {$(this).remove();});}, 90000);
 
   if (notNullOrEmpty(ADVERTISEMENT) &&
       (window.CLIENT.rank < Rank.Moderator)) { 
@@ -648,10 +658,10 @@ $(document).ready(function() {
     // $("#customembed").before('<div id="adwrap" class="col-lg-7 col-md-7">' + ADVERTISEMENT + '</div>');
   }
 
-  $(window).on("focus", () => { $("#chatline").focus(); });
+  $(window).on("focus", function() { $("#chatline").focus(); });
 
   // --------------------------------------------------------------------------------
-  window.setInterval(() => {  // Check every second
+  window.setInterval(function() {  // Check every second
     autoMsgExpire();
     
     // Remove LastPass Icon. TODO There MUST be a better way!
