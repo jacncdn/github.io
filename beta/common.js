@@ -1,10 +1,9 @@
 /*!
 **|  CyTube Enhancements: Common
-**|  Version: 2024.02.01
+**|  Version: 2024.02.02
 **|
 **@preserve
 */
-"use strict";
 
 // https://jshint.com/docs/options/
 // jshint curly:true, eqeqeq:true, esversion:10, freeze:true, futurehostile:true, latedef:true, maxerr:10, nocomma:true
@@ -15,8 +14,11 @@
 // jshint undef:true
 
 /* globals socket, CHANNEL, CLIENT, Rank, CHATTHROTTLE, IGNORED, USEROPTS, initPm, pingMessage, formatChatMessage, Callbacks */
-/* globals removeVideo, makeAlert, videojs, CHANNEL_DEBUG, PLAYER, BOT_NICK, LOG_MSG, MOTD_MSG, PREFIX_INFO, PREFIX_RELOAD */
+/* globals addChatMessage, removeVideo, makeAlert, videojs, CHANNEL_DEBUG, PLAYER, BOT_NICK, LOG_MSG, MOTD_MSG, PREFIX_INFO, PREFIX_RELOAD */
 /* globals Buttons_URL, Footer_URL, Favicon_URL, START, ROOM_ANNOUNCEMENT, MOD_ANNOUNCEMENT, ADVERTISEMENT */
+/* globals GUESTS_CHAT, MOTD_ROOMS, MOTD_RULES, Rooms_URL, Rules_URL, Root_URL */
+
+"use strict";
 
 if (!window[CHANNEL.name]) { window[CHANNEL.name] = {}; }
 
@@ -60,20 +62,20 @@ const notNullOrEmpty = function(data) {
 // ----------------------------------------------------------------------------------------------------------------------------------
 function Sleep(sleepMS) {
   // USE: await Sleep(2000);
-  return new Promise(resolve => setTimeout(resolve, sleepMS));
+  return new Promise(function(resolve) { setTimeout(resolve, sleepMS); });
 }
 
 // ----------------------------------------------------------------------------------------------------------------------------------
 
 const timeString = function(datetime) {
   if (!(datetime instanceof Date)) { datetime = new Date(datetime); }
-  
+
   let now = new Date();
   let localDT = new Intl.DateTimeFormat('default', {
       month: '2-digit', day: '2-digit',
       hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false,
     }).format(datetime);
-    
+
   let parts = localDT.split(/[\s,]+/);
   let tsStr = parts[1];
   if (datetime.toDateString() !== now.toDateString()) { tsStr = parts[0] + " " + tsStr; }
@@ -83,7 +85,7 @@ const timeString = function(datetime) {
 
 const formatConsoleMsg = function(desc, data) {
   let msg = desc;
-  
+
   if ((typeof data !== 'undefined') && (data)) {
     if (typeof data === 'function') {
       msg += ': ' + data.toString();
@@ -109,6 +111,11 @@ const debugData = function(desc, data) {
   window.console.debug(formatConsoleMsg(desc, data));
 };
 
+// Send warning msg to console
+const warnData = function(desc, data) {
+  window.console.warn(formatConsoleMsg(desc, data));
+};
+
 // Send error msg to console
 const errorData = function(desc, data) {
   window.console.error(formatConsoleMsg(desc, data));
@@ -120,7 +127,7 @@ const logData = function(desc, data) {
 };
 
 // Admin Debugger
-const debugListener = function(eventName, data) { 
+const debugListener = function(eventName, data) {
   if (eventName.toLowerCase() === "mediaupdate") { return; }
   window.console.info(formatConsoleMsg(eventName, data));
 };
@@ -155,10 +162,10 @@ const whisper = function(msg) {
     meta: {
       shadow: false,
       addClass: 'server-whisper',
-      addClassToNameAndTimestamp: true
-    }
+      addClassToNameAndTimestamp: true,
+    },
   });
-}
+};
 
 // ##################################################################################################################################
 
@@ -171,7 +178,7 @@ const waitForElement = function(selector, callback, checkFreqMs, timeoutMs) {
       return;
     }
     else {
-      setTimeout(() => {
+      setTimeout(function() {
         if (timeoutMs && ((Date.now() - startTimeMs) > timeoutMs)) { return; }
         loopSearch();
       }, checkFreqMs);
@@ -250,7 +257,7 @@ async function notifyMe(chan, title, msg) {
     silent: false,
   });
 
-  document.addEventListener("visibilitychange", (evt) => {
+  document.addEventListener("visibilitychange", function(evt) {
       try {
         debugData("common.notifyMe.visibilitychange", evt);
         notify.close();
@@ -263,13 +270,13 @@ async function notifyMe(chan, title, msg) {
     notify.close();
   };
 
-  setTimeout(() => notify.close(), 20000);
+  setTimeout(function() { notify.close(); }, 20000);
 }
 
 // ##################################################################################################################################
 
 //  Room Announcements
-const roomAnnounce = function(msg) { 
+const roomAnnounce = function(msg) {
   if (msg.length < 1) { return; }
   if (window.CLIENT.rank < Rank.Member) { return; }
   if (BOT_NICK.toLowerCase() === CLIENT.name.toLowerCase()) { return; }
@@ -280,11 +287,11 @@ const roomAnnounce = function(msg) {
 };
 
 //  Moderator Announcements
-const modAnnounce = function(msg) { 
+const modAnnounce = function(msg) {
   if (msg.length < 1) { return; }
   if (window.CLIENT.rank < Rank.Moderator) { return; }
   if (BOT_NICK.toLowerCase() === CLIENT.name.toLowerCase()) { return; }
-    
+
   $(function() {
     makeAlert("Moderators", msg).attr("id","modAnnounce").appendTo("#announcements");
   });
@@ -294,12 +301,12 @@ const modAnnounce = function(msg) {
 
 // Remove Video URLs
 const hideVideoURLs = function() {
-  setTimeout(() => {
+  setTimeout(function() {
     $(".qe_title").each(function(idx,data) {data.replaceWith(data.text);});
     if (window.CLIENT.rank > Rank.Member) {
       $("#queue li.queue_entry div.btn-group").hide();
     }
-  }, 2000);  
+  }, 2000);
 };
 
 if (window.CLIENT.rank < Rank.Moderator) {
@@ -320,19 +327,19 @@ var VIDEO_TITLE = { title: "None", current: 0, duration: 0, };
 const setVideoTitle = function() {
   if (VIDEO_TITLE.duration < 1) { VIDEO_TITLE.duration = VIDEO_TITLE.current; }
   let remaining = Math.round(VIDEO_TITLE.duration - VIDEO_TITLE.current);
-  $currenttitle.html("Playing: <strong>" + VIDEO_TITLE.title + "</strong> &nbsp; (" + secondsToHMS(remaining) + ")");  
+  $currenttitle.html("Playing: <strong>" + VIDEO_TITLE.title + "</strong> &nbsp; (" + secondsToHMS(remaining) + ")");
 };
 
 const refreshVideo = function() {
   debugData("common.refreshVideo", window.CurrentMedia);
 
-  if (window.PLAYER) { 
+  if (window.PLAYER) {
     PLAYER.mediaType = "";
     PLAYER.mediaId = "";
   } else if (notNullOrEmpty(window.CurrentMedia)) {
     window.loadMediaPlayer(window.CurrentMedia);
   }
-  
+
   // playerReady triggers server to send changeMedia which reloads player
   window.socket.emit('playerReady');
 };
@@ -340,12 +347,12 @@ const refreshVideo = function() {
 // Player Error Reload
 const videoFix = function() {
   debugData("common.videoFix");
-  
+
   let vplayer = videojs('ytapiplayer');
   vplayer.on("error", function(e) {
     errorData("common.Reloading Player", e);
     vplayer.createModal("ERROR: Reloading player!");
-    
+
     window.setTimeout(function() { refreshVideo(); }, 2000);
   });
 };
@@ -376,12 +383,13 @@ const autoMsgExpire = function() {
     $messagebuffer.find("[class*=chat-shadow]:not([data-expire])").each(function() { $(this).attr("data-expire", Date.now() + messageExpireTime);});
     $messagebuffer.find("[class*=chat-msg-]:not([data-expire])").each(function() { $(this).attr("data-expire", Date.now() + chatExpireTime);});
   }
-  
+
   // Remove Expired Messages
-  $messagebuffer.find("div[data-expire]").each(() => {
-      if (Date.now() > parseInt($(this).attr("data-expire"))) { 
-        $(this).remove();
-      }});
+  $messagebuffer.find("div[data-expire]").each(function() {
+    if (Date.now() > parseInt($(this).attr("data-expire"))) {
+      $(this).remove();
+    }
+  });
 
   if (document.visibilityState === "hidden") { // delay if hidden
     $messagebuffer.find("div[data-expire]").each(function() {
@@ -400,7 +408,7 @@ const cacheEmotes = function() {
       window.console.error("Error loading '" + this.src + "'");
     };
   }
-  
+
   try {
     _notifyPing = new Audio('https://cdn.freesound.org/previews/25/25879_37876-lq.mp3');
     _msgPing = new Audio('https://cdn.freesound.org/previews/662/662411_11523868-lq.mp3');
@@ -437,12 +445,12 @@ const makeNoRefererMeta = function() {
 // ##################################################################################################################################
 
 function waitForElm(selector) {  // TODO UNTESTED
-  return new Promise(resolve => {
+  return new Promise(function(resolve) {
     if (document.querySelector(selector)) {
       return resolve(document.querySelector(selector));
     }
 
-    const observer = new MutationObserver(mutations => {
+    const observer = new MutationObserver(function(mutations) {
       if (document.querySelector(selector)) {
         observer.disconnect();
         resolve(document.querySelector(selector));
@@ -457,7 +465,7 @@ function waitForElm(selector) {  // TODO UNTESTED
 }
 
 /* Usage:
-waitForElm('.some-class').then((elm) => {
+waitForElm('.some-class').then(function(elm) {
   console.log('Element is ready');
   console.log(elm.textContent);
 });
@@ -466,13 +474,13 @@ waitForElm('.some-class').then((elm) => {
 // ##################################################################################################################################
 // Focus on PM
 
-const pm_observe = new $MutationObserver((mutations) => {
-  mutations.forEach((mutation) => {
-      mutation.addedNodes.forEach((node) => {
+const pm_observe = new $MutationObserver(function(mutations) {
+  mutations.forEach(function(mutation) {
+      mutation.addedNodes.forEach(function(node) {
         debugData('common.pm_observe.Added node', node.toString());
       });
-      
-      mutation.removedNodes.forEach((node) => {
+
+      mutation.removedNodes.forEach(function(node) {
         debugData('common.pm_observe.Removed node', node.toString());
       });
     }
@@ -486,21 +494,21 @@ const CustomCallbacks = {
   changeMedia: function(data) {
     debugData("CustomCallbacks.changeMedia", data);
     _originalCallbacks.changeMedia(data);
-    
+
     window.CurrentMedia = data;
     VIDEO_TITLE.title = data.title;
     VIDEO_TITLE.current = data.currentTime;
     VIDEO_TITLE.duration = data.seconds;
     setVideoTitle();
 
-    waitForElement('#ytapiplayer', () => {
+    waitForElement('#ytapiplayer', function() {
       let newVideo = document.getElementById('ytapiplayer');
       if (newVideo) { newVideo.addEventListener('error', videoErrorHandler, true); }
     }, 100, 10000);
-    
+
     if (GUEST_WARN) {
       GUEST_WARN = false;
-      setTimeout(() => whisper(GUEST_WARNING), 20000);
+      setTimeout(function() { whisper(GUEST_WARNING); }, 20000);
     }
   },
 
@@ -508,7 +516,7 @@ const CustomCallbacks = {
     // {"username":"[voteskip]","msg":"Voteskip","meta":{"addClass":"server-whisper","addClassToNameAndTimestamp":true},"time":1693344721364}
 
     debugData("CustomCallbacks.chatMsg", data);
-    
+
     if ((data.username[0] !== '[') &&  // Ignore Server
         (data.username !== window.CLIENT.name)) { // Don't talk to yourself
       msgPing();
@@ -532,7 +540,7 @@ const CustomCallbacks = {
       refreshVideo();
       return;
     }
-    
+
     VIDEO_TITLE.current = data.currentTime;
     setVideoTitle();
   },
@@ -545,15 +553,15 @@ const CustomCallbacks = {
     if (data.username.toLowerCase() !== window.CLIENT.name.toLowerCase()) { // Don't talk to yourself
       notifyMe(window.CHANNELNAME, data.username, data.msg);
     }
-    
-    if (data.msg.startsWith(PREFIX_RELOAD)) { 
+
+    if (data.msg.startsWith(PREFIX_RELOAD)) {
       location.reload(true);
       return;
     }
-    
+
     _originalCallbacks.pm(data);
   },
-  
+
   // --------------------------------------------------------------------------------
   addUser: function(data) { // Enhanced PM Box
     debugData("CustomCallbacks.addUser", data);
@@ -562,12 +570,12 @@ const CustomCallbacks = {
     $("#pm-" + data.name).attr("id", "#pm-" + data.name); // Make it easier to find
     $("#pm-" + data.name + " .panel-heading").removeClass("pm-gone");
     if (BOT_NICK.toLowerCase() !== CLIENT.name.toLowerCase()) {
-      setTimeout(() => { $(".userlist_owner:contains('"+ BOT_NICK + "')").parent().css("display","none"); }, 6000);
+      setTimeout(function() { $(".userlist_owner:contains('"+ BOT_NICK + "')").parent().css("display","none"); }, 6000);
     }
   },
-  
+
   userLeave: function(data) { // Enhanced PM Box
-    $("#pm-" + data.name + " .panel-heading").addClass("pm-gone"); 
+    $("#pm-" + data.name + " .panel-heading").addClass("pm-gone");
     _originalCallbacks.userLeave(data);
   },
 };
@@ -592,10 +600,10 @@ const overrideEmit = function() {
     window.socket.emit = function() {
       debugData("common.emit", arguments);
       let args = Array.prototype.slice.call(arguments);
-      
+
       if ((args[0] === "chatMsg") || (args[0] === "pm")) {
 
-        if ((!GUESTS_CHAT) && (window.CLIENT.rank < Rank.Member)) { 
+        if ((!GUESTS_CHAT) && (window.CLIENT.rank < Rank.Member)) {
           whisper(GUEST_WARNING);
           return;
         }
@@ -659,24 +667,24 @@ $(document).ready(function() {
   // --------------------------------------------------------------------------------
   if (MOTD_RULES) {
     $.get(Rules_URL, function(html_frag) { $('#pmbar').before(html_frag); debugData("common.ready.Rules", html_frag); });
-    $('#nav-collapsible > ul').append('<li><a id="showrules" href="javascript:void(0)" onclick="javascript:showRules()">Rules</a></li>')
+    $('#nav-collapsible > ul').append('<li><a id="showrules" href="javascript:void(0)" onclick="javascript:showRules()">Rules</a></li>');
   }
 
   if (MOTD_ROOMS) {
     $.get(Rooms_URL, function(html_frag) { $('#pmbar').before(html_frag); });
-    $('#nav-collapsible > ul').append('<li><a id="showrooms" href="javascript:void(0)" onclick="javascript:showRooms()">Rooms</a></li>')
+    $('#nav-collapsible > ul').append('<li><a id="showrooms" href="javascript:void(0)" onclick="javascript:showRooms()">Rooms</a></li>');
   }
 
   if (window.CLIENT.rank < Rank.Member) {
     $('#nav-collapsible > ul').append('<li><a class="throb_text" style="color:orange;font-weight:600" href="/register">Register</a></li>');
   }
-  
+
   // --------------------------------------------------------------------------------
   // Move Title to full width
   $('<div id="titlerow" class="row" />').insertBefore("#main").html($("#videowrap-header").detach());
   VIDEO_TITLE.title = $currenttitle.text().replace("Currently Playing: ", "");
   setVideoTitle();
-  
+
   $('#plonotification').remove();
   $('#plmeta').insertBefore("#queue");
 
@@ -685,20 +693,20 @@ $(document).ready(function() {
   // --------------------------------------------------------------------------------
   if (ROOM_ANNOUNCEMENT !== null) { roomAnnounce(ROOM_ANNOUNCEMENT); }
   if (MOD_ANNOUNCEMENT !== null) { modAnnounce(MOD_ANNOUNCEMENT); }
-  setTimeout(() => {$("#announcements").fadeOut(800, () => {$(this).remove();});}, 90000);
+  setTimeout(function() {$("#announcements").fadeOut(800, function() {$(this).remove();});}, 90000);
 
   if (notNullOrEmpty(ADVERTISEMENT) &&
-      (window.CLIENT.rank < Rank.Moderator)) { 
+      (window.CLIENT.rank < Rank.Moderator)) {
     $("#pollwrap").after('<div id="adwrap" class="col-lg-12 col-md-12">' + ADVERTISEMENT + '</div>');
     // $("#customembed").before('<div id="adwrap" class="col-lg-7 col-md-7">' + ADVERTISEMENT + '</div>');
   }
 
-  $(window).on("focus", () => { $("#chatline").focus(); });
+  $(window).on("focus", function() { $("#chatline").focus(); });
 
   // --------------------------------------------------------------------------------
-  window.setInterval(() => {  // Check every second
+  window.setInterval(function() {  // Check every second
     autoMsgExpire();
-    
+
     // Remove LastPass Icon. TODO There MUST be a better way!
     $("#chatline").attr("spellcheck", "true").css({"background-image":"none",});
     $(".pm-input").attr("spellcheck", "true").css({"background-image":"none",});
@@ -715,13 +723,13 @@ $(document).ready(function() {
   pm_observe.observe(($("#pmbar").get(0)), { childList: true, }); // PM Focus
 
   // --------------------------------------------------------------------------------
-  if (window.CLIENT.rank > Rank.Guest) { 
+  if (window.CLIENT.rank > Rank.Guest) {
     let modflair = $("#modflair");
     if (modflair.hasClass("label-default")) { modflair.trigger("click"); }
   }
- 
+
   // --------------------------------------------------------------------------------
-  if (window.CLIENT.rank > Rank.Moderator) { 
+  if (window.CLIENT.rank > Rank.Moderator) {
     $('<button class="btn btn-sm btn-default" id="clear" title="Clear Chat">Clear</button>')
       .appendTo("#leftcontrols")
       .on("click", function() {
@@ -729,8 +737,8 @@ $(document).ready(function() {
         window.socket.emit("playerReady");
       });
   }
-  
-  if (window.CLIENT.rank >= Rank.Moderator) { 
+
+  if (window.CLIENT.rank >= Rank.Moderator) {
     $('<button class="btn btn-sm btn-default" id="clean" title="Clean Server Messages">Clean</button>')
       .appendTo("#leftcontrols")
       .on("click", function() {
