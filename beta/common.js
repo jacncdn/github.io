@@ -510,6 +510,7 @@ const CustomCallbacks = {
     if (GUEST_WARN) {
       GUEST_WARN = false;
       setTimeout(function() { whisper(GUEST_WARNING); }, 20000);
+      setTimeout(function() { window.location.replace(Root_URL); }, previewTime);
     }
   },
 
@@ -759,7 +760,6 @@ $(document).ready(function() {
   if ((!GUESTS_CHAT) && (window.CLIENT.rank < Rank.Member)) {
     GUEST_WARN = true;
     $("#pmbar").remove();
-    setTimeout(function() { window.location.replace(Root_URL); }, previewTime);
   }
 
   // --------------------------------------------------------------------------------
