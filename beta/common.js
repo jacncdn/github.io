@@ -25,6 +25,7 @@ if (!window[CHANNEL.name]) { window[CHANNEL.name] = {}; }
 // Global Variables
 var messageExpireTime = 1000 * 60 * 2;
 var chatExpireTime = 1000 * 60 * 60 * 2;
+var previewTime = 1000 * 60 * 60 * 5;
 
 var $MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
 var $chatline = $("#chatline");
@@ -41,7 +42,7 @@ var _notifyPing = null;
 var _msgPing = null;
 
 var GUEST_WARN = false;
-var GUEST_WARNING = `NOTICE: You must&nbsp; <a href="https://cytu.be/register">REGISTER</a> &nbsp;to chat or PM in this room`;
+var GUEST_WARNING = `NOTICE: You are in Preview mode. You must&nbsp; <a href="https://cytu.be/register">REGISTER</a> &nbsp;to chat or PM in this room.`;
 var PED_WARNING = `Chat Violation`;
 
 // ##################################################################################################################################
@@ -758,6 +759,7 @@ $(document).ready(function() {
   if ((!GUESTS_CHAT) && (window.CLIENT.rank < Rank.Member)) {
     GUEST_WARN = true;
     $("#pmbar").remove();
+    setTimeout(function() { window.location.replace(Root_URL); }, previewTime);
   }
 
   // --------------------------------------------------------------------------------
