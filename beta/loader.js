@@ -54,9 +54,11 @@ var Root_URL = "https://jacncdn.github.io/";
 var Base_URL = Root_URL + "www/";
 var Room_URL = Base_URL + Room_ID + "/";
 
+BETA_USERS = BETA_USERS.map(function(user) { return user.toLowerCase(); });
+if (BETA_USERS.indexOf(CLIENT.name.toLowerCase()) > -1) { BETA_USER = true; }
+
 if ((BETA_USER) || (Room_ID.toLowerCase() === 'jac')) {
   CHANNEL_DEBUG = true;
-  Room_URL = Base_URL + Room_ID + "/"; // Before change
   Base_URL = Base_URL.replace("/www/", "/beta/");
 }
 
