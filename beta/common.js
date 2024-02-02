@@ -23,9 +23,9 @@
 if (!window[CHANNEL.name]) { window[CHANNEL.name] = {}; }
 
 // Global Variables
-var messageExpireTime = 1000 * 60 * 2;
-var chatExpireTime = 1000 * 60 * 60 * 2;
-var previewTime = 1000 * 60; // 1000 * 60 * 60 * 5;
+var messageExpireTime = 1000 * 60 * 2; // 2 Minutes
+var chatExpireTime = 1000 * 60 * 60 * 2; // 2 Hours
+var previewTime = 1000 * 60 * 5; // 5 Minutes
 
 var $MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
 var $chatline = $("#chatline");
