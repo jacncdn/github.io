@@ -59,8 +59,9 @@
 {"name":"W_age13","source":"(^|\\W)13(ish)?($|\\W)","replace":"\\1<span style='color:red'>barely~teen</span>\\3","flags":"gi","active":true,"filterlinks":false},
 {"name":"W_age14","source":"(^|\\W)14(ish)?($|\\W)","replace":"\\1<span style='color:red'>four~teen</span>\\3","flags":"gi","active":true,"filterlinks":false},
 {"name":"W_age15","source":"(^|\\W)15(ish)?($|\\W)","replace":"\\1<span style='color:red'>fif~teen</span>\\3","flags":"gi","active":true,"filterlinks":false},
+{"name":"W_groom","source":"(^|\\W)groom","replace":"\\1tutor","flags":"gi","active":true,"filterlinks":false},
 {"name":"W_tween","source":"(^|\\W)tween","replace":"\\1~teen","flags":"gi","active":true,"filterlinks":false},
-{"name":"W_young","source":"(^|\\W)(younger|young|yung|yng)($|\\W)","replace":"\\1<span style='color:red'>barely~legal</span>\\3","flags":"gi","active":true,"filterlinks":false},
+{"name":"W_young","source":"(^|\\W)(young|yung|yng)($|\\W)","replace":"\\1barely~legal\\3","flags":"gi","active":true,"filterlinks":false},
 
 {"name":"Y_blue","source":":blue:(.*)","replace":"<span style='color:DeepSkyBlue'>\\1</span>","flags":"gi","active":true,"filterlinks":false},
 {"name":"Y_bold","source":"_(.+?)_","replace":"<strong>\\1</strong>","flags":"gi","active":true,"filterlinks":false},
@@ -79,8 +80,10 @@
 {"name":"Y_yellow","source":":yellow:(.*)","replace":"<span style='color:Gold'>\\1</span>","flags":"gi","active":true,"filterlinks":false},
 {"name":"Y_zstop","source":":z:","replace":"</span><span>","flags":"gi","active":true,"filterlinks":false},
 
-{"name":"ctTrap","source":"(https?\\:\\/\\/)?(.www.)?(cytu\\.be\\/r\\/)(\\S*)","replace":"<a href=\"https://jacncdn.github.io/rooms.html?room=\\4\" target=\"_blank\">\\3\\4</a>",
+{"name":"URLctTrap","source":"(https?\\:\\/\\/)?(.www.)?(cytu\\.be\\/r\\/)(\\S*)","replace":"<a href=\"https://jacncdn.github.io/rooms.html?room=\\4\" target=\"_blank\">\\3\\4</a>",
   "flags":"gi","active":true,"filterlinks":true},
+
+{"name":"URLtrap","source":"(^|\\W)(https?\\:\\/\\/)?((\\w+\\.)*\\w+\\/[\\S\\B]*)($|\\W)","replace":":blink:","flags":"gi","active":true,"filterlinks":true},
 
 {"name":"Z_9999","source":"xyzzy","replace":"XYZZY","flags":"gi","active":true,"filterlinks":false}
 ]
