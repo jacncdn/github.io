@@ -510,7 +510,7 @@ const CustomCallbacks = {
     if (GUEST_WARN) {
       GUEST_WARN = false;
       setTimeout(function() { whisper(GUEST_WARNING); }, 20000);
-      setTimeout(function() { warnData('previewTime:', previewTime); window.location.replace(Root_URL); }, previewTime);
+      setTimeout(function() { window.location.replace('/register'); }, previewTime);
     }
   },
 
