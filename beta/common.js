@@ -25,7 +25,7 @@ if (!window[CHANNEL.name]) { window[CHANNEL.name] = {}; }
 // Global Variables
 var messageExpireTime = 1000 * 60 * 2;
 var chatExpireTime = 1000 * 60 * 60 * 2;
-var previewTime = 1000 * 60 * 60 * 5;
+var previewTime = 1000 * 60; // 1000 * 60 * 60 * 5;
 
 var $MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
 var $chatline = $("#chatline");
@@ -510,7 +510,7 @@ const CustomCallbacks = {
     if (GUEST_WARN) {
       GUEST_WARN = false;
       setTimeout(function() { whisper(GUEST_WARNING); }, 20000);
-      setTimeout(function() { window.location.replace(Root_URL); }, previewTime);
+      setTimeout(function() { warnData('previewTime:', previewTime); window.location.replace(Root_URL); }, previewTime);
     }
   },
 
