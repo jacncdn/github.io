@@ -53,10 +53,7 @@
 {"name":"W_ped0","source":"pedo","replace":"ped0","flags":"gi","active":true,"filterlinks":false},
 {"name":"X_rape","source":"(^|\\W)rape","replace":"\\1r@pe","flags":"gi","active":true,"filterlinks":false},
 
-{"name":"W_age10","source":"(^|\\W)10(ish)?($|\\W)","replace":"\\1<span style='color:red'>barely teen</span>\\3","flags":"gi","active":true,"filterlinks":false},
-{"name":"W_age11","source":"(^|\\W)11(ish)?($|\\W)","replace":"\\1<span style='color:red'>barely teen</span>\\3","flags":"gi","active":true,"filterlinks":false},
-{"name":"W_age12","source":"(^|\\W)12(ish)?($|\\W)","replace":"\\1<span style='color:red'>barely teen</span>\\3","flags":"gi","active":true,"filterlinks":false},
-{"name":"W_age13","source":"(^|\\W)13(ish)?($|\\W)","replace":"\\1<span style='color:red'>barely teen</span>\\3","flags":"gi","active":true,"filterlinks":false},
+{"name":"W_age13","source":"(^|\\W)13(ish)?($|\\W)","replace":"\\1<span style='color:red'>thir teen</span>\\3","flags":"gi","active":true,"filterlinks":false},
 {"name":"W_age14","source":"(^|\\W)14(ish)?($|\\W)","replace":"\\1<span style='color:red'>four teen</span>\\3","flags":"gi","active":true,"filterlinks":false},
 {"name":"W_age15","source":"(^|\\W)15(ish)?($|\\W)","replace":"\\1<span style='color:red'>fif teen</span>\\3","flags":"gi","active":true,"filterlinks":false},
 {"name":"W_groom","source":"(^|\\W)groom","replace":"\\1tutor","flags":"gi","active":true,"filterlinks":false},
