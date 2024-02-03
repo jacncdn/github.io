@@ -113,6 +113,10 @@ a {
   width: 25%;
   padding: 0.2em;
 }
+.deleted {
+  color: #C040C0;
+  text-decoration: line-through DarkRed 2px;
+}
 
 a.popular { font-style: italic; font-weight: bold !important; }
 a:link.new, a:hover.new, a:active.new { color: SpringGreen !important; }
