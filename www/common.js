@@ -1,6 +1,6 @@
 /*!
 **|  CyTube Enhancements: Common
-**|  Version: 2024.02.02
+**|  Version: 2024.02.05
 **|
 **@preserve
 */
@@ -716,6 +716,11 @@ $(document).ready(function() {
   }
 
   // --------------------------------------------------------------------------------
+  USEROPTS.synch = true;
+  setOpt("synch", USEROPTS.synch);
+  USEROPTS.sync_accuracy = 6;
+  setOpt("sync_accuracy", USEROPTS.sync_accuracy);
+
   makeNoRefererMeta();
   refreshVideo();
   cacheEmotes();
