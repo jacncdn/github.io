@@ -89,6 +89,10 @@ body {
 }  
 .rooms-child:first-child {
 } 
+#showrules, #showrooms, #showregister {
+  color: orange;
+  font-weight:600;
+}
 
 a {
   color: #CCCCCC;
