@@ -1,6 +1,6 @@
 /*!
 **|  CyTube Enhancements: Common
-**|  Version: 2024.02.05
+**|  Version: 2024.02.06
 **|
 **@preserve
 */
@@ -633,7 +633,7 @@ $(document).ready(function() {
   }
 
   if (window.CLIENT.rank < Rank.Member) {
-    $('#nav-collapsible > ul').append('<li><a class="throb_text" style="color:orange;font-weight:600" href="/register">Register</a></li>');
+    $('#nav-collapsible > ul').append('<li><a id="showregister" class="throb_text" href="/register">Register</a></li>');
   }
 
   // --------------------------------------------------------------------------------
