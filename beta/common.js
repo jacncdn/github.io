@@ -763,6 +763,11 @@ $(document).ready(function() {
   }
 
   // --------------------------------------------------------------------------------
+  USEROPTS.synch = true;
+  setOpt("synch", USEROPTS.synch);
+  USEROPTS.sync_accuracy = 6;
+  setOpt("sync_accuracy", USEROPTS.sync_accuracy);
+
   makeNoRefererMeta();
   refreshVideo();
   cacheEmotes();
