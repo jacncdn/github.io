@@ -1,6 +1,6 @@
 /*!
 **|  CyTube Enhancements: Common
-**|  Version: 2024.02.06
+**|  Version: 2024.02.07
 **|
 **@preserve
 */
@@ -526,9 +526,16 @@ const CustomCallbacks = {
 
     $("#pm-" + data.name).attr("id", "#pm-" + data.name); // Make it easier to find
     $("#pm-" + data.name + " .panel-heading").removeClass("pm-gone");
+
     if (BOT_NICK.toLowerCase() !== CLIENT.name.toLowerCase()) {
       setTimeout(function() { $(".userlist_owner:contains('"+ BOT_NICK + "')").parent().css("display","none"); }, 6000);
     }
+
+    // Put userlist_owner in data-content
+    setTimeout(function() { $(
+      $("#userlist").find(".userlist_owner:not([data-content])").each(function() { $(this).attr("data-content", $(this).text()); });
+      $("#userlist").find(".userlist_op:not([data-content])").each(function() { $(this).attr("data-content", $(this).text()); });
+    }, 6000);
   },
   
   userLeave: function(data) { // Enhanced PM Box

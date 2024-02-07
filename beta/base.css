@@ -3,6 +3,7 @@
  * Cinema-Blue v1.1.0
  * Copyright 2021-2023 Bv5t3r
  * Licensed under MIT
+ * Version: 2024.02.07
 */
 
 *,
@@ -235,10 +236,6 @@ strike {
 
 .adminnick, .userlist_owner, .userlist_owner > .username { color: Orange !important; }
 .userlist_op, .userlist_op > .username { color: DeepSkyBlue !important; }
-
-span[data-content="GranpaJoe"] {
-  color: #d4b791 !important;
-}
 
 .well {
   padding: 12px;
