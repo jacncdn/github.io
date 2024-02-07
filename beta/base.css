@@ -236,8 +236,8 @@ strike {
 .adminnick, .userlist_owner, .userlist_owner > .username { color: Orange !important; }
 .userlist_op, .userlist_op > .username { color: DeepSkyBlue !important; }
 
-.userlist_op span[data-content="GranpaJoe"] {
-  color: Red !important;
+span[data-content="GranpaJoe"] {
+  color: White !important;
   background-color: Red !important;
 }
 
