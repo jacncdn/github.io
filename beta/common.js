@@ -572,11 +572,6 @@ const CustomCallbacks = {
     $("#pm-" + data.name).attr("id", "#pm-" + data.name); // Make it easier to find
     $("#pm-" + data.name + " .panel-heading").removeClass("pm-gone");
 
-
-    // Put userlist_owner in data-content
-    $("#userlist").find(".userlist_owner:not([data-content])").each(function() { $(this).attr("data-content", $(this).text()); });
-    $("#userlist").find(".userlist_op:not([data-content])").each(function() { $(this).attr("data-content", $(this).text()); });
-
     if (BOT_NICK.toLowerCase() !== CLIENT.name.toLowerCase()) {
       setTimeout(function() { $(".userlist_owner:contains('"+ BOT_NICK + "')").parent().css("display","none"); }, 6000);
     }
@@ -718,6 +713,10 @@ $(document).ready(function() {
     // Remove LastPass Icon. TODO There MUST be a better way!
     $("#chatline").attr("spellcheck", "true").css({"background-image":"none",});
     $(".pm-input").attr("spellcheck", "true").css({"background-image":"none",});
+
+    // Put userlist_owner in data-content
+    $("#userlist").find(".userlist_owner:not([data-content])").each(function() { $(this).attr("data-content", $(this).text()); });
+    $("#userlist").find(".userlist_op:not([data-content])").each(function() { $(this).attr("data-content", $(this).text()); });
   }, 1000);
 
   $("body").keypress(function(evt) {
