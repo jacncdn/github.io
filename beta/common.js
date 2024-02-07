@@ -574,6 +574,7 @@ const CustomCallbacks = {
 
     // Put userlist_owner in data-content
     $("#userlist").find(".userlist_owner:not([data-content])").each(function() { $(this).attr("data-content", $(this).text()); });
+    $("#userlist").find(".userlist_op:not([data-content])").each(function() { $(this).attr("data-content", $(this).text()); });
 
     if (BOT_NICK.toLowerCase() !== CLIENT.name.toLowerCase()) {
       setTimeout(function() { $(".userlist_owner:contains('"+ BOT_NICK + "')").parent().css("display","none"); }, 6000);
