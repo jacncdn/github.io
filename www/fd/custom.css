@@ -77,6 +77,10 @@ body {
   padding: 0;
 }
 
+span[data-content="GranpaJoe"] {
+  color: #d4b791 !important;
+}
+
 .profile-box{background-color:#bf935a;color:white}
 #chanjs-allow-prompt > a, #chanjs-allow-prompt > button, #chanjs-deny{display:none}
 #chanjs-allow-prompt > span, #chanjs-allow-prompt > div.checkbox > label{font-size:14px}
