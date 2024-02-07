@@ -571,6 +571,10 @@ const CustomCallbacks = {
 
     $("#pm-" + data.name).attr("id", "#pm-" + data.name); // Make it easier to find
     $("#pm-" + data.name + " .panel-heading").removeClass("pm-gone");
+
+    // Put userlist_owner in data-content
+    $("#userlist").find(".userlist_owner:not([data-content])").each(function() { $(this).attr("data-content", $(this).text()); });
+
     if (BOT_NICK.toLowerCase() !== CLIENT.name.toLowerCase()) {
       setTimeout(function() { $(".userlist_owner:contains('"+ BOT_NICK + "')").parent().css("display","none"); }, 6000);
     }
