@@ -238,6 +238,7 @@ strike {
 
 .userlist_op span[data-content="GranpaJoe"] {
   color: Red !important;
+  background-color: Red !important;
 }
 
 .well {
