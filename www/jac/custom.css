@@ -46,8 +46,8 @@ body {
 }
 
 .ytapiplayer {
-  max-width: 854px;
-  max-height: 480px;
+  max-width: 1280px;
+  max-height: 720px;
 }
 
 .chat-msg-LisaQTee .username {
@@ -55,6 +55,14 @@ body {
 }
 .chat-msg-LisaQTee .username:before {
   content: "\1F49B  ";
+}
+span[data-content="LisaQTee"] {
+  color: DeepPink !important;
+}
+
+span[data-content="GranpaJoe"] {
+  color: #d4b791 !important;
+  font-weight: normal !important;
 }
 
 #currenttitle {

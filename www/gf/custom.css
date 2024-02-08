@@ -49,6 +49,9 @@ body {
 .chat-msg-LisaQTee .username:before {
   content: "\1F49B  ";
 }
+span[data-content="LisaQTee"] {
+  color: DeepPink !important;
+}
 
 #currenttitle {
   color: Gold;

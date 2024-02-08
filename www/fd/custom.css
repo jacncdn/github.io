@@ -49,6 +49,14 @@ body {
 .chat-msg-LisaQTee .username:before {
   content: "\1F49B  ";
 }
+span[data-content="LisaQTee"] {
+  color: DeepPink !important;
+}
+
+span[data-content="GranpaJoe"] {
+  color: #d4b791 !important;
+  font-weight: normal !important;
+}
 
 #currenttitle {
   color: Gold;
@@ -75,10 +83,6 @@ body {
   width: 0;
   margin: 0;
   padding: 0;
-}
-
-span[data-content="GranpaJoe"] {
-  color: #d4b791 !important;
 }
 
 .profile-box{background-color:#bf935a;color:white}
