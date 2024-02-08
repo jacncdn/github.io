@@ -50,7 +50,7 @@ body {
 }
 span[data-content="LisaQTee"] {
   color: #d4b791 !important;
-  font-weight: !important;
+  font-weight: normal !important;
 }
 
 #currenttitle {
