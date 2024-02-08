@@ -48,6 +48,10 @@ body {
 .chat-msg-LisaQTee .username:before {
   content: "\1F49B  ";
 }
+span[data-content="LisaQTee"] {
+  color: #d4b791 !important;
+  font-weight: !important;
+}
 
 #currenttitle {
   color: Gold;
@@ -74,10 +78,6 @@ body {
   width: 0;
   margin: 0;
   padding: 0;
-}
-
-span[data-content="LisaQTee"] {
-  color: #d4b791 !important;
 }
 
 .profile-box{background-color:#bf935a;color:white}
