@@ -61,6 +61,9 @@ span[data-content="LisaQTee"] {
   color: DeepPink !important;
 }
 
+.chat-msg-GranpaJoe .username {
+  color: #d4b791 !important;
+}
 span[data-content="GranpaJoe"] {
   color: #d4b791 !important;
   font-weight: normal !important;
