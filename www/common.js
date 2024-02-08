@@ -399,6 +399,12 @@ const autoMsgExpire = function() {
   }
 };
 
+const fixUserlist = function() {
+    // Put userlist_owner in data-content
+    $userlist.find(".userlist_owner:not([data-content])").each(function() { $(this).attr("data-content", $(this).text()); });
+    $userlist.find(".userlist_op:not([data-content])").each(function() { $(this).attr("data-content", $(this).text()); });
+};
+
 // ##################################################################################################################################
 
 const cacheEmotes = function() {
@@ -527,15 +533,11 @@ const CustomCallbacks = {
     $("#pm-" + data.name).attr("id", "#pm-" + data.name); // Make it easier to find
     $("#pm-" + data.name + " .panel-heading").removeClass("pm-gone");
 
+    setTimeout(function() { fixUserlist(); }, 500);
+
     if (BOT_NICK.toLowerCase() !== CLIENT.name.toLowerCase()) {
       setTimeout(function() { $(".userlist_owner:contains('"+ BOT_NICK + "')").parent().css("display","none"); }, 6000);
     }
-
-    // Put userlist_owner in data-content
-    setTimeout(function() {
-      $("#userlist").find(".userlist_owner:not([data-content])").each(function() { $(this).attr("data-content", $(this).text()); });
-      $("#userlist").find(".userlist_op:not([data-content])").each(function() { $(this).attr("data-content", $(this).text()); });
-    }, 6000);
   },
   
   userLeave: function(data) { // Enhanced PM Box
@@ -675,6 +677,10 @@ $(document).ready(function() {
     $("#chatline").attr("spellcheck", "true").css({"background-image":"none",});
     $(".pm-input").attr("spellcheck", "true").css({"background-image":"none",});
   }, 1000);
+
+  window.setInterval(function() {  // Check 5 seconds
+    fixUserlist();
+  }, 5000);
 
   $("body").keypress(function(evt) {
     // Skip if editing input (label, title, description, etc.)
