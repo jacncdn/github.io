@@ -53,6 +53,11 @@ span[data-content="LisaQTee"] {
   color: DeepPink !important;
 }
 
+span[data-content="GranpaJoe"] {
+  color: #d4b791 !important;
+  font-weight: normal !important;
+}
+
 #currenttitle {
   color: Gold;
   padding-left: 8px;
