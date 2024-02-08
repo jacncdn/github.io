@@ -1,6 +1,6 @@
 /*!
 **|  CyTube Enhancements: Common
-**|  Version: 2024.02.07
+**|  Version: 2024.02.08
 **|
 **@preserve
 */
@@ -13,7 +13,7 @@
 // jshint unused:false
 // jshint undef:true
 
-/* globals socket, CHANNEL, CLIENT, Rank, CHATTHROTTLE, IGNORED, USEROPTS, initPm, pingMessage, formatChatMessage, Callbacks */
+/* globals socket, CHANNEL, CLIENT, Rank, CHATTHROTTLE, IGNORED, USEROPTS, initPm, setOpt, pingMessage, formatChatMessage, Callbacks */
 /* globals addChatMessage, removeVideo, makeAlert, videojs, CHANNEL_DEBUG, PLAYER, BOT_NICK, LOG_MSG, MOTD_MSG, PREFIX_INFO, PREFIX_RELOAD */
 /* globals Buttons_URL, Footer_URL, Favicon_URL, START, ROOM_ANNOUNCEMENT, MOD_ANNOUNCEMENT, ADVERTISEMENT */
 /* globals GUESTS_CHAT, MOTD_ROOMS, MOTD_RULES, Rooms_URL, Rules_URL, Root_URL */
@@ -577,7 +577,7 @@ const CustomCallbacks = {
     }
 
     // Put userlist_owner in data-content
-    setTimeout(function() { $(
+    setTimeout(function() {
       $("#userlist").find(".userlist_owner:not([data-content])").each(function() { $(this).attr("data-content", $(this).text()); });
       $("#userlist").find(".userlist_op:not([data-content])").each(function() { $(this).attr("data-content", $(this).text()); });
     }, 6000);
