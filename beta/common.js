@@ -1,6 +1,6 @@
 /*!
 **|  CyTube Enhancements: Common
-**|  Version: 2024.02.08
+**|  Version: 2024.02.09
 **|
 **@preserve
 */
@@ -13,7 +13,7 @@
 // jshint unused:false
 // jshint undef:true
 
-/* globals socket, CHANNEL, CLIENT, Rank, CHATTHROTTLE, IGNORED, USEROPTS, initPm, setOpt, pingMessage, formatChatMessage, Callbacks */
+/* globals socket, CHANNEL, CLIENT, Rank, CHATTHROTTLE, IGNORED, USEROPTS, initPm, setOpt, storeOpts, applyOpts, pingMessage, formatChatMessage, Callbacks */
 /* globals addChatMessage, removeVideo, makeAlert, videojs, CHANNEL_DEBUG, PLAYER, BOT_NICK, LOG_MSG, MOTD_MSG, PREFIX_INFO, PREFIX_RELOAD */
 /* globals Buttons_URL, Footer_URL, Favicon_URL, START, ROOM_ANNOUNCEMENT, MOD_ANNOUNCEMENT, ADVERTISEMENT */
 /* globals GUESTS_CHAT, MOTD_ROOMS, MOTD_RULES, Rooms_URL, Rules_URL, Root_URL */
@@ -331,6 +331,8 @@ const setVideoTitle = function() {
   $currenttitle.html("Playing: <strong>" + VIDEO_TITLE.title + "</strong> &nbsp; (" + secondsToHMS(remaining) + ")");
 };
 
+
+// ----------------------------------------------------------------------------------------------------------------------------------
 const refreshVideo = function() {
   debugData("common.refreshVideo", window.CurrentMedia);
 
@@ -345,6 +347,7 @@ const refreshVideo = function() {
   window.socket.emit('playerReady');
 };
 
+// ----------------------------------------------------------------------------------------------------------------------------------
 // Player Error Reload
 const videoFix = function() {
   debugData("common.videoFix");
@@ -358,10 +361,25 @@ const videoFix = function() {
   });
 };
 
+// ----------------------------------------------------------------------------------------------------------------------------------
 function videoErrorHandler(event) {
   errorData('common.videoErrorHandler', event);
   refreshVideo();
 }
+
+// ----------------------------------------------------------------------------------------------------------------------------------
+const overrideMediaRefresh = function() { // Override #mediarefresh.click to increase USEROPTS.sync_accuracy
+  $(document).off('click', '#mediarefresh').on('click', '#mediarefresh', function() {
+    if (window.USEROPTS.sync_accuracy < 20) {
+      window.USEROPTS.synch = true;
+      window.USEROPTS.sync_accuracy += 2;
+      storeOpts();
+      applyOpts();
+    }
+
+    refreshVideo();
+  });
+};
 
 // ##################################################################################################################################
 
@@ -645,9 +663,31 @@ const overrideEmit = function() {
 
 // ##################################################################################################################################
 
-function showRules() { $("#cytube_rules").modal(); }
+const customUserOpts = function() {
+  window.USEROPTS.first_visit = false;
+  window.USEROPTS.ignore_channelcss = false;
+  window.USEROPTS.ignore_channeljs = false;
+  window.USEROPTS.modhat = true;
+  window.USEROPTS.synch = true;
+  window.USEROPTS.sync_accuracy = 6;
 
-function showRooms() {
+  if (window.CLIENT.rank >= Rank.Moderator) {
+    window.USEROPTS.show_shadowchat = true;
+    window.USEROPTS.show_ip_in_tooltip = true;
+    window.USEROPTS.show_timestamps = true;
+    window.USEROPTS.blink_title = "onlyping";
+  }
+  
+  // util.js
+  storeOpts();
+  applyOpts();
+};
+
+// ##################################################################################################################################
+
+const showRules = function() { $("#cytube_rules").modal(); };
+
+const showRooms = function() {
   $("#cytube_x").load(Root_URL + "inc/cytube_x.html");
   $("#cytube_k").load(Root_URL + "inc/cytube_k.html");
   $("#cytube_pg").load(Root_URL + "inc/cytube_pg.html");
@@ -655,7 +695,7 @@ function showRooms() {
   $("#cytube_to").load(Root_URL + "inc/cytube_to.html");
   $("#otherlists").load(Root_URL + "inc/otherlists.html");
   $("#cytube_rooms").modal();
-}
+};
 
 // ##################################################################################################################################
 /*  window.CLIENT.rank
@@ -670,6 +710,7 @@ function showRooms() {
 
 //  DOCUMENT READY
 $(document).ready(function() {
+  customUserOpts();
   initCallbacks();
   getFooter();
 
@@ -776,11 +817,7 @@ $(document).ready(function() {
   }
 
   // --------------------------------------------------------------------------------
-  USEROPTS.synch = true;
-  setOpt("synch", USEROPTS.synch);
-  USEROPTS.sync_accuracy = 6;
-  setOpt("sync_accuracy", USEROPTS.sync_accuracy);
-
+  overrideMediaRefresh();
   makeNoRefererMeta();
   refreshVideo();
   cacheEmotes();
