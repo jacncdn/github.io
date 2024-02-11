@@ -2,7 +2,7 @@
 // @name         CyTube Enhancer
 // @author       Buster Garvin
 // @description  Make changes to CyTube for better experience. Tested in chrome.
-// @version      0.9.011
+// @version      0.9.021
 // @updateURL    https://jacncdn.github.io/tm/cytube-enhancer.js
 // @downloadURL  https://jacncdn.github.io/tm/cytube-enhancer.js
 // @namespace    https://jacncdn.github.io
@@ -280,6 +280,12 @@ async function notifyMe(chan, title, msg) {
 
 // ----------------------------------------------------------------------------------------------------------------------------------
 // TODO: Duplicate in common.js???
+/*
+  if ((typeof _orgFormatMsg === "undefined") || (_orgFormatMsg === null)) {
+    _orgFormatMsg = safeWin.formatChatMessage;
+    safeWin.formatChatMessage = formatChatMessage;
+  }
+*/
 function formatTimeString(datetime) {
   if (!(datetime instanceof Date)) { datetime = new Date(datetime); }
 
@@ -290,8 +296,8 @@ function formatTimeString(datetime) {
     }).format(datetime);
 
   let parts = localDT.split(/[\s,]+/);
-  let tsStr = parts[1];
-  if (datetime.toDateString() !== now.toDateString()) { tsStr = parts[0] + " " + tsStr; }
+  let tsStr = parts[1]; // HH:mm:ss
+  if (datetime.toDateString() !== now.toDateString()) { tsStr = parts[0] + " " + tsStr; } // add date
 
   return "[" + tsStr + "]";
 };
@@ -301,7 +307,7 @@ function formatChatMessage(data, last) {
   let skip = false;
   if (data.meta.addClass === "server-whisper") { skip = true; }
 
-  safeWin.console.debug("CyTubeEnhancer.formatChatMessage", JSON.stringify(data, null, 2));
+  // safeWin.console.debug("CyTubeEnhancer.formatChatMessage", JSON.stringify(data, null, 2));
 
   data.msg = stripImages(data.msg);
   data.msg = execEmotes(data.msg);
@@ -350,10 +356,7 @@ const delayChanges = function() {
     return;
   }
 
-  if (typeof _orgFormatMsg === null) {
-    _orgFormatMsg = safeWin.formatChatMessage;
-    safeWin.formatChatMessage = formatChatMessage;
-  }
+  safeWin.formatChatMessage = formatChatMessage;
 
   makeNoRefererMeta();
   changeCSS();
@@ -381,13 +384,14 @@ const delayChanges = function() {
   $("#chanjs-save-pref").prop("checked", true);
   // $("#chanjs-deny").click();
 
-  // Socket Events
+/*
   socket.on("changeMedia", function(data) {
     $("#currenttitle").text("Playing: " + data.title);
 
     let msg = `{"title":"` + data.title + `","url":"` + data.id + `",},`;
     safeWin.console.debug(msg);
   });
+*/
 
   if (typeof BOT_NICK === "undefined") { var BOT_NICK = 'xyzzy'; }
   socket.on("pm", function(data) {
@@ -428,6 +432,8 @@ const delayChanges = function() {
   });
 
   addModeratorBtns();
+
+  safeWin.console.debug('##### CyTube Enhancer Loaded');
 };
 
 // ----------------------------------------------------------------------------------------------------------------------------------
