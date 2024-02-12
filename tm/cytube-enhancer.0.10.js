@@ -2,7 +2,7 @@
 // @name         CyTube Enhancer
 // @author       Cinema-Blue
 // @description  Make changes to CyTube for better experience. Tested in Chrome & Firefox.
-// @version      0.10.025
+// @version      0.10.026
 // @namespace    https://cinema-blue.icu
 // @iconURL      https://cinema-blue.icu/img/favicon.png
 // @match        https://cytu.be/r/*
@@ -30,6 +30,12 @@ let Base_URL = "https://jacncdn.github.io/www/";
 // let Base_URL = "https://cinema-blue-ico/www/";
 
 // debugger;
+
+// TODO:
+// overrideEmit
+// customUserOpts
+// CustomCallbacks
+// formatChatMessage -> custom.js
 
 // ##################################################################################################################################
 // TODO: Duplicate in common.js???
@@ -110,7 +116,7 @@ const replaceFormatMsg = function() {
     clearInterval(replaceFormatMsgInterval);
   }
 }
-const replaceFormatMsgInterval = setInterval(replaceFormatMsg, 100);
+const replaceFormatMsgInterval = setInterval(replaceFormatMsg, 10);
 
 // ##################################################################################################################################
 
@@ -224,6 +230,8 @@ const delayChanges = function() {
   }
   $.getScript(Base_URL + "betterpm.js");
 
+  if (typeof BOT_NICK === "undefined") { var BOT_NICK = 'xyzzy'; }
+  
   makeNoRefererMeta();
 
   $(window).on("focus", function() { $("#chatline").focus(); });
@@ -242,7 +250,6 @@ const delayChanges = function() {
   $("#chanjs-save-pref").prop("checked", true);
   // $("#chanjs-deny").click();
 
-  if (typeof BOT_NICK === "undefined") { var BOT_NICK = 'xyzzy'; }
   socket.on("pm", function(data) {
     if (data.username.toLowerCase() === safeWin.CLIENT.name.toLowerCase()) { return; } // Don't talk to yourself
     if (data.msg.startsWith(String.fromCharCode(158))) { return; } // PREFIX_INFO
@@ -254,6 +261,15 @@ const delayChanges = function() {
   socket.on("chatMsg", function(data) {
     msgPing();
     notifyMe(safeWin.CHANNELNAME + ': ' + data.username, data.msg);
+  });
+
+  // Enhanced PM Box
+  socket.on("addUser", function(data) {
+    $("#pm-" + data.name + " .panel-heading").removeClass("pm-gone");
+  });
+
+  socket.on("userLeave", function(data) {
+    $("#pm-" + data.name + " .panel-heading").addClass("pm-gone");
   });
 
   $('<button class="btn btn-sm btn-default" id="removeVideo" title="Remove Video">Remove Video</button>')
@@ -270,15 +286,6 @@ const delayChanges = function() {
       $messagebuffer.find("[class^=poll-notify]").each(function() { $(this).remove(); });
       $(".chat-msg-Video:not(:last)").each(function() { $(this).remove(); });
     });
-
-  // Enhanced PM Box
-  socket.on("addUser", function(data) {
-    $("#pm-" + data.name + " .panel-heading").removeClass("pm-gone");
-  });
-
-  socket.on("userLeave", function(data) {
-    $("#pm-" + data.name + " .panel-heading").addClass("pm-gone");
-  });
 
   addModeratorBtns();
 
