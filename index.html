@@ -30,10 +30,9 @@
   <script>
     if (window.location.href.indexOf('?') > 0) {
       let urlParams = new URLSearchParams(window.location.search);
-      let room = urlParams.get('r');
-      if (room !== null) {
-        window.location.replace("https://cytu.be/r/" + room);
-      }
+      window.location.href = "https://static.cinema-blue.icu/rooms.html?" + urlParams.toString();
+    } else {
+      window.location.href = "https://static.cinema-blue.icu/rooms.html;
     }
   </script>
 </head>
