@@ -331,7 +331,6 @@ const setVideoTitle = function() {
   $currenttitle.html("Playing: <strong>" + VIDEO_TITLE.title + "</strong> &nbsp; (" + secondsToHMS(remaining) + ")");
 };
 
-
 // ----------------------------------------------------------------------------------------------------------------------------------
 const refreshVideo = function() {
   debugData("common.refreshVideo", window.CurrentMedia);
@@ -418,9 +417,9 @@ const autoMsgExpire = function() {
 };
 
 const fixUserlist = function() {
-    // Put userlist_owner in data-content
-    $userlist.find(".userlist_owner:not([data-content])").each(function() { $(this).attr("data-content", $(this).text()); });
-    $userlist.find(".userlist_op:not([data-content])").each(function() { $(this).attr("data-content", $(this).text()); });
+  // Put userlist_owner in data-content
+  $userlist.find(".userlist_owner:not([data-content])").each(function() { $(this).attr("data-content", $(this).text()); });
+  $userlist.find(".userlist_op:not([data-content])").each(function() { $(this).attr("data-content", $(this).text()); });
 };
 
 // ##################################################################################################################################
